@@ -160,7 +160,8 @@ public class PlayerInformation : MonoBehaviour {
         Common.effects.PlayEffect(EffectsEnum.Finding_gem_movement_finished_to_middle, middleShowWinGUI.GetWorldPositionOfGemInfo(0));
         ShowMiddleGUI(text);
         // Debug.Log("MOWING in the start");
-        StartCoroutine(CountMoneyRoutine(0, amount, middleShowWinGUI,durationToGemMoveMiddle));
+        // StartCoroutine(CountMoneyRoutine(0, amount, middleShowWinGUI,durationToGemMoveMiddle));
+        middleShowWinGUI.SetWonMoney(amount);
         yield return new WaitForSeconds(durationToGemMoveMiddle);
         this.WinMoney(amount);
         
@@ -178,6 +179,8 @@ public class PlayerInformation : MonoBehaviour {
 
 
     }
+
+
     void ShowMiddleGUI(string text)
     {
         Debug.Log("SHOWING GUI");

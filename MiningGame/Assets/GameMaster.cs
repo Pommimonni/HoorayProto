@@ -6,6 +6,9 @@ public class GameMaster : MonoBehaviour {
     public GameObject gemPrefab;
     public bool playerHandlingGem=false;
     public bool onBonusRound = false;
+    public bool forceFirstMember = false;
+
+    public Transform bonusRowShowMenu;
 
     public GameObject shallWePlayAgainGO;
     // Use this for initialization
@@ -17,7 +20,10 @@ public class GameMaster : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            forceFirstMember = !forceFirstMember;
+        }
 	}
 
     public void WallOpened(Vector3 atPosition)
@@ -53,7 +59,14 @@ public class GameMaster : MonoBehaviour {
     }
     void EnterBonusRound()
     {
-        //onBonusRound = true;
+        onBonusRound = true;
+        Common.usefulFunctions.ShowChildForxSeconds(bonusRowShowMenu, 5f);
+        Invoke("EndBonusRound", 5f);
+    }
+
+    void EndBonusRound()
+    {
+        onBonusRound = false;
     }
 
     void EndGame()
@@ -74,7 +87,14 @@ public class GameMaster : MonoBehaviour {
     void gemHandling(Vector3 atPosition,PlayerInformation player)
     {
         PlayerGemHandlingStart();
-        Gem toWin = WhatGemDoWeWin();
+        Gem toWin = null;
+        if (forceFirstMember)
+        {
+            toWin = allGems[0];
+        }
+        else {
+            toWin = WhatGemDoWeWin();
+        }
        // Debug.Log("We won " + toWin.Name.ToString());
         if (toWin != null)
         {

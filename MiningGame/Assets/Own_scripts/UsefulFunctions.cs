@@ -129,4 +129,19 @@ public class UsefulFunctions : MonoBehaviour {
         StartCoroutine(moveObjectToPlaceRoutine(toMove, where, duration));
     }
 
+
+    public void ShowChildForxSeconds(Transform parent,float seconds)
+    {
+        StartCoroutine(ShowGameObjectChildForxSeconds(parent, seconds));
+    }
+
+    IEnumerator ShowGameObjectChildForxSeconds(Transform parent, float seconds)
+    {
+        GameObject objectToShow = parent.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        objectToShow.SetActive(false);
+        yield break;
+    }
+
 }

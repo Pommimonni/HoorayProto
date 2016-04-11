@@ -5,6 +5,7 @@ public class Wall : MonoBehaviour {
 
 
     public GameObject On_click_effect;
+    public bool creatingHoleWithCropping = false;
    // public bool go_small = false;
     //public float go_small_speed = 0.9f;
     // Use this for initialization
@@ -16,10 +17,14 @@ public class Wall : MonoBehaviour {
 	void Update () {
         // ChangeObjectSize(new Vector3(10f, 10f, 10f));
         //  moveRight();
-       // if (go_small)
-      //  {
-      //      this.GoSmall();
-       // }
+        // if (go_small)
+        //  {
+        //      this.GoSmall();
+        // }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            creatingHoleWithCropping = !creatingHoleWithCropping;
+        }
     }
 
     void ChangeObjectSize(Vector3 newValue)
@@ -83,8 +88,13 @@ public class Wall : MonoBehaviour {
     {
         float newSize = Common.wallGrid.GetHoleSize(position);
         if (newSize != -1) {
-           // CreateHoleWithCropping(position, 1f);
-            CreateHoleWithoutCropping(position, newSize);
+            if (creatingHoleWithCropping)
+            {
+                CreateHoleWithCropping(position, 1f);
+            }
+            else {
+                CreateHoleWithoutCropping(position, newSize);
+            }
             return true;
         }
         else
