@@ -71,12 +71,10 @@ $RECYCLE.BIN/
 *.lnk
 *.sln
 /*.rar
-Uni/ProjectSettings/ProjectVersion.txt
-Uni/Assets/Fabric.meta
-Uni/Assets/Fabric/Editor/Resources.meta
-Uni/Assets/Fabric/Editor/ProjectData.meta
-Uni/Assets/Fabric/Scripts/Editor.meta
-Uni/Assets/Fabric/Editor.meta
-Uni/Assets/Fabric/Scripts.meta
-Uni/Assets/Fabric/Editor/PreviewerSessions.meta
-HopperballRacing/ProjectSettings/ProjectVersion.txt
+MiningGame/ProjectSettings/ProjectVersion.txt
+
+# FMOD 
+Assets/FMODStudioCache.asset
+Assets/StreamingAssets/*.bank
+fmod.log
+fmod_editor.log
