@@ -45,6 +45,7 @@ public class Effects : MonoBehaviour {
 
     public GameObject bombExplosionEffect;
     public GameObject bigBombExplosionEffect;
+    public bool removeEffectSounds = false;
     
 
     // Update is called once per frame
@@ -99,7 +100,10 @@ public class Effects : MonoBehaviour {
                 createdEffectParent= parent.gameObject;
             }
         }
-        CreateSoundEffect(effectToPlay, createdEffectParent);
+        if (!removeEffectSounds)
+        {
+            CreateSoundEffect(effectToPlay, createdEffectParent);
+        }
         return createdEffectParent;
     }
     

@@ -5,7 +5,7 @@ public class LauriWrapper : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        Common.lauriWrapper = this;
 	}
 	
 	// Update is called once per frame
