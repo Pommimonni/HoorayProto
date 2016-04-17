@@ -97,21 +97,21 @@ public class PlayerInformation : MonoBehaviour {
         myInformationGUI.SetMoneyTotal(moneyTotalAmount);
     }
 
-    public void AddWinsToTotalMoney()
+    public void AddWinsToTotalMoneys()
     {
         SetTotalMoneyAmount(moneyWon);
     }
 
     public void WinMoney(float money)
     {
-        
-        StartCoroutine(CountMoneyRoutine(moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
+
+        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
         moneyWon += money;
       //  myInformationGUI.SetWonMoney(wonMoney);
      
     }
 
-    float CalculateHowLongtimeMoneyCountLasts(float moneyIncrease)
+    public float CalculateHowLongtimeMoneyCountLasts(float moneyIncrease)
     {
         MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
         float difference = moneyIncrease;
@@ -162,33 +162,7 @@ public class PlayerInformation : MonoBehaviour {
 
 
     
-    IEnumerator CountMoneyRoutine(float oldAmount,float newAmount,InfoGUI toSet,float maxDuration)
-    {
-        MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
-        float difference = Mathf.Abs(newAmount - oldAmount);
-        float sign = Mathf.Sign(newAmount - oldAmount);
-        int moneyPerStep = 1;
-        if (difference * moneyCountParams.step > maxDuration)
-        {
-            moneyPerStep = (int)(difference* moneyCountParams.step / maxDuration);
-        }
-        float moneyGoer = oldAmount;
-        for(int n=0; n < (int)difference; n++)
-        {
-            moneyGoer += sign * moneyPerStep;
-            if (moneyGoer > newAmount)
-            {
-                break;
-            }
-            toSet.SetWonMoney(moneyGoer);
-            yield return new WaitForSeconds(moneyCountParams.step);
-            
-        }
-        
-        toSet.SetWonMoney(newAmount);
-
-        yield break;   
-    }
+  
     IEnumerator MoveGemToMidleAndCountMoney(GameObject gemGO,float amount,string text)
     {
         yield return new WaitForSeconds(1.2f);
@@ -207,7 +181,7 @@ public class PlayerInformation : MonoBehaviour {
         Common.gameMaster.AddWonMoneyBoth(amount);
 
         // Debug.Log("MOWING in the middle");
-        StartCoroutine(CountMoneyRoutine(amount, 0, middleShowWinGUI,moneyCountParams.maxDuration));
+      //  StartCoroutine(CountMoneyRoutine(amount, 0, middleShowWinGUI,moneyCountParams.maxDuration));
         float countLasts = CalculateHowLongtimeMoneyCountLasts(amount);
         if (countLasts < 1f)
         {
@@ -314,9 +288,13 @@ public class PlayerInformation : MonoBehaviour {
         this.myInformationGUI.SetNewWonGems(this.wonGems);
         // myInformationGUI.SetNewWonGems(sameInARow);
     }
+    public bool addEmptyGems=false;
     public void HandleEmptyGem()
     {
-        AddMenuGems(null);
+        if (addEmptyGems)
+        {
+            AddMenuGems(null);
+        }
     }
 
     private void AddMenuGems(Gem newGem)

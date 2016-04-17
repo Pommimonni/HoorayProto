@@ -17,7 +17,7 @@ public static class Common  {
     public static LevelLoader levelLoader;
     public static BombSummoner bonusBombSummoner;
     public static BonusRoundWinChances bonusRoundChances;
-
+    public static LauriWrapper lauriWrapper;
     public static Gems gemSkins;
 
     public static string cullingMaskNameInTexture = "_Mask";

@@ -89,13 +89,16 @@ public class BonusRoundBomb : MonoBehaviour {
 
     private void HandleDestruction()
     {
+        Vector3 position = this.transform.position;
         if (!isBigOne)
         {
-            Common.effects.PlayBombExplosionEffect(this.transform.position);
+            Common.effects.PlayBombExplosionEffect(position);
+            Common.lauriWrapper.BonusRoundDestroyWall(position, false);
         }
         else
         {
-            Common.effects.PlayBigBombExplosionEffect(this.transform.position);
+            Common.lauriWrapper.BonusRoundDestroyWall(position, true);
+            Common.effects.PlayBigBombExplosionEffect(position);
         }
         Destroy(this.gameObject);
     }

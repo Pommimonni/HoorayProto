@@ -30,7 +30,11 @@ public class InfoGUI : MonoBehaviour {
         }
 	}
 
-
+    public Transform sBBResults;
+    public Transform sEndGameResults;
+    public Transform sStartBB;
+    public Transform sPlayAgain;
+    public Transform BonusRoundCombining;
 
     public float wonMoneyTester = 0f;
     public int hitsLeft = 10;
@@ -38,7 +42,8 @@ public class InfoGUI : MonoBehaviour {
     public Text wonAmountText;
     public Text hitsLeftText;
     public List<Image> gemImagesOnWonGems;
-    public List<Image> gemImagesOnMiddleGems;
+    public List<Image> gemImagesOnMiddleGemsBonusRound;
+    public List<Image> gemImagesOnShowEndScreenGems;
     public Sprite emptyWonGemSprite;
     Camera myCamera;
     public Color usedAxeColor;
@@ -51,6 +56,9 @@ public class InfoGUI : MonoBehaviour {
 
     public Text betText;
     public Text moneyTotalText;
+    public Text moneyTotalTextForEndShow;
+    public Text moneyTotalBBResults;
+
 
     public void SetWonMoney(float wonMoney)
     {
@@ -76,7 +84,86 @@ public class InfoGUI : MonoBehaviour {
         }
     }
 
-    
+    public void CountTotalMoneyForEndText(float oldAmount,float newAmount,float maxDuration)
+    {
+        StartCoroutine(CountInsertMoney(oldAmount, newAmount, moneyTotalTextForEndShow, maxDuration));
+    }
+
+    public bool AreWeCountingMoney()
+    {
+        return stillCountingMoney;
+    }
+
+    bool stillCountingMoney = false;
+
+    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration)
+    {
+        stillCountingMoney = true;
+        MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
+        float startTime = Time.time;
+        float difference = Mathf.Abs(newAmount - oldAmount);
+        float sign = Mathf.Sign(newAmount - oldAmount);
+        int moneyPerStep = 1;
+        float lasts = difference * moneyCountParams.step;
+        if (difference * moneyCountParams.step > maxDuration)
+        {
+            
+            float floatmoneyPerStep = (difference * moneyCountParams.step / maxDuration);
+            moneyPerStep =(int)Mathf.Ceil(floatmoneyPerStep);
+            Debug.Log("changing step new step is "+moneyPerStep);
+        }
+        float moneyGoer = oldAmount;
+        for (int n = 0; n < (int)difference; n++)
+        {
+            moneyGoer += sign * moneyPerStep;
+            if (moneyGoer*sign > newAmount)
+            {
+                break;
+            }
+            toSet.text = moneyGoer.ToString();
+            yield return new WaitForSeconds(moneyCountParams.step);
+
+        }
+
+        toSet.text = newAmount.ToString();
+        Debug.Log("in reality money count lasted " + (Time.time - startTime).ToString()+ "  with step "+moneyPerStep+" we caunted "+difference+ " should last"+lasts.ToString()+ " max duration is "+maxDuration.ToString());
+        Debug.Log("New amount " + newAmount);
+        Debug.Log("Old Amount " + oldAmount);
+        stillCountingMoney = false;
+        yield break;
+    }
+
+    public void ShowBBResultsSetActive(bool active)
+    {
+        GameObject objectToShow = sBBResults.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(active);
+        // Invoke("StartBonusRound", duration);
+    }
+
+
+    public void StartShowEndGameResults()
+    {
+        
+        GameObject objectToShow = sEndGameResults.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(true);
+        // Invoke("StartBonusRound", duration);
+    }
+    public void StopShowEndGameResults()
+    {
+        GameObject objectToShow = sEndGameResults.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(false);
+    }
+
+    public void ShowStartBonusRound(float duration)
+    {
+        Common.usefulFunctions.ShowChildForxSeconds(sStartBB, duration);
+    }
+
+    public void ShowPlayAgain()
+    {
+        GameObject objectToShow = sPlayAgain.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(true);
+    }
 
 
     public void SetCombinedHitsAndDiamonds(List<Gem> gemsFound)
@@ -131,7 +218,14 @@ public class InfoGUI : MonoBehaviour {
 
     public Vector3 GetWorldPositionOfMiddleGemLocation(int index)
     {
-        Image img = gemImagesOnMiddleGems[index];
+        Image img = gemImagesOnMiddleGemsBonusRound[index];
+        return img.rectTransform.position;
+    }
+
+
+    public Vector3 GetWorldPositionOfShowEndGemLocation(int index)
+    {
+        Image img = gemImagesOnShowEndScreenGems[index];
         return img.rectTransform.position;
     }
 
@@ -182,7 +276,7 @@ public class InfoGUI : MonoBehaviour {
 
         for (int n = counter; n < gemImagesOnWonGems.Count; n++)
         {
-            gemImagesOnWonGems[n].sprite = emptyWonGemSprite;
+           // gemImagesOnWonGems[n].sprite = emptyWonGemSprite;
         }
     }
 

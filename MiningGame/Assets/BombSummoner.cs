@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 [System.Serializable]
 public enum TypeOfTrajectory : int { straight,parabolicGravity,parabolicCalculated, linearIncrease, exponent };
 
@@ -45,7 +45,7 @@ public class BombSummoner : MonoBehaviour
         if (lastSpawn == 0f || lastSpawn + spawnHz < Time.time)
         {
 
-            if (Common.gameMaster.onBonusRound)
+            if (summoning)
             {
                 if (IsThereTimeLeft())
                 {
@@ -55,10 +55,12 @@ public class BombSummoner : MonoBehaviour
                   //  Debug.Log("Spawning bomb"+lastSpawn);
                     Vector3 spawnLoc = getSpawnLocation();
                     SpawnBomb(spawnLoc);
+                    objectsSpawned++;
                 }
                 else
                 {
-                    Common.gameMaster.EndBonusRound();
+                    Common.gameMaster.BonusRoundEndsShowResults();
+                    summoning = false;
                 }
 
             }
@@ -131,11 +133,12 @@ public class BombSummoner : MonoBehaviour
 
     public float bigBombChance = 0.1f;
 
-
+    bool summoning = false;
 
     public void StartBonusRound()
     {
         objectsSpawned = 0;
+        summoning = true;
         
     }
 
@@ -290,8 +293,6 @@ public class BombSummoner : MonoBehaviour
         // spawnedObject.GetComponent<Rigidbody>().AddRelativeForce(force);
         //  spawnedObject.GetComponent<Rigidbody>().AddTorque(torgue);
         //   spawnedObject.GetComponent<Rigidbody>().AddForce(force);
-
-
 
     }
 

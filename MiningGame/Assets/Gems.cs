@@ -78,6 +78,18 @@ public class Gems: MonoBehaviour
         }
         return true;
     }
+    public float CalculateMoneyWon(List<Gem> gems)
+    {
+        float total = 0f;
+        foreach(Gem gem in gems)
+        {
+            if (!IsGemEmpty(gem))
+            {
+                total += gem.priceMoney;
+            }
+        }
+        return total;
+    }
 
     public List<Gem> EmptyGemsThatAre(List<Gem> whatToEmpty, Gem whatTypeOfGem)
     {
