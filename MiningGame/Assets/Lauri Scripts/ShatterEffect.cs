@@ -5,7 +5,8 @@ public class ShatterEffect : MonoBehaviour {
 
     public static ShatterEffect main;
     public ParticleSystem particleFX;
-    public AudioSource soundFX;
+    public FMODUnity.StudioEventEmitter soundFXFmod;
+
 	// Use this for initialization
 	void Start () {
         main = this;
@@ -20,6 +21,9 @@ public class ShatterEffect : MonoBehaviour {
     {
         this.transform.position = location;
         particleFX.Play();
-        soundFX.Play();
+        if (soundFXFmod)
+        {
+            soundFXFmod.Play();
+        }
     }
 }
