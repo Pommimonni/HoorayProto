@@ -96,4 +96,11 @@ public class ToogleGroupHandler : MonoBehaviour {
             }
         }
     }
+
+    public void SetMemberToggled(int toggled)
+    {
+        Toggle toggle=myActiveChildren[toggled].GetComponent<Toggle>();
+        toggle.isOn = true;
+    }
+    
 }

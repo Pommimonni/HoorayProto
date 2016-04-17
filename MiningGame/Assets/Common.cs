@@ -14,8 +14,9 @@ public static class Common  {
     public static SpriteCropper spriteCropper;
     public static Effects effects;
     public static InfoGUI playerInfoGUI;
-    public static RoundSettings roundSettings;
     public static LevelLoader levelLoader;
+    public static BombSummoner bonusBombSummoner;
+    public static BonusRoundWinChances bonusRoundChances;
 
     public static Gems gemSkins;
 

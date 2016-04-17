@@ -64,6 +64,43 @@ public class Gems: MonoBehaviour
     }
 
 
+    public bool IsGemEmpty(Gem gem)
+    {
+        if (gem != null)
+        {
+            if (gem.Name != null)
+            {
+                if (gem.Name.Length > 1)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    public List<Gem> EmptyGemsThatAre(List<Gem> whatToEmpty, Gem whatTypeOfGem)
+    {
+        List<Gem> newWonGems = new List<Gem>();
+        int counter = 0;
+        foreach (Gem gem in whatToEmpty)
+        {
+            if (IsGemEmpty(gem))
+            {
+                newWonGems.Add(null);
+            }
+            else if (gem.Name == whatTypeOfGem.Name)
+            {
+
+                newWonGems.Add(null);
+            }
+            else
+            {
+                newWonGems.Add(gem);
+            }
+            counter++;
+        }
+        return newWonGems;
+    }
 }
 

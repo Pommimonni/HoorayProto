@@ -43,6 +43,7 @@ public class Wall : MonoBehaviour {
     }
     void OnMouseDown()
     {
+        /*
         if (Common.gameMaster.canHitWall())
         {
             // go_small = true;
@@ -62,8 +63,54 @@ public class Wall : MonoBehaviour {
 
             //Destroy(this.gameObject);
         }
-
+        */
     }
+    void WallOpen(PlayerInformation player)
+    {
+        if (Common.gameMaster.canHitWall())
+        {
+            // go_small = true;
+            //ChangeObjectSize(new Vector3(0f, 0f, 0f));
+
+            Vector3 mousePosition = Common.usefulFunctions.GetMouseWorldPosition();
+            mousePosition.z = 0;
+            Common.effects.PlayEffect(EffectsEnum.Hitting_wall, mousePosition);
+            bool succesfull = CreateHoleIfPossible(mousePosition);
+            if (succesfull)
+            {
+                Common.gameMaster.WallOpened(mousePosition,player);
+                Common.effects.PlayEffect(EffectsEnum.Wall_destrying, mousePosition);
+                ///ExplosionEffect(mousePosition);
+            }
+            // Remove();
+
+            //Destroy(this.gameObject);
+        }
+    }
+
+    void OnMouseOver()
+    {
+        if (Common.gameMaster.canHitWall())
+        {
+         
+            if (Input.GetMouseButton(1))
+            {
+                if (!Common.gameMaster.player2.GamesOver() )
+                {
+                    WallOpen(Common.gameMaster.player2);
+                }
+            }
+            if (Input.GetMouseButton(0))
+            {
+                if (!Common.gameMaster.player1.GamesOver() )
+                {
+                    WallOpen(Common.gameMaster.player1);
+
+                }
+            }
+        }
+    }
+
     public GameObject unCroppedPrefab;
     public void CreateHoleWithOffset(Vector3 position,float newSize)
     {

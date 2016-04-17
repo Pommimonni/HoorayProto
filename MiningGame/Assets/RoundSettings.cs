@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RoundSettings : MonoBehaviour {
+public static class RoundSettings {
 
-    public float bet;
-    public float ratio;
-    public int hits;
-    public float moneyInserted;
+    public static float bet=1f;
+    public static float ratio;
+    public static int hits=3;
+    public static float moneyInsertedPLayer1 = 11f;
+    public static float moneyInsertedPlayer2 = 12f;
+    public static float moneyInserted = 14;
+    /*
     void Awake()
     {
         if (Common.roundSettings)
@@ -20,4 +23,5 @@ public class RoundSettings : MonoBehaviour {
 
 
     }
+    */
 }

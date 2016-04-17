@@ -14,14 +14,19 @@ public class InfoGUI : MonoBehaviour {
          //   img.sprite = emptyWonGemSprite;
         }
         Common.playerInfoGUI = this;
+        if (betText)
+        {
+            SetBet();
+        }
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("KEY DOWN A");
-            SetNewWonGems(sameInARowForTesting);
+           // Debug.Log("KEY DOWN A");
+            //SetNewWonGems(sameInARowForTesting);
         }
 	}
 
@@ -33,19 +38,89 @@ public class InfoGUI : MonoBehaviour {
     public Text wonAmountText;
     public Text hitsLeftText;
     public List<Image> gemImagesOnWonGems;
+    public List<Image> gemImagesOnMiddleGems;
     public Sprite emptyWonGemSprite;
     Camera myCamera;
+    public Color usedAxeColor;
+    public Color unUsedAxeColor;
+
+    public Transform hitShowHorizontal;
+    public Transform combinedHitsAndGemsFound;
 
     public Text tittleText;
 
+    public Text betText;
+    public Text moneyTotalText;
+
     public void SetWonMoney(float wonMoney)
     {
+       // Debug.LogError("settings money " + wonMoney);
         wonAmountText.text = wonMoney.ToString();
     }
     public void SetHitsLeft(int newHits)
     {
-        hitsLeftText.text = newHits.ToString();
+        // hitsLeftText.text = newHits.ToString();
+        ColourHitSown(newHits);
+
     }
+    public void SetBet()
+    {
+        Debug.Log(this.gameObject.name);
+        betText.text = RoundSettings.bet.ToString();
+    }
+    public void SetMoneyTotal(float money)
+    {
+        if (moneyTotalText)
+        {
+            moneyTotalText.text = money.ToString();
+        }
+    }
+
+    
+
+
+    public void SetCombinedHitsAndDiamonds(List<Gem> gemsFound)
+    {
+        for (int n = gemsFound.Count - 1; n >= 0; n--)
+        {
+            Transform child = combinedHitsAndGemsFound.GetChild(n);
+            Gem gem = gemsFound[n];
+            if (child.GetComponent<Image>())
+            {
+                child.GetComponent<Image>().color = Color.white;
+                if (Common.gemSkins.IsGemEmpty(gem))
+                {
+                    child.GetComponent<Image>().sprite = emptyWonGemSprite;
+                }
+                else
+                {
+                    child.GetComponent<Image>().sprite = gem.gemSprite;
+                }
+            }
+        }
+    }
+
+    public void ColourHitSown(int amount)
+    {
+        int counter = 0;
+        for(int n= hitShowHorizontal.childCount-1; n>=0; n--)
+        {
+            Transform child = hitShowHorizontal.GetChild(n);
+            if (child.GetComponent<Image>())
+            {
+                if (amount-1 < counter)
+                {
+                    child.GetComponent<Image>().color = usedAxeColor;
+                }
+                else
+                {
+                    child.GetComponent<Image>().color = unUsedAxeColor;
+                }
+            }
+            counter++;
+        }
+    }
+
 
     public Vector3 GetWorldPositionOfGemInfo(int index)
     {
@@ -54,19 +129,58 @@ public class InfoGUI : MonoBehaviour {
 
     }
 
+    public Vector3 GetWorldPositionOfMiddleGemLocation(int index)
+    {
+        Image img = gemImagesOnMiddleGems[index];
+        return img.rectTransform.position;
+    }
 
     public void SetNewWonGems(List<Gem> gems)
     {
+        SetGemShow(gems);
+        //  SetCombinedHitsAndDiamonds(gems);
+        //   Common.gameMaster.RefreshTotalGemShow();
+    }
+
+
+    public void GemShowDisableGem(int counter)
+    {
+        gemImagesOnWonGems[counter].sprite = emptyWonGemSprite;
+    }
+
+    public void GemShowAddGem(int counter, Gem gem)
+    {
+        gemImagesOnWonGems[counter].sprite = gem.gemSprite;
+    }
+
+    public void SetGemShow(List<Gem> gems)
+    {
         int counter = 0;
-        Debug.Log("Setting new gems. Gem amount " + gems.Count.ToString());
-        foreach(Gem gem in gems)
+        foreach (Gem gem in gems)
         {
-            Debug.Log("setting new gem");
-            gemImagesOnWonGems[counter].sprite = gem.gemSprite;
+            bool added = false;
+            if (gem != null)
+            {
+                if (gem.Name != null)
+                {
+                    {
+                        if (gem.Name.Length > 1)
+                        {
+                            Debug.Log("setting new gem");
+                            GemShowAddGem(counter, gem);
+                            added = true;
+                        }
+                    }
+                }
+            }
+            if (added == false)
+            {
+                GemShowDisableGem(counter);
+            }
             counter++;
         }
 
-        for(int n=counter; n<gemImagesOnWonGems.Count; n++)
+        for (int n = counter; n < gemImagesOnWonGems.Count; n++)
         {
             gemImagesOnWonGems[n].sprite = emptyWonGemSprite;
         }

@@ -65,7 +65,7 @@ public class WallGrid : MonoBehaviour {
         float xmyp = FindMaxHoleSizeToDirection(new Vector2(-1, 1), position);
         float xpym = FindMaxHoleSizeToDirection(new Vector2(1, -1), position);
         float smallestValue=Mathf.Min(xp, xm, yp, ym,xpym,xmym,xpyp,xmyp);
-        Debug.Log("MAX sizes in x "+xp.ToString() + " " + xm.ToString());
+     //   Debug.Log("MAX sizes in x "+xp.ToString() + " " + xm.ToString());
         return smallestValue;
     }
 

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class UsefulFunctions : MonoBehaviour {
 
@@ -81,13 +83,20 @@ public class UsefulFunctions : MonoBehaviour {
         return true;
     }
 
+
+
+    public void scaleGOOverTime(GameObject go, Vector3 endScale,float duration)
+    {
+        StartCoroutine(scaleTo(go.transform, endScale, duration));
+    }
+
     IEnumerator scaleTo(Transform objectToScale, Vector3 endScale, float duration)
     {
         float timeGoer = 0f;
         Vector3 startScale = objectToScale.localScale;
         while (timeGoer < duration)
         {
-            Debug.Log("<color=red>We are still scaling:</color>");
+           // Debug.Log("<color=red>We are still scaling:</color>");
             timeGoer += Time.fixedDeltaTime;
             objectToScale.localScale = Vector3.Lerp(startScale, endScale, timeGoer / duration);
             yield return new WaitForFixedUpdate();
@@ -95,6 +104,38 @@ public class UsefulFunctions : MonoBehaviour {
 
         yield break;
     }
+
+    public List<GameObject> OrderByTransformxPosition(List<GameObject> gos)
+    {
+        return gos.OrderBy(go => go.transform.position.x).ToList<GameObject>();
+    }
+
+    public Vector3 GetMeanPositionFromGameObjects(List<GameObject> GOS)
+    {
+        List<Vector3> allPos = new List<Vector3>();
+        foreach(GameObject go in GOS)
+        {
+            allPos.Add(go.transform.position);
+        }
+        return GetMeanVector(allPos);
+    }
+
+    public Vector3 GetMeanVector(List<Vector3> positions)
+    {
+        if (positions.Count == 0)
+            return Vector3.zero;
+        float x = 0f;
+        float y = 0f;
+        float z = 0f;
+        foreach (Vector3 pos in positions)
+        {
+            x += pos.x;
+            y += pos.y;
+            z += pos.z;
+        }
+        return new Vector3(x / positions.Count, y / positions.Count, z / positions.Count);
+    }
+
 
     IEnumerator moveObjectToPlaceRoutine(Transform obj, Vector3 where, float duration)
     {
@@ -129,6 +170,15 @@ public class UsefulFunctions : MonoBehaviour {
         StartCoroutine(moveObjectToPlaceRoutine(toMove, where, duration));
     }
 
+    public bool GetRandomBool(float trueChance=0.5f)
+    {
+        float random = Random.Range(0, 1f);
+        if (random < trueChance)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void ShowChildForxSeconds(Transform parent,float seconds)
     {

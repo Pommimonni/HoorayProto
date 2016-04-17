@@ -19,7 +19,7 @@ public class EffectDefinition
 
 
 [System.Serializable]
-public enum EffectsEnum : int { Hitting_wall,Wall_destrying, Finding_gem_while_moving,Finding_gem_movement_finished_to_middle, Finding_gem_movement_finished_to_combo, ManyInRow, };
+public enum EffectsEnum : int { Hitting_wall,Wall_destrying, Finding_gem_while_moving,Finding_gem_movement_finished_to_middle, When_3_in_row_found,Gem_movement_finishing_combo, };
 
 
 
@@ -36,11 +36,16 @@ public class Effects : MonoBehaviour {
     public float gemStayDuration = 1f;
     public float whenInRowFoundItLasts = 1f;
     public float fixedZToMove = -1f;
+    
     public MoneyCounParameters moneyCountParams;
 
 
 
     public GameObject test;
+
+    public GameObject bombExplosionEffect;
+    public GameObject bigBombExplosionEffect;
+    
 
     // Update is called once per frame
     void Update () {
@@ -55,7 +60,7 @@ public class Effects : MonoBehaviour {
         List<EffectDefinition> found= definedEffects.Where(item => item.whatTypeOfEffect == whatEffect).ToList();
         if (found.Count == 1)
         {
-            Debug.Log("Found effect " + whatEffect.ToString());
+          //  Debug.Log("Found effect " + whatEffect.ToString());
             return found[0];
         }
         else
@@ -63,6 +68,15 @@ public class Effects : MonoBehaviour {
             Debug.LogError("DIDNT FIND effect for EffectEnum "+whatEffect.ToString());
             return null;
         }
+    }
+
+    public GameObject PlayBombExplosionEffect(Vector3 position)
+    {
+       return PlayNormalEffect(bombExplosionEffect, position);
+    }
+    public GameObject PlayBigBombExplosionEffect(Vector3 position)
+    {
+        return PlayNormalEffect(bigBombExplosionEffect,position);
     }
 
     public GameObject PlayEffect(EffectsEnum whatEffect,Vector3 location,Transform parent = null)

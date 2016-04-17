@@ -7,8 +7,8 @@ public class MenuManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //SetAllPlayerNameTittle("PLAYERTEST");
-        ActivateMenu(menuGOer);
+       // SetAllPlayerNameTittle(playerName);
+       // ActivateMenu(menuGOer);
         
 
     }
@@ -24,7 +24,8 @@ public class MenuManager : MonoBehaviour {
             GoBackMenu();
         }
 	}
-
+    public string playerName = "player1";
+    public int playerNumber = 1;
     public int menuGOer = 0;
     public PlayerInformation myPlayer;
     public bool isAllGems = false;
@@ -34,6 +35,8 @@ public class MenuManager : MonoBehaviour {
     public int chosenFavouriteGemint = 0;
     public float ratio = 0;
     public Gem chosenFavouriteGem;
+    public MenuManager otherMenu;
+    public ToogleGroupHandler betToggle;
 
     public void SetIsAllGemsOn(bool value)
     {
@@ -47,16 +50,29 @@ public class MenuManager : MonoBehaviour {
         this.transform.GetChild(index).gameObject.SetActive(true);
         menuGOer = index;
     }
-    public void SetMyPlayer(PlayerInformation newPlayer)
+    public void SetOtherMenu(GameObject menu)
     {
-        myPlayer = newPlayer;
-        SetAllPlayerNameTittle(newPlayer.name);
-        
+        otherMenu = menu.GetComponentInChildren<MenuManager>();
+    }
+    public void Initialize(string newPlayer)
+    {
+       // myPlayer = newPlayer;
+        SetAllPlayerNameTittle(newPlayer);
+        ActivateMenu(menuGOer);
+
     }
     public void SetMoneyInserted(string moneyAmount)
     {
         float money = float.Parse(moneyAmount);
         moneyInserted = money;
+        if (playerNumber == 1)
+        {
+            RoundSettings.moneyInsertedPLayer1 += moneyInserted;
+        }
+        else
+        {
+            RoundSettings.moneyInsertedPlayer2 += moneyInserted;
+        }
 
     }
 
@@ -94,9 +110,17 @@ public class MenuManager : MonoBehaviour {
         this.chosenFavouriteGem = Common.gemSkins.allGems[newChild];
     }
 
+
+    public void ChangeOtherBetToggle(int toggle)
+    {
+        otherMenu.betToggle.SetMemberToggled(toggle);
+    }
+
     public void BetToggleChanged(int newBet)
     {
+
         this.betAmount = newBet+1;
+        ChangeOtherBetToggle(newBet);
     }
 
     public void RatioToggleChanged(int newToggle)
@@ -131,10 +155,10 @@ public class MenuManager : MonoBehaviour {
 
     void SetRoundSettings()
     {
-        RoundSettings settings = Common.roundSettings;
-        settings.bet = this.betAmount;
-        settings.ratio = this.ratio;
-        settings.moneyInserted = this.moneyInserted;
+
+        RoundSettings.bet = this.betAmount;
+        RoundSettings.ratio = this.ratio;
+        RoundSettings.moneyInserted = this.moneyInserted;
     }
 
     void SetAllPlayerNameTittle(string newTittle)
@@ -150,4 +174,6 @@ public class MenuManager : MonoBehaviour {
             }
         }
     }
+
+
 }
