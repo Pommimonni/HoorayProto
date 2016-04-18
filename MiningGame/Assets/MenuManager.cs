@@ -54,13 +54,19 @@ public class MenuManager : MonoBehaviour {
     {
         otherMenu = menu.GetComponentInChildren<MenuManager>();
     }
-    public void Initialize(string newPlayer)
+    public void Initialize(string newPlayer,int newplayerNumber)
     {
        // myPlayer = newPlayer;
         SetAllPlayerNameTittle(newPlayer);
+        
+        this.playerNumber = newplayerNumber;
+        this.GetComponentInChildren<RemoveFromPlayer>().RemoveBasedOnTags(playerNumber);
         ActivateMenu(menuGOer);
 
     }
+
+
+
     public void SetMoneyInserted(string moneyAmount)
     {
         float money = float.Parse(moneyAmount);
@@ -113,7 +119,7 @@ public class MenuManager : MonoBehaviour {
 
     public void ChangeOtherBetToggle(int toggle)
     {
-        otherMenu.betToggle.SetMemberToggled(toggle);
+       // otherMenu.betToggle.SetMemberToggled(toggle);
     }
 
     public void BetToggleChanged(int newBet)
@@ -121,6 +127,7 @@ public class MenuManager : MonoBehaviour {
 
         this.betAmount = newBet+1;
         ChangeOtherBetToggle(newBet);
+        otherMenu.betAmount = newBet + 1;
     }
 
     public void RatioToggleChanged(int newToggle)
