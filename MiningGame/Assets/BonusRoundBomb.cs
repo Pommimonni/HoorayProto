@@ -74,7 +74,7 @@ public class BonusRoundBomb : MonoBehaviour {
     }
     private void ColourParticleEffect(Color newColor)
     {
-        this.systemColourToChange.startColor = newColor;
+       // this.systemColourToChange.startColor = newColor;
     }
 
 

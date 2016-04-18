@@ -46,8 +46,19 @@ public class GameMaster : MonoBehaviour {
         {
            // GameObject created=(GameObject)Instantiate(player1, Vector3.zero, Quaternion.identity);
            player2=(PlayerInformation) Instantiate(player1, Vector3.zero, Quaternion.identity);
-          //  GameObject created = (GameObject)Instantiate(player1GO, Vector3.zero, Quaternion.identity);
-         //     player2 = created.GetComponentInChildren<PlayerInformation>();
+            Transform[] allChilds = player2.GetComponentsInChildren<Transform>();
+            foreach (Transform child in allChilds)
+            {
+                if (child.tag == "PlayerUIs")
+                {
+                    Vector3 pos = child.GetComponent<RectTransform>().position;
+                    child.GetComponent<RectTransform>().position = new Vector3(pos.x, pos.y - 5, pos.z);
+                    //Destroy(child.gameObject);
+
+                }
+            }
+            //  GameObject created = (GameObject)Instantiate(player1GO, Vector3.zero, Quaternion.identity);
+            //     player2 = created.GetComponentInChildren<PlayerInformation>();
         }
     }
 
@@ -340,7 +351,8 @@ public class GameMaster : MonoBehaviour {
                     }
                 }
                 Vector3 startPos = playerWhoseGemsMove.myInformationGUI.GetWorldPositionOfGemInfo(counter);
-                playerToScreenMove.myInformationGUI.GemShowDisableGem(counter);
+                //playerToScreenMove.myInformationGUI.GemShowDisableGem(counter);
+                playerWhoseGemsMove.myInformationGUI.GemShowDisableGem(counter);
                 GameObject createdGem=CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f);
                 playerToScreenMove.startingPositionsOfGemMoveMiddle.Add(startPos);
                 playerToScreenMove.allGemsTomiddleCreatedGems.Add(createdGem);

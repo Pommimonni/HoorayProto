@@ -16,6 +16,7 @@ public class LauriWrapper : MonoBehaviour {
     //laita tarvittava toiminnallisuus seinän tekoon
     public void BonusRoundDestroyWall(Vector3 position,bool isBigOne)
     {
+      //  ShatterCone.smaller.DestroyCone(position); tai jotain vastaavaa
         //positio on parametri joka kertoo missä paikassa pommi tuhoutuu
         //is bigOne parametri joka kertoo jos on isompi pommi tulossa.
         //laita funktio toiminnalisuusjota kutsut kun seinää tuhotaan at bonusround

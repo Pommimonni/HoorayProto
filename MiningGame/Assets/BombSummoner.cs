@@ -54,7 +54,15 @@ public class BombSummoner : MonoBehaviour
                     adjustHz();
                   //  Debug.Log("Spawning bomb"+lastSpawn);
                     Vector3 spawnLoc = getSpawnLocation();
-                    SpawnBomb(spawnLoc);
+                    float random = Random.Range(0f, 1f);
+                    if (random > bigBombChance)
+                    {
+                        SpawnBomb(spawnLoc);
+                    }
+                    else {
+                        SpawnBigOne(spawnLoc);
+                    }
+                    
                     objectsSpawned++;
                 }
                 else
@@ -85,25 +93,22 @@ public class BombSummoner : MonoBehaviour
 
     void SpawnBomb(Vector3 spawnLoc)
     {
-        GameObject enemySpawned = (GameObject)Instantiate(bombPrefab, spawnLoc, Quaternion.identity);
-        HandleBombInitialization(enemySpawned);
+        GameObject enemySpawned = (GameObject)Instantiate(normalPrefab, spawnLoc, Quaternion.identity);
+        HandleBombInitialization(enemySpawned,false);
+        forceAdding(enemySpawned);
+    }
+
+    void SpawnBigOne(Vector3 spawnLoc)
+    {
+        GameObject enemySpawned = (GameObject)Instantiate(bigOnePrefab, spawnLoc, Quaternion.identity);
+        HandleBombInitialization(enemySpawned,true);
         forceAdding(enemySpawned);
     }
     
-    void HandleBombInitialization(GameObject created)
+    void HandleBombInitialization(GameObject created,bool isBig)
     {
-        BonusRoundBomb bomb= created.transform.GetComponent<BonusRoundBomb>();
-        bool isBig = false;
+        BonusRoundBomb bomb= created.transform.GetComponentInChildren<BonusRoundBomb>();
         //Determining if it is a big one
-        float random = Random.Range(0f, 1f);
-        if (random > bigBombChance)
-        {
-
-        }
-        else {
-            created.transform.localScale = created.transform.localScale * 2f;
-            isBig = true;
-                }
         bool whoStarts = Common.usefulFunctions.GetRandomBool();
         bomb.Initialize(2, whoStarts,isBig);
     }
@@ -115,7 +120,8 @@ public class BombSummoner : MonoBehaviour
     Vector3 mapMIddle = Vector3.zero;
 
 
-    public GameObject bombPrefab;
+    public GameObject normalPrefab;
+    public GameObject bigOnePrefab;
 
     public float radius;
     public float spawnHz = 3f;
@@ -218,7 +224,7 @@ public class BombSummoner : MonoBehaviour
             xPos = mapleftBottom.x;
         }
         float yPos = Random.Range(mapleftBottom.y, mapRightTop.y);
-
+        Debug.Log("New x in spawn is " + xPos);
         return new Vector3(xPos, yPos, mapleftBottom.z);
     }
 
@@ -226,23 +232,28 @@ public class BombSummoner : MonoBehaviour
     Vector3 GetRandomTarget(Vector3 spawnLoc)
     {
         float sign = -1f;
-        if (spawnLoc.x > mapMIddle.x)
+        Debug.Log("getting target " + spawnLoc);
+        Debug.Log("Map middle is " + mapMIddle);
+        if (spawnLoc.x < mapMIddle.x)
         {
             sign = 1f;
         }
+        Debug.Log("sing is " + sign);
         Vector3 targetLoc = SpawnSide(sign);
         return targetLoc;
     }
 
     public float flyDuration = 0f;
     public float linearIncreaseMagnity = 5f;
+    public Vector3 targetTest;
+    public Vector3 normalizedTest;
     void forceAdding(GameObject spawnedObject)
     {
         Vector3 force = Vector3.zero;
         Rigidbody spawnedRigid = spawnedObject.GetComponent<Rigidbody>();
         Vector3 startPos = spawnedObject.transform.position;
-        Vector3 target = GetRandomTarget(spawnedObject.transform.position); 
-
+        Vector3 target = GetRandomTarget(spawnedObject.transform.position);
+        targetTest = target;
         if (TypeOfTrajectory.linearIncrease == typeOfTrajectory)
         {
             spawnedRigid.useGravity = false;
@@ -265,6 +276,7 @@ public class BombSummoner : MonoBehaviour
             spawnedRigid.useGravity = false;
 
             Vector3 normalizedVector = (target - spawnedObject.transform.position).normalized;
+            normalizedTest = normalizedVector;
             spawnedRigid.velocity = CalculateVelocityBasedOnLinearSpeed(flyDuration, normalizedVector);
            /// force = normalizedVector * aimForceMagnitude;
            // spawnedRigid.AddForce(force);

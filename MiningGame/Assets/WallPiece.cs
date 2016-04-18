@@ -15,19 +15,24 @@ public class WallPiece : MonoBehaviour {
 	
 	}
 
-    void OnMouseDown()
+     void OnMouseDown()
+    //void OnMouseOver()
     {
-        Debug.Log("Clicked a wallpiece");
-        Destroy(this.gameObject);
-        ShatterEffect.main.Play(this.transform.position);
-        if(gameObject.layer == LayerMask.NameToLayer("Wall"))
+        if (Common.gameMaster.canHitWall())
         {
-            ShatterCone.smaller.DestroyCone(this.transform.position);
-        } else
-        {
-            ShatterCone.main.DestroyCone(this.transform.position);
+            Debug.Log("Clicked a wallpiece");
+            Destroy(this.gameObject);
+            ShatterEffect.main.Play(this.transform.position);
+            if (gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                ShatterCone.smaller.DestroyCone(this.transform.position);
+            }
+            else
+            {
+                ShatterCone.main.DestroyCone(this.transform.position);
+            }
+            Common.lauriWrapper.WallMouseClick();
         }
-        Common.lauriWrapper.WallMouseClick();
     }
 
     
