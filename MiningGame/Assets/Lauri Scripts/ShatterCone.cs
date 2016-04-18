@@ -4,6 +4,9 @@ using System.Collections;
 public class ShatterCone: MonoBehaviour {
 
     public static ShatterCone main;
+    public static ShatterCone smaller;
+
+    public bool smallerCone = false;
 
     public Vector3 furtherSphereOffset;
     public float firstSphereRadius;
@@ -12,7 +15,14 @@ public class ShatterCone: MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        main = this;
+        if (!smallerCone)
+        {
+            main = this;
+        } else
+        {
+            smaller = this;
+        }
+        
 	}
 
     public void DestroyCone(Vector3 position)
