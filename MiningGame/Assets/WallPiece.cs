@@ -20,7 +20,14 @@ public class WallPiece : MonoBehaviour {
         Debug.Log("Clicked a wallpiece");
         Destroy(this.gameObject);
         ShatterEffect.main.Play(this.transform.position);
-        ShatterCone.main.DestroyCone(this.transform.position);
+        if(gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            ShatterCone.smaller.DestroyCone(this.transform.position);
+        } else
+        {
+            ShatterCone.main.DestroyCone(this.transform.position);
+        }
+        Common.lauriWrapper.WallMouseClick();
     }
 
     
