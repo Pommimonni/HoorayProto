@@ -12,6 +12,7 @@ public class Gem
     public Sprite gemSprite;
     public float chanceToGet = 0.1f;
     public GameObject effectWhenGot;
+    public GameObject my3DGem;
     public string textDisplyed;
     public float priceMoney=1f;
      
@@ -88,8 +89,33 @@ public class Gems: MonoBehaviour
                 total += gem.priceMoney;
             }
         }
-        return total;
+        
+        return AdjustBet(total);
     }
+
+    float AdjustBet(float amount)
+    {
+        return amount * RoundSettings.bet;
+    }
+
+    public float CalculateMoneyWonByType(List<Gem> gems,Gem whatTypeOfGem)
+    {
+        float total = 0f;
+        foreach (Gem gem in gems)
+        {
+            if (!IsGemEmpty(gem))
+            {
+                if (gem.Name == whatTypeOfGem.Name)
+                {
+
+                    total += gem.priceMoney;
+                }
+               
+            }
+        }
+        return AdjustBet(total);
+    }
+
 
     public List<Gem> EmptyGemsThatAre(List<Gem> whatToEmpty, Gem whatTypeOfGem)
     {

@@ -169,6 +169,10 @@ public class UsefulFunctions : MonoBehaviour {
         where.z = fixedz;
         StartCoroutine(moveObjectToPlaceRoutine(toMove, where, duration));
     }
+    public void MoveObjectToPlaceNonFixed(Transform toMove, Vector3 where, float duration)
+    {
+        StartCoroutine(moveObjectToPlaceRoutine(toMove, where, duration));
+    }
 
     public bool GetRandomBool(float trueChance=0.5f)
     {

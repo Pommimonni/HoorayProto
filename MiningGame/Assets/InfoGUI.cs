@@ -73,7 +73,7 @@ public class InfoGUI : MonoBehaviour {
     }
     public void SetBet()
     {
-        Debug.Log(this.gameObject.name);
+        //Debug.Log(this.gameObject.name);
         betText.text = RoundSettings.bet.ToString();
     }
     public void SetMoneyTotal(float money)
@@ -96,7 +96,7 @@ public class InfoGUI : MonoBehaviour {
 
     bool stillCountingMoney = false;
 
-    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration)
+    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f)
     {
         stillCountingMoney = true;
         MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
@@ -113,6 +113,7 @@ public class InfoGUI : MonoBehaviour {
             Debug.Log("changing step new step is "+moneyPerStep);
         }
         float moneyGoer = oldAmount;
+        float step = moneyCountParams.step/speed;
         for (int n = 0; n < (int)difference; n++)
         {
             moneyGoer += sign * moneyPerStep;
@@ -121,7 +122,7 @@ public class InfoGUI : MonoBehaviour {
                 break;
             }
             toSet.text = moneyGoer.ToString();
-            yield return new WaitForSeconds(moneyCountParams.step);
+            yield return new WaitForSeconds(step);
 
         }
 

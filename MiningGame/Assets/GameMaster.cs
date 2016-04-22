@@ -17,7 +17,9 @@ public class GameMaster : MonoBehaviour {
     public List<Gem> gemsWonInBonusRound;
 
     public bool dublicatePlayersOnStartUp = true;
-    public GameObject player1GO;
+    public bool dublicateCameras = true;
+    public GameObject cameraToDublicate;
+    public float xIncrementToSecondCamera = 40f;
     public PlayerInformation player1;
     public PlayerInformation player2;
 
@@ -59,6 +61,14 @@ public class GameMaster : MonoBehaviour {
             }
             //  GameObject created = (GameObject)Instantiate(player1GO, Vector3.zero, Quaternion.identity);
             //     player2 = created.GetComponentInChildren<PlayerInformation>();
+        }
+        if (dublicateCameras)
+        {
+            GameObject createdCamera = (GameObject)Instantiate(cameraToDublicate, Vector3.zero, Quaternion.identity);
+            createdCamera.transform.position = new Vector3(cameraToDublicate.transform.position.x+xIncrementToSecondCamera,cameraToDublicate.transform.position.y,cameraToDublicate.transform.position.z);
+            player2 = createdCamera.GetComponentInChildren<PlayerInformation>();//(PlayerInformation)Instantiate(player1, Vector3.zero, Quaternion.identity);
+            player2.playerNumber = 2;
+            createdCamera.GetComponentInChildren<Camera>().targetDisplay = 1;
         }
     }
 
@@ -305,6 +315,13 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("Creating game named " + gem.Name);
         GameObject created = (GameObject)Instantiate(gemPrefab, position, Quaternion.identity);
         created.GetComponentInChildren<SpriteRenderer>().sprite = gem.gemSprite;
+
+        if (create3DGem)
+        {
+            GameObject created3D = (GameObject)Instantiate(gem.my3DGem, position, Quaternion.identity);
+            Common.usefulFunctions.SetObjectToParent(created.transform, created3D.transform);
+        }
+
         return created;
     }
 
@@ -318,7 +335,13 @@ public class GameMaster : MonoBehaviour {
     {
 
     }
-
+    void DestroyCreatedGems(PlayerInformation toPlayer)
+    {
+        foreach(GameObject createdGO in toPlayer.allGemsTomiddleCreatedGems)
+        {
+            Destroy(createdGO);
+        }
+    }
     IEnumerator SpawnGemTypeAndMoveItToMiddle(PlayerInformation playerWhoseGemsMove, PlayerInformation playerToScreenMove, Gem whatTypeOfGem,bool isShowEndScreen=false)
     {
         //  return;
@@ -382,41 +405,66 @@ public class GameMaster : MonoBehaviour {
         tempMoneyFromFromMovedGems = new List<float>();
         endShowMoneyCountCounter = 0;
         float moneyGoer = 0f;
-        StartCoroutine(CountMoneysEndShow(player1));
-        StartCoroutine(CountMoneysEndShow(player2));
+      //  StartCoroutine(CountMoneyEndShowCountAllMoney(player1));
+     //   StartCoroutine(CountMoneyEndShowCountAllMoney(player2));
         foreach (Gem gemType in allGems)
         {
             tempMoneyFromFromMovedGems.Add(0);
+            float lowerMoney = moneyGoer;
+            float moneyByType = Common.gemSkins.CalculateMoneyWonByType(combinedWonGems, gemType);
+            float upperMOney = moneyGoer + moneyByType;
+            StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
+            StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
             yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",true));
-            yield return new WaitForFixedUpdate();
-            moneyGoer += tempMoneyFromFromMovedGems[endShowMoneyCountCounter];
+            while (countingMoney)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+           // yield return new WaitForSeconds(0.3f);
+            // moneyGoer += tempMoneyFromFromMovedGems//tempMoneyFromFromMovedGems[endShowMoneyCountCounter];
             //If wanted to count every win separately player1.myInformationGUI.CountTotalMoneyForEndText(0f,moneyGoer,4f);
 
-
+            moneyGoer += moneyByType;
             endShowMoneyCountCounter++;
             
         }
-
-        while (countingMoney)
+        yield return new WaitForSeconds(1f);
+        float totalMoney = moneyGoer/2;
+        player1.WinMoney(totalMoney,2);
+        player2.WinMoney(totalMoney,2);
+        StartCoroutine(CountMoneyOneType(player1, moneyGoer, 0));
+        StartCoroutine(CountMoneyOneType(player2, moneyGoer, 0));
+        while (player1.myInformationGUI.AreWeCountingMoney())
         {
             yield return new WaitForFixedUpdate();
         }
+        yield return new WaitForSeconds(1f);
+        DestroyCreatedGems(player1);
+        DestroyCreatedGems(player2);
         EndGame();
 
     }
 
-    IEnumerator CountMoneysEndShow(PlayerInformation player)
+    IEnumerator CountMoneyEndShowCountAllMoney(PlayerInformation player)
     {
         countingMoney = true;
         float totalMoney = Common.gemSkins.CalculateMoneyWon(combinedWonGems);
         Text toChange = player.myInformationGUI.moneyTotalTextForEndShow;
         yield return StartCoroutine(player.myInformationGUI.CountInsertMoney(0, totalMoney, toChange, Common.effects.moneyCountParams.maxDuration));//CountTotalMoneyForEndText(0f, totalMoney, Common.effects.moneyCountParams.maxDuration);
                                                                                                                                                     //  float countLasts = player.CalculateHowLongtimeMoneyCountLasts(totalMoney);
-                                                                                                                                                    // yield return new WaitForSeconds(countLasts);
-                                                                                                                                                    //  Debug.Log("count ends it should have lasted "+countLasts.ToString());
+                                                                                                                                                    // yield return new WaitForSeconds(countLasts);                                                                                                                                               //  Debug.Log("count ends it should have lasted "+countLasts.ToString());
         yield return new WaitForSeconds(1f);
         player.myInformationGUI.CountTotalMoneyForEndText(totalMoney, 0f, Common.effects.moneyCountParams.maxDuration);
         player.WinMoney(totalMoney);
+        countingMoney = false;
+    }
+
+
+    IEnumerator CountMoneyOneType(PlayerInformation player,float lowerMoney,float upperMOney)
+    {
+        countingMoney = true;
+        Text toChange = player.myInformationGUI.moneyTotalTextForEndShow;
+        yield return StartCoroutine(player.myInformationGUI.CountInsertMoney(lowerMoney, upperMOney, toChange, Common.effects.moneyCountParams.maxDuration));
         countingMoney = false;
     }
 
@@ -515,6 +563,9 @@ public class GameMaster : MonoBehaviour {
         yield return new WaitForSeconds(oneMoveDuration);
      //   ordered[2].SetActive(false);
         Common.usefulFunctions.scaleGOOverTime(middleObject, middleObject.transform.localScale * 1.4f, oneMoveDuration);
+        Vector3 newPos = middleObject.transform.position;
+        newPos.z += 2f;
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(middleObject.transform,newPos , oneMoveDuration);
         yield return new WaitForSeconds(oneMoveDuration);
        // ordered[0].SetActive(false);
         yield return new WaitForSeconds(1f);
@@ -526,13 +577,16 @@ public class GameMaster : MonoBehaviour {
 
     }
 
-
-    GameObject CreateGemAndMoveToLocation(Gem toCreate, Vector3 startLocation, Vector3 endLocation, float oneMoveDuration)
+    public bool create3DGem = true;
+    public GameObject CreateGemAndMoveToLocation(Gem toCreate, Vector3 startLocation, Vector3 endLocation, float oneMoveDuration)
     {
+
         GameObject createdGem = Common.gameMaster.CreateGem(toCreate, startLocation);
         createdGem.GetComponent<Rigidbody2D>().gravityScale = 0;
         float fixedZToMove = Common.effects.fixedZToMove;
-        Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(createdGem.transform, endLocation, oneMoveDuration, fixedZToMove);
+
+        // Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(createdGem.transform, endLocation, oneMoveDuration, fixedZToMove);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endLocation, oneMoveDuration);
         return createdGem;
     }
 

@@ -78,8 +78,9 @@ public class PlayerInformation : MonoBehaviour {
         {
             moneyTotalAmount = RoundSettings.moneyInsertedPlayer2;
         }
+        Debug.Log("Loading round values current money is at the start "+moneyTotalAmount);
         SetTotalMoneyAmount(- RoundSettings.bet);
-
+        Debug.Log("Loading round values current money is "+moneyTotalAmount);
         // moneyWon = RoundSettings.moneyInserted;        
     }
 
@@ -102,10 +103,10 @@ public class PlayerInformation : MonoBehaviour {
         SetTotalMoneyAmount(moneyWon);
     }
 
-    public void WinMoney(float money)
+    public void WinMoney(float money,float speed=1f)
     {
 
-        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
+        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration,speed));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
         moneyWon += money;
       //  myInformationGUI.SetWonMoney(wonMoney);
      
@@ -223,7 +224,7 @@ public class PlayerInformation : MonoBehaviour {
             tittleToShow = "Wrong gem";
            // Debug.Log("Wrong gem, win nothing");
         }
-        yield return StartCoroutine(MoveGemToMidleAndCountMoney(gemGO, totalWon,tittleToShow));
+       // yield return StartCoroutine(MoveGemToMidleAndCountMoney(gemGO, totalWon,tittleToShow));
         // Debug.Log("GEM ROUTINE CONTINUES");
        
         Vector3 endPos=MoveGemFromPositionToGUI(gemGO, this.wonGems.Count-1, durationToGemMoveToGUI);
@@ -271,11 +272,14 @@ public class PlayerInformation : MonoBehaviour {
 
     GameObject CreateGemAndMoveToLocation(Gem toCreate,Vector3 startLocation,Vector3 endLocation,float oneMoveDuration)
     {
+        return Common.gameMaster.CreateGemAndMoveToLocation(toCreate, startLocation, endLocation, oneMoveDuration);
+        /*
         GameObject createdGem = Common.gameMaster.CreateGem(toCreate, startLocation);
         
         float fixedZToMove = Common.effects.fixedZToMove;
         Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(createdGem.transform, endLocation, oneMoveDuration, fixedZToMove);
         return createdGem;
+        */
     }
 
 
