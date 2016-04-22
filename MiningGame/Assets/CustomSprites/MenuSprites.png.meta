@@ -1,0 +1,710 @@
+fileFormatVersion: 2
+guid: ee723f5919cbda24daae15980d328ae3
+timeCreated: 1461002917
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: MenuSprites_0
+    21300002: MenuSprites_1
+    21300004: MenuSprites_2
+    21300006: MenuSprites_3
+    21300008: MenuSprites_4
+    21300010: MenuSprites_5
+    21300012: MenuSprites_6
+    21300014: MenuSprites_7
+    21300016: MenuSprites_8
+    21300018: MenuSprites_9
+    21300020: MenuSprites_10
+    21300022: MenuSprites_11
+    21300024: MenuSprites_12
+    21300026: MenuSprites_13
+    21300028: MenuSprites_14
+    21300030: MenuSprites_15
+    21300032: MenuSprites_16
+    21300034: MenuSprites_17
+    21300036: MenuSprites_18
+    21300038: MenuSprites_19
+    21300040: MenuSprites_20
+    21300042: MenuSprites_21
+    21300044: MenuSprites_22
+    21300046: MenuSprites_23
+    21300048: MenuSprites_24
+    21300050: MenuSprites_25
+    21300052: MenuSprites_26
+    21300054: MenuSprites_27
+    21300056: MenuSprites_28
+    21300058: MenuSprites_29
+    21300060: MenuSprites_30
+    21300062: MenuSprites_31
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: MenuSprites_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 645
+        width: 113
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33.5, y: 56}
+        - {x: -56.5, y: 42}
+        - {x: -56.5, y: -50}
+        - {x: -39.5, y: -56}
+        - {x: 43.5, y: -56}
+        - {x: 56.5, y: -45}
+        - {x: 56.5, y: 33}
+        - {x: 48.5, y: 56}
+    - name: MenuSprites_1
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 645
+        width: 113
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -47.5, y: 56}
+        - {x: -56.5, y: 29}
+        - {x: -56.5, y: -36}
+        - {x: -39.5, y: -56}
+        - {x: 54.5, y: -56}
+        - {x: 56.5, y: -46}
+        - {x: 56.5, y: 38}
+        - {x: 45.5, y: 56}
+    - name: MenuSprites_2
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 642
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -37.5, y: 56.5}
+        - {x: -43.5, y: 55.5}
+        - {x: -56.5, y: 38.5}
+        - {x: -56.5, y: -27.5}
+        - {x: -43.5, y: -56.5}
+        - {x: 33.5, y: -56.5}
+        - {x: 56.5, y: -50.5}
+        - {x: 56.5, y: 53.5}
+        - {x: 47.5, y: 56.5}
+    - name: MenuSprites_3
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 645
+        width: 118
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -34, y: 59}
+        - {x: -59, y: 36}
+        - {x: -59, y: -49}
+        - {x: -33, y: -59}
+        - {x: 48, y: -59}
+        - {x: 59, y: -46}
+        - {x: 59, y: 26}
+        - {x: 41, y: 59}
+    - name: MenuSprites_4
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 645
+        width: 118
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -59, y: 59}
+        - {x: -59, y: -55}
+        - {x: -56, y: -59}
+        - {x: 59, y: -59}
+        - {x: 59, y: 54}
+        - {x: 57, y: 59}
+    - name: MenuSprites_5
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 642
+        width: 117
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -46.5, y: 59}
+        - {x: -58.5, y: 37}
+        - {x: -58.5, y: -48}
+        - {x: -42.5, y: -59}
+        - {x: 27.5, y: -59}
+        - {x: 58.5, y: -41}
+        - {x: 58.5, y: 38}
+        - {x: 28.5, y: 59}
+    - name: MenuSprites_6
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 642
+        width: 397
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -156.5, y: 59}
+        - {x: -164.5, y: 56}
+        - {x: -180.5, y: 47}
+        - {x: -189.5, y: 36}
+        - {x: -194.5, y: 27}
+        - {x: -198.5, y: 17}
+        - {x: -198.5, y: -17}
+        - {x: -196.5, y: -23}
+        - {x: -191.5, y: -33}
+        - {x: -183.5, y: -43}
+        - {x: -175.5, y: -50}
+        - {x: -165.5, y: -56}
+        - {x: -156.5, y: -59}
+        - {x: 198.5, y: -59}
+        - {x: 198.5, y: 59}
+    - name: MenuSprites_7
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 515
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -47.5, y: 56.5}
+        - {x: -56.5, y: 31.5}
+        - {x: -56.5, y: -36.5}
+        - {x: -34.5, y: -56.5}
+        - {x: 41.5, y: -56.5}
+        - {x: 56.5, y: -34.5}
+        - {x: 56.5, y: 43.5}
+        - {x: 37.5, y: 56.5}
+    - name: MenuSprites_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 516
+        width: 113
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -44.5, y: 56}
+        - {x: -56.5, y: 38}
+        - {x: -56.5, y: -50}
+        - {x: -33.5, y: -56}
+        - {x: 32.5, y: -56}
+        - {x: 56.5, y: -32}
+        - {x: 56.5, y: 49}
+        - {x: 37.5, y: 56}
+    - name: MenuSprites_9
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 511
+        width: 112
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -56, y: -39.5}
+        - {x: -49, y: -56.5}
+        - {x: 31, y: -56.5}
+        - {x: 56, y: -42.5}
+        - {x: 56, y: 41.5}
+        - {x: 51, y: 56.5}
+        - {x: -44, y: 56.5}
+        - {x: -56, y: 47.5}
+    - name: MenuSprites_10
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 513
+        width: 118
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -54, y: 59}
+        - {x: -59, y: 54}
+        - {x: -59, y: -42}
+        - {x: -53, y: -59}
+        - {x: 54, y: -59}
+        - {x: 59, y: -58}
+        - {x: 59, y: 59}
+    - name: MenuSprites_11
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 513
+        width: 117
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52.5, y: 59}
+        - {x: -58.5, y: 50}
+        - {x: -58.5, y: -32}
+        - {x: -53.5, y: -44}
+        - {x: -45.5, y: -59}
+        - {x: 42.5, y: -59}
+        - {x: 58.5, y: -52}
+        - {x: 58.5, y: 51}
+        - {x: 44.5, y: 59}
+    - name: MenuSprites_12
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 509
+        width: 118
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -59, y: 59}
+        - {x: -59, y: -56}
+        - {x: -44, y: -59}
+        - {x: 57, y: -59}
+        - {x: 59, y: -57}
+        - {x: 59, y: 41}
+        - {x: 51, y: 59}
+    - name: MenuSprites_13
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 513
+        width: 397
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -155.5, y: 59}
+        - {x: -161.5, y: 57}
+        - {x: -172.5, y: 52}
+        - {x: -175.5, y: 50}
+        - {x: -184.5, y: 42}
+        - {x: -191.5, y: 33}
+        - {x: -196.5, y: 22}
+        - {x: -198.5, y: 16}
+        - {x: -198.5, y: -16}
+        - {x: -195.5, y: -25}
+        - {x: -189.5, y: -36}
+        - {x: -179.5, y: -46}
+        - {x: -169.5, y: -54}
+        - {x: -158.5, y: -59}
+        - {x: 198.5, y: -59}
+        - {x: 198.5, y: 59}
+    - name: MenuSprites_14
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 380
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -45.5, y: 56.5}
+        - {x: -56.5, y: 26.5}
+        - {x: -56.5, y: -51.5}
+        - {x: -54.5, y: -56.5}
+        - {x: 51.5, y: -56.5}
+        - {x: 56.5, y: -42.5}
+        - {x: 56.5, y: 38.5}
+        - {x: 26.5, y: 56.5}
+    - name: MenuSprites_15
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 381
+        width: 113
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -56.5, y: 56}
+        - {x: -56.5, y: -50}
+        - {x: -54.5, y: -56}
+        - {x: 47.5, y: -56}
+        - {x: 56.5, y: -28}
+        - {x: 56.5, y: 56}
+    - name: MenuSprites_16
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 381
+        width: 113
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -36.5, y: 56.5}
+        - {x: -56.5, y: 48.5}
+        - {x: -56.5, y: -51.5}
+        - {x: -52.5, y: -56.5}
+        - {x: 44.5, y: -56.5}
+        - {x: 56.5, y: -53.5}
+        - {x: 56.5, y: 52.5}
+        - {x: 32.5, y: 56.5}
+    - name: MenuSprites_17
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 378
+        width: 118
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -59, y: 59}
+        - {x: -59, y: -43}
+        - {x: -23, y: -59}
+        - {x: 33, y: -59}
+        - {x: 59, y: -36}
+        - {x: 59, y: 25}
+        - {x: 36, y: 59}
+    - name: MenuSprites_18
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 383
+        width: 117
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27.5, y: 59}
+        - {x: -58.5, y: 47}
+        - {x: -58.5, y: -38}
+        - {x: -52.5, y: -59}
+        - {x: 43.5, y: -59}
+        - {x: 58.5, y: -44}
+        - {x: 58.5, y: 37}
+        - {x: 35.5, y: 59}
+    - name: MenuSprites_19
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 383
+        width: 118
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -34, y: 59}
+        - {x: -39, y: 58}
+        - {x: -59, y: 38}
+        - {x: -59, y: -30}
+        - {x: -47, y: -59}
+        - {x: 49, y: -59}
+        - {x: 59, y: -54}
+        - {x: 59, y: 34}
+        - {x: 30, y: 59}
+    - name: MenuSprites_20
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 378
+        width: 397
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -158.5, y: 59}
+        - {x: -175.5, y: 51}
+        - {x: -180.5, y: 46}
+        - {x: -189.5, y: 36}
+        - {x: -193.5, y: 29}
+        - {x: -198.5, y: 17}
+        - {x: -198.5, y: -17}
+        - {x: -196.5, y: -23}
+        - {x: -191.5, y: -33}
+        - {x: -183.5, y: -43}
+        - {x: -175.5, y: -50}
+        - {x: -165.5, y: -56}
+        - {x: -156.5, y: -59}
+        - {x: 198.5, y: -59}
+        - {x: 198.5, y: 59}
+    - name: MenuSprites_21
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 253
+        width: 344
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -170, y: 45.5}
+        - {x: -172, y: 42.5}
+        - {x: -172, y: -45.5}
+        - {x: 172, y: -45.5}
+        - {x: 172, y: 44.5}
+        - {x: 170, y: 45.5}
+    - name: MenuSprites_22
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 253
+        width: 344
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -170, y: 45.5}
+        - {x: -172, y: 44.5}
+        - {x: -172, y: -45.5}
+        - {x: 172, y: -45.5}
+        - {x: 172, y: 42.5}
+        - {x: 169, y: 45.5}
+    - name: MenuSprites_23
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 243
+        width: 396
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -157, y: 59}
+        - {x: -163, y: 58}
+        - {x: -177, y: 49}
+        - {x: -187, y: 38}
+        - {x: -192, y: 32}
+        - {x: -196, y: 23}
+        - {x: -198, y: 17}
+        - {x: -198, y: -17}
+        - {x: -196, y: -25}
+        - {x: -190, y: -36}
+        - {x: -175, y: -50}
+        - {x: -166, y: -55}
+        - {x: -161, y: -57}
+        - {x: -155, y: -59}
+        - {x: 198, y: -59}
+        - {x: 198, y: 59}
+    - name: MenuSprites_24
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 206
+        width: 344
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -172, y: 22.5}
+        - {x: -172, y: -20.5}
+        - {x: -170, y: -22.5}
+        - {x: 170, y: -22.5}
+        - {x: 172, y: -20.5}
+        - {x: 172, y: 22.5}
+    - name: MenuSprites_25
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 206
+        width: 344
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -172, y: 22.5}
+        - {x: -172, y: -21.5}
+        - {x: -170, y: -22.5}
+        - {x: 170, y: -22.5}
+        - {x: 172, y: -20.5}
+        - {x: 172, y: 22.5}
+    - name: MenuSprites_26
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 101
+        width: 91
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42.5, y: 57.5}
+        - {x: -45.5, y: 56.5}
+        - {x: -45.5, y: 11.5}
+        - {x: -41.5, y: -27.5}
+        - {x: -35.5, y: -46.5}
+        - {x: -33.5, y: -48.5}
+        - {x: -37.5, y: -45.5}
+        - {x: -38.5, y: -43.5}
+        - {x: -40.5, y: -41.5}
+        - {x: -45.5, y: -41.5}
+        - {x: -45.5, y: -57.5}
+        - {x: 33.5, y: -57.5}
+        - {x: 41.5, y: -50.5}
+        - {x: 45.5, y: -10.5}
+        - {x: 45.5, y: 57.5}
+    - name: MenuSprites_27
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 99
+        width: 286
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -143, y: 59}
+        - {x: -143, y: -59}
+        - {x: 143, y: -59}
+        - {x: 143, y: 59}
+    - name: MenuSprites_28
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 95
+        width: 343
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -170.5, y: 42}
+        - {x: -171.5, y: 40}
+        - {x: -171.5, y: -42}
+        - {x: 171.5, y: -42}
+        - {x: 171.5, y: 40}
+        - {x: 169.5, y: 42}
+    - name: MenuSprites_29
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 95
+        width: 344
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -170, y: 42}
+        - {x: -172, y: 41}
+        - {x: -172, y: -42}
+        - {x: 172, y: -42}
+        - {x: 172, y: 39}
+        - {x: 169, y: 42}
+    - name: MenuSprites_30
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 40
+        width: 343
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -171.5, y: 27}
+        - {x: -171.5, y: -24}
+        - {x: -168.5, y: -27}
+        - {x: 168.5, y: -27}
+        - {x: 171.5, y: -24}
+        - {x: 171.5, y: 27}
+    - name: MenuSprites_31
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 40
+        width: 344
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -172, y: 26.5}
+        - {x: -172, y: -22.5}
+        - {x: -168, y: -26.5}
+        - {x: 169, y: -26.5}
+        - {x: 172, y: -24.5}
+        - {x: 172, y: 26.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
