@@ -18,6 +18,8 @@ public class MoveGemToPosParameters(){
 
 public class PlayerInformation : MonoBehaviour {
 
+    public Transform gemRevealLocation;
+
     void Awake()
     {
         Common.playerInfo = this;

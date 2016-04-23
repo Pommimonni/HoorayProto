@@ -15,14 +15,14 @@ public class WallPiece : MonoBehaviour {
 	
 	}
 
-     void OnMouseDown()
-    //void OnMouseOver()
+    void OnMouseDown()
     {
-        if (Common.gameMaster.canHitWall())
+        Debug.Log("On mouse down on wall piece");
+        if (Common.gameMaster.canHitWall() || true)
         {
             Debug.Log("Clicked a wallpiece");
             Destroy(this.gameObject);
-            ShatterEffect.main.Play(this.transform.position);
+            ShatterEffect.main.Play(this.transform.position, true, GetHittingPlayer());
             if (gameObject.layer == LayerMask.NameToLayer("Wall"))
             {
                 ShatterCone.smaller.DestroyCone(this.transform.position);
@@ -33,6 +33,13 @@ public class WallPiece : MonoBehaviour {
             }
             Common.lauriWrapper.WallMouseClick();
         }
+    }
+
+    //which screen did the hit happen on?
+    PlayerInformation GetHittingPlayer()
+    {
+        //TODO how to detect correct player
+        return Common.playerInfo;
     }
 
     
