@@ -15,6 +15,7 @@ public class BonusRoundBomb : MonoBehaviour {
 	
 	}
     public ParticleSystem systemColourToChange;
+    public GameObject fuseEffectGO;
     public Color player1Colour;
     public Color player2Colour;
 
@@ -34,7 +35,7 @@ public class BonusRoundBomb : MonoBehaviour {
         }
         nextPlayerPlayer1=startingPlayerPlayer1;
         isBigOne = newIsBigOne;
-        ChangeGrapchis(startingPlayerPlayer1);
+        SetNewPlayerCOlour(startingPlayerPlayer1);
     }
 
     public void PlayerHitsMe(bool isPlayer1)
@@ -56,13 +57,28 @@ public class BonusRoundBomb : MonoBehaviour {
         if (hits >= hitsNeeded)
         {
             BombBreaks();
+            return;
         }
         nextPlayerPlayer1 = !nextPlayerPlayer1;
-        ChangeGrapchis(nextPlayerPlayer1);
+        SetNewPlayerCOlour(nextPlayerPlayer1);
+        SetFuse();
+        SetScaleAnimation();
     }
 
-    private void ChangeGrapchis(bool newPlayerToHit)
+    private void SetFuse()
     {
+        fuseEffectGO.SetActive(true);
+    }
+
+    private void SetScaleAnimation()
+    {
+        GetComponentInChildren<BonusAnimation>().PlayAnimationEffect();
+    }
+
+    private void SetNewPlayerCOlour(bool newPlayerToHit)
+    {
+
+
         if (newPlayerToHit)
         {
             ColourParticleEffect(player1Colour);

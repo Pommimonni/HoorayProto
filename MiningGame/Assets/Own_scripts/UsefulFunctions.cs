@@ -24,7 +24,7 @@ public class UsefulFunctions : MonoBehaviour {
     {
         return Input.mousePosition;
     }
-    void Start()
+    void Awake()
     {
         Common.usefulFunctions = this;
     }
@@ -46,6 +46,27 @@ public class UsefulFunctions : MonoBehaviour {
         }
         Debug.Log("RayCast doesnt hit " + ray);
         return false;
+    }
+
+
+    public GameObject RayCastAlongCameraAndReturnhit(Camera camera,Vector3 position,int layer)
+    {
+        //Debug.Log("Checking raycast on " + startPosition);
+        RaycastHit hit;
+        position.z = -2f;
+        Vector3 screenPoint = camera.WorldToScreenPoint(position);
+        Ray ray = camera.ScreenPointToRay(screenPoint);
+        float distance = 123.123f; //however far your ray shoots
+        int layerMask = 1 << layer;  // "7" here needing to be replaced by whatever layer it is you're wanting to use
+        //layerMask = ~layerMask; //invert the mask so it targets all layers EXCEPT for this one
+        if (Physics.Raycast(ray, out hit, distance, layerMask))
+        {
+            Debug.Log("RAYCast hits");
+            return hit.transform.gameObject;
+            //do stuff 
+        }
+        return null;
+        
     }
 
     public bool RayCast2DCheckLayer(Vector3 startPosition, int layer)
@@ -83,7 +104,12 @@ public class UsefulFunctions : MonoBehaviour {
         return true;
     }
 
+    public List<Vector3> SortVector3ListaBasedOnx(List<Vector3> unsortedVectors)
+    {
 
+            return unsortedVectors.OrderBy(v => v.x).ToList<Vector3>();
+        
+    }
 
     public void scaleGOOverTime(GameObject go, Vector3 endScale,float duration)
     {

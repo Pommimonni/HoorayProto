@@ -32,10 +32,10 @@ public class BombSummoner : MonoBehaviour
     void initialize()
     {
         Random.seed = System.DateTime.Now.Millisecond;
-        mapleftBottom = GameObject.Find("mapleftBottom").transform.position;
-        mapRightTop = GameObject.Find("mapRightTop").transform.position;
-        mapMIddle = new Vector3(mapleftBottom.x + mapRightTop.x, mapleftBottom.y + mapRightTop.y, mapleftBottom.z*2);
-        mapMIddle = mapMIddle / 2;
+        mapleftBottom = Common.mapleftBottom;
+        mapRightTop = Common.mapRightTop;
+        mapMIddle = Common.mapMIddle;
+        
     }
 
         // Update is called once per frame

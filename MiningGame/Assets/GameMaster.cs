@@ -22,6 +22,8 @@ public class GameMaster : MonoBehaviour {
     public float xIncrementToSecondCamera = 40f;
     public PlayerInformation player1;
     public PlayerInformation player2;
+    public Camera player1Camera;
+    public Camera player2Camera;
 
     List<float> tempMoneyFromFromMovedGems;
     int endShowMoneyCountCounter = 0;
@@ -80,7 +82,8 @@ public class GameMaster : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            BeforeBonusRoundEnterEffects();
+            //BeforeBonusRoundEnterEffects();
+            StartBonusRound();
         }
         if (Input.GetKeyDown(KeyCode.A))
         {

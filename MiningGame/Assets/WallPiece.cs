@@ -18,26 +18,37 @@ public class WallPiece : MonoBehaviour {
     void OnMouseDown()
     {
         Debug.Log("On mouse down on wall piece");
-        if (Common.gameMaster.canHitWall() || true)
+        if (Common.gameMaster.canHitWall())
         {
             Debug.Log("Clicked a wallpiece");
-            Destroy(this.gameObject);
-            ShatterEffect.main.Play(this.transform.position, true, GetHittingPlayer());
-            if (gameObject.layer == LayerMask.NameToLayer("Wall"))
-            {
-                ShatterCone.smaller.DestroyCone(this.transform.position);
-            }
-            else
-            {
-                ShatterCone.main.DestroyCone(this.transform.position);
-            }
-            Common.lauriWrapper.WallMouseClick();
+            ShatterPlay(true);
+           // Common.lauriWrapper.WallMouseClick();
         }
     }
-
-    //which screen did the hit happen on?
-    PlayerInformation GetHittingPlayer()
+    public void ShatterPlay(bool gemFound)
     {
+        Destroy(this.gameObject);
+        ShatterEffect.main.Play(this.transform.position, gemFound, GetHittingPlayer(this.transform.position));
+        if (gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            ShatterCone.smaller.DestroyCone(this.transform.position);
+        }
+        else
+        {
+            ShatterCone.main.DestroyCone(this.transform.position);
+        }
+    }
+    //which screen did the hit happen on?
+    PlayerInformation GetHittingPlayer(Vector3 position)
+    {
+        if (position.x < Common.mapMIddle.x)
+        {
+            return Common.gameMaster.player1;
+        }
+        else
+        {
+            return Common.gameMaster.player2;
+        }
         //TODO how to detect correct player
         return Common.playerInfo;
     }
