@@ -240,11 +240,13 @@ public class InfoGUI : MonoBehaviour {
 
     public void GemShowDisableGem(int counter)
     {
+        Debug.Log("Disabling gem on counter " + counter);
         gemImagesOnWonGems[counter].sprite = emptyWonGemSprite;
     }
 
     public void GemShowAddGem(int counter, Gem gem)
     {
+        Debug.Log("Adding gemshow on  " + counter);
         gemImagesOnWonGems[counter].sprite = gem.gemSprite;
     }
 
@@ -261,7 +263,7 @@ public class InfoGUI : MonoBehaviour {
                     {
                         if (gem.Name.Length > 1)
                         {
-                            Debug.Log("setting new gem");
+                         //   Debug.Log("setting new gem");
                             GemShowAddGem(counter, gem);
                             added = true;
                         }

@@ -46,6 +46,7 @@ public class ShatterEffect : MonoBehaviour {
             sparklingGem.GetComponent<Rigidbody>().AddForce(Vector3.back * (pushSparklingGemForce + sparklingGem.transform.position.z * extraKickForDeepGems) );
             sparklingGem.GetComponent<Rigidbody>().AddTorque(Vector3.right * Random.Range(100, 200));
             sparklingGem.GetComponent<Rigidbody>().AddTorque(Vector3.up * Random.Range(100, 200));
+            sparklingGem.GetComponent<CoveredGem>().myPlayer = playerInfo;
             sparklingGem.GetComponent<CoveredGem>().targetLocation = playerInfo.gemRevealLocation;
         }
     }

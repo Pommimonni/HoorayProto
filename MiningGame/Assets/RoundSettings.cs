@@ -7,7 +7,7 @@ public static class RoundSettings {
     public static float ratio;
     public static int hits=3;
     public static float moneyInsertedPLayer1 = 1f;
-    public static float moneyInsertedPlayer2 = 2f;
+    public static float moneyInsertedPlayer2 = 22f;
     public static float moneyInserted = 14;
     /*
     void Awake()

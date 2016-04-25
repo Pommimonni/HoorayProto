@@ -4,8 +4,11 @@ using System.Collections;
 public class CoveredGem : MonoBehaviour {
 
     public Transform targetLocation;
+    public PlayerInformation myPlayer;
     public float waitUntilMovingToTarget;
     public float approachSpeed;
+
+    public float revealDuration = 2f;
 
     bool approaching = false;
 
@@ -19,6 +22,8 @@ public class CoveredGem : MonoBehaviour {
     public ParticleSystem starFX;
     public ParticleSystem rockFX;
     public GameObject coveredGem;
+
+    GameObject created3DGem;
 
     // Use this for initialization
     void Start () {
@@ -72,17 +77,28 @@ public class CoveredGem : MonoBehaviour {
             rockFX.Play();
             Destroy(coveredGem);
             onDisplay = false;
-            SpawnGem(Common.gemSkins.getGemSkin(0));
+          //  Common.gameMaster.GemRevealOver(this.transform.position,myPlayer);
+            SpawnGem(myPlayer.nextGemToWin);
         }
     }
 
     void SpawnGem(Gem gem)
     {
+        //Common.gameMaster.
         GameObject gemInstance = (GameObject)GameObject.Instantiate(gem.my3DGem, transform.position, Quaternion.identity);
+        created3DGem = gemInstance;
         gemInstance.GetComponent<Rigidbody>().AddTorque(Vector3.up * 30);
+        Invoke("RevealOver", revealDuration);
         //REMOVE THIS 
-        Destroy(gemInstance, 5f);
-        Destroy(gameObject, 5f);
+      //  Destroy(gemInstance, 5f);
+       // Destroy(gameObject, 5f);
+    }
+    
+    void RevealOver()
+    {
+        Common.gameMaster.GemRevealOver(this.transform.position, myPlayer);
+        Destroy(gameObject);
+        Destroy(created3DGem);
     }
 
     bool IsBelowScreen()

@@ -16,7 +16,8 @@ public class LauriWrapper : MonoBehaviour {
     //laita tarvittava toiminnallisuus seinän tekoon
     public void BonusRoundDestroyWall(Vector3 position,bool isBigOne)
     {
-        GameObject wallPieceGO = Common.usefulFunctions.RayCastAlongCameraAndReturnhit(Common.gameMaster.player1Camera, position, 11);
+        Camera camera = Common.gameMaster.GetCameraBasedOnPosition(position);
+        GameObject wallPieceGO = Common.usefulFunctions.RayCastAlongCameraAndReturnhit(camera, position, 11);
         wallPieceGO.GetComponentInChildren<WallPiece>().ShatterPlay(false);
       //  ShatterCone.smaller.DestroyCone(position); tai jotain vastaavaa
         //positio on parametri joka kertoo missä paikassa pommi tuhoutuu
@@ -37,19 +38,19 @@ public class LauriWrapper : MonoBehaviour {
 
     public void WallMouseClick()
     {
-        if (Common.gameMaster.canHitWall())
+        if (Common.gameMaster.canHitWall(null))
         {
 
             if (Input.GetMouseButton(1))
             {
-                if (!Common.gameMaster.player2.GamesOver())
+                if (!Common.gameMaster.player2.DoIHaveHitsLeft())
                 {
                     WallOpen(Common.gameMaster.player2);
                 }
             }
             if (Input.GetMouseButton(0))
             {
-                if (!Common.gameMaster.player1.GamesOver())
+                if (!Common.gameMaster.player1.DoIHaveHitsLeft())
                 {
                     WallOpen(Common.gameMaster.player1);
 

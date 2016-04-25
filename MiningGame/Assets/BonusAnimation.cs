@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class BonusAnimation : MonoBehaviour {
-
+    public float speed = 1f;
 	// Use this for initialization
 	void Start () {
      //   PlayAnimationEffect();
@@ -22,6 +22,7 @@ public class BonusAnimation : MonoBehaviour {
     public void PlayAnimationEffect()
     {
         this.GetComponent<Animation>().Play();
+        GetComponent<Animation>()["BombScale"].speed = speed;
         playing = true;
     }
 

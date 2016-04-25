@@ -117,6 +117,7 @@ public class Gems: MonoBehaviour
     }
 
 
+
     public List<Gem> EmptyGemsThatAre(List<Gem> whatToEmpty, Gem whatTypeOfGem)
     {
         List<Gem> newWonGems = new List<Gem>();
