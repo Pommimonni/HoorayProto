@@ -32,10 +32,10 @@ public class BombSummoner : MonoBehaviour
     void initialize()
     {
         Random.seed = System.DateTime.Now.Millisecond;
-        mapleftBottom = GameObject.Find("mapleftBottom").transform.position;
-        mapRightTop = GameObject.Find("mapRightTop").transform.position;
-        mapMIddle = new Vector3(mapleftBottom.x + mapRightTop.x, mapleftBottom.y + mapRightTop.y, mapleftBottom.z*2);
-        mapMIddle = mapMIddle / 2;
+        mapleftBottom = Common.mapleftBottom;
+        mapRightTop = Common.mapRightTop;
+        mapMIddle = Common.mapMIddle;
+        
     }
 
         // Update is called once per frame
@@ -96,6 +96,7 @@ public class BombSummoner : MonoBehaviour
         GameObject enemySpawned = (GameObject)Instantiate(normalPrefab, spawnLoc, Quaternion.identity);
         HandleBombInitialization(enemySpawned,false);
         forceAdding(enemySpawned);
+        TorqueAdding(enemySpawned);
     }
 
     void SpawnBigOne(Vector3 spawnLoc)
@@ -105,16 +106,27 @@ public class BombSummoner : MonoBehaviour
         forceAdding(enemySpawned);
     }
     
+    void TorqueAdding(GameObject spawnedObject)
+    {
+        spawnedObject.GetComponent<Rigidbody>().AddTorque(torgue);
+    }
     void HandleBombInitialization(GameObject created,bool isBig)
     {
         BonusRoundBomb bomb= created.transform.GetComponentInChildren<BonusRoundBomb>();
         //Determining if it is a big one
-        bool whoStarts = Common.usefulFunctions.GetRandomBool();
+        bool whoStarts = false;
+        if (determineStartingPlayerBasedOnScreenLocation)
+        {
+            whoStarts = Common.gameMaster.IsPositionOnPlayer1Screen(created.transform.position);
+        }
+        else {
+            whoStarts = Common.usefulFunctions.GetRandomBool();
+        }
         bomb.Initialize(2, whoStarts,isBig);
     }
 
 
-
+    public bool determineStartingPlayerBasedOnScreenLocation = true;
     Vector3 mapleftBottom;
     Vector3 mapRightTop;
     Vector3 mapMIddle = Vector3.zero;

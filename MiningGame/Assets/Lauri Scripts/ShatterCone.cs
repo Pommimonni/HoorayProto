@@ -39,7 +39,7 @@ public class ShatterCone: MonoBehaviour {
         while (i < hitColliders.Length)
         {
             if (Mathf.Abs(hitColliders[i].transform.position.z - z) < withinZaxis)
-                hitColliders[i].SendMessage("Shatter");
+                hitColliders[i].SendMessage("Shatter", SendMessageOptions.DontRequireReceiver);
             i++;
         }
     }

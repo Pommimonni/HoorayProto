@@ -18,6 +18,8 @@ public class MoveGemToPosParameters(){
 
 public class PlayerInformation : MonoBehaviour {
 
+    public Transform gemRevealLocation;
+
     void Awake()
     {
         Common.playerInfo = this;
@@ -34,7 +36,9 @@ public class PlayerInformation : MonoBehaviour {
         
 
     }
-
+    public Gem nextGemToWin = null;
+    public bool onGemReveal = false;
+    public bool onGemHandling = false;
     public string playerInfoName = "Player 1";
     public int playerNumber = 1;
     public float moneyWon = 0f;
@@ -63,7 +67,7 @@ public class PlayerInformation : MonoBehaviour {
         Debug.Log("playerHItsBeing set" + gamesLeft.ToString());
         myInformationGUI.SetHitsLeft(this.gamesLeft);
     }
-    public bool GamesOver()
+    public bool DoIHaveHitsLeft()
     {
             return this.gamesLeft <= 0;
         
@@ -78,8 +82,9 @@ public class PlayerInformation : MonoBehaviour {
         {
             moneyTotalAmount = RoundSettings.moneyInsertedPlayer2;
         }
+        Debug.Log("Loading round values current money is at the start "+moneyTotalAmount);
         SetTotalMoneyAmount(- RoundSettings.bet);
-
+        Debug.Log("Loading round values current money is "+moneyTotalAmount);
         // moneyWon = RoundSettings.moneyInserted;        
     }
 
@@ -102,10 +107,10 @@ public class PlayerInformation : MonoBehaviour {
         SetTotalMoneyAmount(moneyWon);
     }
 
-    public void WinMoney(float money)
+    public void WinMoney(float money,float speed=1f)
     {
 
-        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
+        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration,speed));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
         moneyWon += money;
       //  myInformationGUI.SetWonMoney(wonMoney);
      
@@ -156,7 +161,7 @@ public class PlayerInformation : MonoBehaviour {
                 return 0;
             }
         }
-        Debug.Log("WON NORMAL GEMAAAAAAAAAA"+toWin);
+      //  Debug.Log("WON NORMAL GEMAAAAAAAAAA"+toWin);
         return toWin;
     }
 
@@ -223,7 +228,7 @@ public class PlayerInformation : MonoBehaviour {
             tittleToShow = "Wrong gem";
            // Debug.Log("Wrong gem, win nothing");
         }
-        yield return StartCoroutine(MoveGemToMidleAndCountMoney(gemGO, totalWon,tittleToShow));
+       // yield return StartCoroutine(MoveGemToMidleAndCountMoney(gemGO, totalWon,tittleToShow));
         // Debug.Log("GEM ROUTINE CONTINUES");
        
         Vector3 endPos=MoveGemFromPositionToGUI(gemGO, this.wonGems.Count-1, durationToGemMoveToGUI);
@@ -236,10 +241,14 @@ public class PlayerInformation : MonoBehaviour {
      //   Destroy(createdEFFect);
         this.myInformationGUI.SetNewWonGems(this.wonGems);
         bool enterBonus = false;
-        int howManyTimes = HowManyTimesSameGameInRow(wonGem);
+        int howManyTimes = HowManyTimesSameGemInRow(wonGem);
         if (howManyTimes > 2)
         {
+            Debug.Log("STARTING BONUSROUND");
             enterBonus = true;
+            Common.gameMaster.combinedWithRemovedBonusRoundGems=Common.gemSkins.EmptyGemsThatAre(Common.gameMaster.combinedWonGems,wonGem);
+            //AddBannedGems();
+            /*
        //     int powder = howManyTimes - 2;
           //  float amount = Mathf.Pow(won.priceMoney, powder);  //Formula for how much is the bonus money
             float amount = wonGem.priceMoney * 2;
@@ -249,6 +258,7 @@ public class PlayerInformation : MonoBehaviour {
             Destroy(rowFinalEff);
             //WinMoney(amount);
            // emptyInRowGems(wonGem);
+           */
 
         }
         Common.gameMaster.PlayerGemHandlingFinish(this,enterBonus,wonGem);
@@ -269,13 +279,18 @@ public class PlayerInformation : MonoBehaviour {
         
     }
 
+
+
     GameObject CreateGemAndMoveToLocation(Gem toCreate,Vector3 startLocation,Vector3 endLocation,float oneMoveDuration)
     {
+        return Common.gameMaster.CreateGemAndMoveToLocation(toCreate, startLocation, endLocation, oneMoveDuration);
+        /*
         GameObject createdGem = Common.gameMaster.CreateGem(toCreate, startLocation);
         
         float fixedZToMove = Common.effects.fixedZToMove;
         Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(createdGem.transform, endLocation, oneMoveDuration, fixedZToMove);
         return createdGem;
+        */
     }
 
 
@@ -303,18 +318,21 @@ public class PlayerInformation : MonoBehaviour {
         myInformationGUI.SetNewWonGems(wonGems);
     }
 
-    int HowManyTimesSameGameInRow(Gem won)
+    int HowManyTimesSameGemInRow(Gem won)
     {
         int sameInARowCounter = 0;
-        foreach (Gem gem in Common.gameMaster.combinedWonGems)
+        int counter = 0;
+        foreach (Gem gem in Common.gameMaster.combinedWithRemovedBonusRoundGems)
         {
             if (!Common.gemSkins.IsGemEmpty(gem))
             {
                 if (gem.Name == won.Name)
                 {
-                    sameInARowCounter++;
+                        sameInARowCounter++;
+
                 }
             }
+            counter++;
         }
         if (sameInARowCounter == 0)
         {

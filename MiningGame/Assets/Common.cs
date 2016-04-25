@@ -21,6 +21,11 @@ public static class Common  {
     public static Gems gemSkins;
 
     public static string cullingMaskNameInTexture = "_Mask";
-    
+
+
+    public static Vector3 mapleftBottom;
+    public static Vector3 mapRightTop;
+    public static Vector3 mapMIddle;
+
 
 }

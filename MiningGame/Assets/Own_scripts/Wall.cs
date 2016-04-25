@@ -67,7 +67,7 @@ public class Wall : MonoBehaviour {
     }
     void WallOpen(PlayerInformation player)
     {
-        if (Common.gameMaster.canHitWall())
+        if (Common.gameMaster.canHitWall(player))
         {
             // go_small = true;
             //ChangeObjectSize(new Vector3(0f, 0f, 0f));
@@ -90,19 +90,19 @@ public class Wall : MonoBehaviour {
 
     void OnMouseOver()
     {
-        if (Common.gameMaster.canHitWall())
+        if (Common.gameMaster.canHitWall(null))
         {
          
             if (Input.GetMouseButton(1))
             {
-                if (!Common.gameMaster.player2.GamesOver() )
+                if (!Common.gameMaster.player2.DoIHaveHitsLeft() )
                 {
                     WallOpen(Common.gameMaster.player2);
                 }
             }
             if (Input.GetMouseButton(0))
             {
-                if (!Common.gameMaster.player1.GamesOver() )
+                if (!Common.gameMaster.player1.DoIHaveHitsLeft() )
                 {
                     WallOpen(Common.gameMaster.player1);
 
