@@ -109,8 +109,8 @@ public class PlayerInformation : MonoBehaviour {
 
     public void WinMoney(float money,float speed=1f)
     {
-
-        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration,speed));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
+       // Common.effects.CreateCoinMoveEffectForPlayers(1f);
+        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration,speed,true));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
         moneyWon += money;
       //  myInformationGUI.SetWonMoney(wonMoney);
      

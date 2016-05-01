@@ -96,7 +96,7 @@ public class InfoGUI : MonoBehaviour {
 
     bool stillCountingMoney = false;
 
-    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f)
+    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f,bool createCoinMovement=false)
     {
         stillCountingMoney = true;
         MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
@@ -105,6 +105,7 @@ public class InfoGUI : MonoBehaviour {
         float sign = Mathf.Sign(newAmount - oldAmount);
         int moneyPerStep = 1;
         float lasts = difference * moneyCountParams.step;
+        int modToCoinMove = Common.effects.modToCoinMove;
         if (difference * moneyCountParams.step > maxDuration)
         {
             
@@ -121,15 +122,22 @@ public class InfoGUI : MonoBehaviour {
             {
                 break;
             }
-            toSet.text = moneyGoer.ToString();
+            if (createCoinMovement)
+            {
+                if (n % modToCoinMove == 0)
+                {
+                    Common.effects.CreateOneCoinMove(step*modToCoinMove, moneyTotalBBResults.transform.position, moneyTotalText.transform.position);
+                }
+            }
             yield return new WaitForSeconds(step);
+            toSet.text = moneyGoer.ToString();
 
         }
 
         toSet.text = newAmount.ToString();
-        Debug.Log("in reality money count lasted " + (Time.time - startTime).ToString()+ "  with step "+moneyPerStep+" we caunted "+difference+ " should last"+lasts.ToString()+ " max duration is "+maxDuration.ToString());
-        Debug.Log("New amount " + newAmount);
-        Debug.Log("Old Amount " + oldAmount);
+      //  Debug.Log("in reality money count lasted " + (Time.time - startTime).ToString()+ "  with step "+moneyPerStep+" we caunted "+difference+ " should last"+lasts.ToString()+ " max duration is "+maxDuration.ToString());
+      //  Debug.Log("New amount " + newAmount);
+       // Debug.Log("Old Amount " + oldAmount);
         stillCountingMoney = false;
         yield break;
     }
@@ -215,6 +223,11 @@ public class InfoGUI : MonoBehaviour {
         Image img = gemImagesOnWonGems[index];
         return img.rectTransform.position;
 
+    }
+    public GameObject GetGOOfGemMiddleShowEndScreen(int index)
+    {
+        Image img = gemImagesOnShowEndScreenGems[index];
+        return img.gameObject;
     }
 
     public Vector3 GetWorldPositionOfMiddleGemLocation(int index)

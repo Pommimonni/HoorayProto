@@ -287,10 +287,20 @@ public class GameMaster : MonoBehaviour {
         Common.bonusBombSummoner.StartBonusRound();
     }
 
+    public Vector3 TransformPlayer1PositionToPlayer2Position(Vector3 p1Pos)
+    {
+        float xDiff = player2Camera.transform.position.x- player1Camera.transform.position.x;
+        Vector3 p2Pos = p1Pos;
+        p2Pos.x += xDiff;
+        Debug.Log("New POS " + p2Pos + " old pos " + p1Pos);
+        return p2Pos;
+    }
+
     public void BonusRoundEndsShowResults()
     {
         player1.myInformationGUI.ShowBBResultsSetActive(true);
         player2.myInformationGUI.ShowBBResultsSetActive(true);
+        Common.effects.SpawnEffectOnBothScreens(EffectsEnum.BonusGameEnds, Vector3.zero);//Common.effects.PlayEffect(EffectsEnum.BonusGameEnds, Vector3.zero);
         StartCoroutine(CountMoneyBonusRound(player1));
         StartCoroutine(CountMoneyBonusRound(player2));
         //float total = Common.gemSkins.CalculateMoneyWon(gemsWonInBonusRound);
@@ -440,13 +450,14 @@ public class GameMaster : MonoBehaviour {
         List<Gem> gemsToMove = playerWhoseGemsMove.wonGems;
         foreach (Gem gem in gemsToMove)
         {
+            int amountAlreadyInGems = playerToScreenMove.allGemsTomiddleCreatedGems.Count;
             if (Common.gemSkins.IsGemEmpty(gem))
             {
                 //newWonGems.Add(null);
             }
             else if (gem.Name == whatTypeOfGem.Name)
             {
-                int amountAlreadyInGems = playerToScreenMove.allGemsTomiddleCreatedGems.Count;
+                
                 Debug.Log("moving gem gems in middle is " + amountAlreadyInGems);
                 Vector3 endPos = Vector3.zero;
                 if (isShowEndScreen)
@@ -472,7 +483,17 @@ public class GameMaster : MonoBehaviour {
                 playerToScreenMove.startingPositionsOfGemMoveMiddle.Add(startPos);
                 playerToScreenMove.allGemsTomiddleCreatedGems.Add(createdGem);
                 yield return new WaitForSeconds(0.75f);
-                
+                if (isShowEndScreen)
+                {
+                    Vector2 offsets = new Vector2(0.0f, 0.4f);
+                    string popUpString = (gem.priceMoney/2).ToString();
+                    PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
+                    pu.FontSize = 45;
+                    pu.FillColor = Color.yellow;
+                    pu.OutlineColor = Color.black;
+                    PopUpManager.Instance.Pop(pu, true);
+
+                }
             }
 
 
@@ -485,6 +506,9 @@ public class GameMaster : MonoBehaviour {
     {
 
     }
+
+    
+
     IEnumerator ShowEndResults()
     {
         player1.myInformationGUI.StartShowEndGameResults();
@@ -503,11 +527,16 @@ public class GameMaster : MonoBehaviour {
         {
             tempMoneyFromFromMovedGems.Add(0);
             float lowerMoney = moneyGoer;
-            float moneyByType = Common.gemSkins.CalculateMoneyWonByType(combinedWonGems, gemType);
+            float moneyByType = Common.gemSkins.CalculateMoneyWonByType(combinedWonGems, gemType)/2;
             float upperMOney = moneyGoer + moneyByType;
-            StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
-            StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
+
             yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",true));
+            if (moneyByType != 0)
+            {
+              //  PopUpManager.Instance.Pop(pu, true);
+                StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
+                StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
+            }
             while (countingMoney)
             {
                 yield return new WaitForFixedUpdate();
@@ -521,9 +550,9 @@ public class GameMaster : MonoBehaviour {
             
         }
         yield return new WaitForSeconds(1f);
-        float totalMoney = moneyGoer/2;
-        player1.WinMoney(totalMoney,2);
-        player2.WinMoney(totalMoney,2);
+        float totalMoney = moneyGoer;  //2;
+        player1.WinMoney(totalMoney,1);
+        player2.WinMoney(totalMoney,1);
         StartCoroutine(CountMoneyOneType(player1, moneyGoer, 0));
         StartCoroutine(CountMoneyOneType(player2, moneyGoer, 0));
         while (player1.myInformationGUI.AreWeCountingMoney())

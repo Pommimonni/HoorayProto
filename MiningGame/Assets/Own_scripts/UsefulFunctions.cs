@@ -120,12 +120,13 @@ public class UsefulFunctions : MonoBehaviour {
     {
         float timeGoer = 0f;
         Vector3 startScale = objectToScale.localScale;
+        float startTime = Time.time;
         while (timeGoer < duration)
         {
-           // Debug.Log("<color=red>We are still scaling:</color>");
-            timeGoer += Time.fixedDeltaTime;
+            // Debug.Log("<color=red>We are still scaling:</color>");
+            timeGoer = Time.time - startTime;
             objectToScale.localScale = Vector3.Lerp(startScale, endScale, timeGoer / duration);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
 
         yield break;
@@ -167,19 +168,20 @@ public class UsefulFunctions : MonoBehaviour {
     {
         float timeGoer = 0f;
         Vector3 startLocation = obj.position;
+        float startTime = Time.time;
         while (timeGoer < duration)
         {
             if (obj)
             {
                 //Debug.Log("<color=red>We are still scaling:</color>");
-                timeGoer += Time.fixedDeltaTime;
+                timeGoer =Time.time- startTime;
                 obj.position = Vector3.Lerp(startLocation, where, timeGoer / duration);
 
             }
             else {
                 timeGoer = duration + 1;
             }
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
 
         yield break;

@@ -19,7 +19,7 @@ public class EffectDefinition
 
 
 [System.Serializable]
-public enum EffectsEnum : int { Hitting_wall,Wall_destrying, Finding_gem_while_moving,Finding_gem_movement_finished_to_middle, When_3_in_row_found,Gem_movement_finishing_combo, };
+public enum EffectsEnum : int { Hitting_wall,Wall_destrying, Finding_gem_while_moving,Finding_gem_movement_finished_to_middle, When_3_in_row_found,Gem_movement_finishing_combo,BonusGameEnds };
 
 
 
@@ -46,11 +46,16 @@ public class Effects : MonoBehaviour {
     public GameObject bombExplosionEffect;
     public GameObject bigBombExplosionEffect;
     public bool removeEffectSounds = false;
-    
+    public int modToCoinMove=2;
+
 
     // Update is called once per frame
     void Update () {
-      //  FindEffect(EffectsEnum.Finding_gem);
+        //  FindEffect(EffectsEnum.Finding_gem);
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CreateCoinMoveEffectForPlayers(2f);
+        }
 
 	}
 
@@ -119,6 +124,12 @@ public class Effects : MonoBehaviour {
         }
     }
 
+    public void SpawnEffectOnBothScreens(EffectsEnum whatEffect,Vector3 player1Position)
+    {
+        PlayEffect(whatEffect, player1Position);
+        PlayEffect(whatEffect, Common.gameMaster.TransformPlayer1PositionToPlayer2Position(player1Position));
+    }
+
     void PlayEffectAndParent(GameObject effect, Vector3 location, Transform parent)
     {
         // GameObject created = PlayCFXEffect(effect, location);
@@ -132,7 +143,46 @@ public class Effects : MonoBehaviour {
         return createdObject;
 
     }
+    public GameObject CoinGO;
+    float coinmoveDuration = 0.5f;
+    void CreateCoinMoveEffect(PlayerInformation player,float duration)
+    {
+        Vector3 startPos = player.myInformationGUI.moneyTotalBBResults.gameObject.transform.position;
+        Vector3 endPos = player.myInformationGUI.moneyTotalText.transform.position;
+        endPos.z -= 3f;
+        StartCoroutine(CreateMultipleMovements(startPos,endPos,duration));
+    }
 
+    public void CreateCoinMoveEffectForPlayers(float duration)
+    {
+        CreateCoinMoveEffect(Common.gameMaster.player1,duration);
+        CreateCoinMoveEffect(Common.gameMaster.player2,duration);
+    }
+    public void CreateOneCoinMove(float duration,Vector3 BBresults,Vector3 totalTextPos)
+    {
+        Vector3 startPos = BBresults;
+        Vector3 endPos = totalTextPos;
+        endPos.z -= 3f;
+        StartCoroutine(CoinEffect(startPos, endPos, duration));
+    }
+
+    IEnumerator CreateMultipleMovements(Vector3 startPos,Vector3 endPos,float duration)
+    {
+        float startTime = Time.time;
+        while (duration > Time.time - startTime)
+        {
+            StartCoroutine(CoinEffect(startPos, endPos,coinmoveDuration));
+            yield return new WaitForSeconds(coinmoveDuration / 2);
+        }
+    }
+
+    IEnumerator CoinEffect(Vector3 startPos, Vector3 endPos,float duration)
+    {
+        GameObject createdObj = (GameObject)Instantiate(CoinGO, startPos, Quaternion.identity);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdObj.transform, endPos, duration);
+        yield return new WaitForSeconds(coinmoveDuration);
+        Destroy(createdObj);
+    }
     
 
     GameObject PlayCFXEffect(GameObject effect, Vector3 location)
