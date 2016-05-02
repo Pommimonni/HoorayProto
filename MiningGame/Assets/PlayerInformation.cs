@@ -58,6 +58,7 @@ public class PlayerInformation : MonoBehaviour {
 
 
     public List<GameObject> allGemsTomiddleCreatedGems;  // FOR BOnus ROund
+    public List<GameObject> allExtraCreatedGems;  // FOR BOnus ROund
     public List<Vector3> startingPositionsOfGemMoveMiddle;
 
 
@@ -67,7 +68,7 @@ public class PlayerInformation : MonoBehaviour {
         Debug.Log("playerHItsBeing set" + gamesLeft.ToString());
         myInformationGUI.SetHitsLeft(this.gamesLeft);
     }
-    public bool DoIHaveHitsLeft()
+    public bool IsNoHits()
     {
             return this.gamesLeft <= 0;
         
@@ -237,7 +238,8 @@ public class PlayerInformation : MonoBehaviour {
         yield return new WaitForFixedUpdate();
        // GameObject createdEFFect=Common.effects.PlayEffect(EffectsEnum.FindingGemMovementStartingCombo,endPos);
         yield return new WaitForSeconds(gemStayDuration);
-        Destroy(gemGO);
+        //Destroy(gemGO);
+        myInformationGUI.AddGUIGem(gemGO, wonGem);
      //   Destroy(createdEFFect);
         this.myInformationGUI.SetNewWonGems(this.wonGems);
         bool enterBonus = false;

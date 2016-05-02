@@ -43,14 +43,14 @@ public class LauriWrapper : MonoBehaviour {
 
             if (Input.GetMouseButton(1))
             {
-                if (!Common.gameMaster.player2.DoIHaveHitsLeft())
+                if (!Common.gameMaster.player2.IsNoHits())
                 {
                     WallOpen(Common.gameMaster.player2);
                 }
             }
             if (Input.GetMouseButton(0))
             {
-                if (!Common.gameMaster.player1.DoIHaveHitsLeft())
+                if (!Common.gameMaster.player1.IsNoHits())
                 {
                     WallOpen(Common.gameMaster.player1);
 

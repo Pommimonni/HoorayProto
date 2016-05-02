@@ -35,6 +35,7 @@ public class InfoGUI : MonoBehaviour {
     public Transform sStartBB;
     public Transform sPlayAgain;
     public Transform BonusRoundCombining;
+    public Transform sOutOfHits;
 
     public float wonMoneyTester = 0f;
     public int hitsLeft = 10;
@@ -48,7 +49,7 @@ public class InfoGUI : MonoBehaviour {
     Camera myCamera;
     public Color usedAxeColor;
     public Color unUsedAxeColor;
-
+    public GameObject testSpawn;
     public Transform hitShowHorizontal;
     public Transform combinedHitsAndGemsFound;
 
@@ -59,6 +60,19 @@ public class InfoGUI : MonoBehaviour {
     public Text moneyTotalTextForEndShow;
     public Text moneyTotalBBResults;
 
+    public List<GameObject> my3DGUIGEMS;
+    List<Gem> gemTypeOf3DGems;
+
+    public void AddGUIGem(GameObject gem,Gem gemType)
+    {
+        my3DGUIGEMS.Add(gem);
+       // gemTypeOf3DGems.Add(gemType);
+    }
+
+    public GameObject Get3DGem(int counter)
+    {
+        return my3DGUIGEMS[counter];
+    }
 
     public void SetWonMoney(float wonMoney)
     {
@@ -126,7 +140,8 @@ public class InfoGUI : MonoBehaviour {
             {
                 if (n % modToCoinMove == 0)
                 {
-                    Common.effects.CreateOneCoinMove(step*modToCoinMove, moneyTotalBBResults.transform.position, moneyTotalText.transform.position);
+                    Common.effects.CreateOneCoinMove(step*modToCoinMove, moneyTotalBBResults.transform.position, moneyTotalText.rectTransform.position);
+                   // Instantiate(testSpawn, moneyTotalText.rectTransform.position, Quaternion.identity);
                 }
             }
             yield return new WaitForSeconds(step);
@@ -166,6 +181,12 @@ public class InfoGUI : MonoBehaviour {
     public void ShowStartBonusRound(float duration)
     {
         Common.usefulFunctions.ShowChildForxSeconds(sStartBB, duration);
+    }
+
+    public void ShowOutOfHitsOnOff(bool onOff)
+    {
+        GameObject objectToShow = sOutOfHits.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(onOff);
     }
 
     public void ShowPlayAgain()

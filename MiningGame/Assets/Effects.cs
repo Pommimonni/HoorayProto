@@ -162,7 +162,8 @@ public class Effects : MonoBehaviour {
     {
         Vector3 startPos = BBresults;
         Vector3 endPos = totalTextPos;
-        endPos.z -= 3f;
+        
+       // endPos.z -= 4f;
         StartCoroutine(CoinEffect(startPos, endPos, duration));
     }
 
