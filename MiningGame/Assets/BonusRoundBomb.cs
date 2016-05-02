@@ -123,7 +123,7 @@ public class BonusRoundBomb : MonoBehaviour {
     {
         Debug.Log("WRONG PLAYER HITS Is it player 1" + isPlayer1.ToString());
     }
-
+    /*
     void OnMouseOver()
     {
         if (Input.GetMouseButton(1))
@@ -136,6 +136,19 @@ public class BonusRoundBomb : MonoBehaviour {
             PlayerHitsMe(true);
             Debug.Log("Left clicking bomb");
         }
+    }
+    */
+
+    void OnMouseDown()
+    {
+        Debug.Log("On mouse down on bomb");
+        PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(this.transform.position);
+        bool isp1 = false;
+        if (hittingPlayer == Common.gameMaster.player1)
+        {
+            isp1 = true;
+        }
+        PlayerHitsMe(isp1);
     }
 
 }
