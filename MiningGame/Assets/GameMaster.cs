@@ -11,6 +11,7 @@ public class GameMaster : MonoBehaviour {
     public bool forceFirstMember = false;
     bool startingBonusRound = false;
     bool gameEnded = false;
+    bool showingEndGame = false;
 
     public Transform bonusRowShowMenu;
 
@@ -217,7 +218,7 @@ public class GameMaster : MonoBehaviour {
         {
             int indexFound = 0;
             int counter = 0;
-            foreach(Gem gem in allGems)
+            foreach (Gem gem in allGems)
             {
                 if (gem.Name == gainedWhenEnter.Name)
                 {
@@ -229,15 +230,20 @@ public class GameMaster : MonoBehaviour {
             indexOfGemWeEnteredBonusRound = indexFound;
             if (!onBonusRound && !startingBonusRound)
             {
+                startingBonusRound = true;
                 StartCoroutine(BeforeBonusRoundEnterEffects());
             }
         }
+
+
         CheckGameEnd();
+
     }
+
 
     void CheckGameEnd()
     {
-        if (player1.DoIHaveHitsLeft() && player2.DoIHaveHitsLeft() && !onBonusRound)
+        if (player1.IsNoHits() && player2.IsNoHits() && !onBonusRound)
         {
             EndGameStarts();
         }
@@ -252,7 +258,7 @@ public class GameMaster : MonoBehaviour {
 
     public bool canHitWall(PlayerInformation info)
     {
-        if ((info.DoIHaveHitsLeft() || info.onGemReveal || info.onGemHandling || onBonusRound || gameEnded || startingBonusRound) && !allowHittingAlways)
+        if ((info.IsNoHits() || IsGameOnNonNormalState(info)) && !allowHittingAlways)//info.onGemReveal || info.onGemHandling || onBonusRound || gameEnded || startingBonusRound) && !allowHittingAlways)
         {
             return false; //Change back to false
         }
@@ -261,9 +267,21 @@ public class GameMaster : MonoBehaviour {
             return true;
         }
     }
+
+    public bool IsGameOnNonNormalState(PlayerInformation info)
+    {
+        if (info.onGemReveal || info.onGemHandling || onBonusRound || gameEnded || startingBonusRound || showingEndGame)
+        {
+            return true; //Change back to false
+        }
+        return false;
+    }
+
+
+
     IEnumerator BeforeBonusRoundEnterEffects()
     {
-        startingBonusRound = true;
+    
         while (player1.onGemHandling || player2.onGemHandling)
         {
             yield return new WaitForFixedUpdate();
@@ -273,6 +291,8 @@ public class GameMaster : MonoBehaviour {
         //Common.usefulFunctions.ShowChildForxSeconds(bonusRowShowMenu, 5f);
         player1.allGemsTomiddleCreatedGems = new List<GameObject>();
         player2.allGemsTomiddleCreatedGems = new List<GameObject>();
+        player1.allExtraCreatedGems = new List<GameObject>();
+        player2.allExtraCreatedGems = new List<GameObject>();
         player2.startingPositionsOfGemMoveMiddle = new List<Vector3>();
         player1.startingPositionsOfGemMoveMiddle = new List<Vector3>();
         StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(Common.gemSkins.getGemSkin(indexOfGemWeEnteredBonusRound), "BonusRoundSpecial"));
@@ -287,10 +307,20 @@ public class GameMaster : MonoBehaviour {
         Common.bonusBombSummoner.StartBonusRound();
     }
 
+    public Vector3 TransformPlayer1PositionToPlayer2Position(Vector3 p1Pos)
+    {
+        float xDiff = player2Camera.transform.position.x- player1Camera.transform.position.x;
+        Vector3 p2Pos = p1Pos;
+        p2Pos.x += xDiff;
+        Debug.Log("New POS " + p2Pos + " old pos " + p1Pos);
+        return p2Pos;
+    }
+
     public void BonusRoundEndsShowResults()
     {
         player1.myInformationGUI.ShowBBResultsSetActive(true);
         player2.myInformationGUI.ShowBBResultsSetActive(true);
+        Common.effects.SpawnEffectOnBothScreens(EffectsEnum.BonusGameEnds, Vector3.zero);//Common.effects.PlayEffect(EffectsEnum.BonusGameEnds, Vector3.zero);
         StartCoroutine(CountMoneyBonusRound(player1));
         StartCoroutine(CountMoneyBonusRound(player2));
         //float total = Common.gemSkins.CalculateMoneyWon(gemsWonInBonusRound);
@@ -309,6 +339,7 @@ public class GameMaster : MonoBehaviour {
 
     void EndGameStarts()
     {
+        showingEndGame = true;
         StartCoroutine(ShowEndResults());
 
 
@@ -321,6 +352,7 @@ public class GameMaster : MonoBehaviour {
         player2.AddWinsToTotalMoneys();
 
         Debug.Log("GAME ENDS");
+        showingEndGame = false;
         gameEnded = true;
         player1.myInformationGUI.StopShowEndGameResults();
         player2.myInformationGUI.StopShowEndGameResults();
@@ -360,7 +392,7 @@ public class GameMaster : MonoBehaviour {
         {
             GameObject createdGem = CreateGem(toWin, atPosition);
             GameObject createdEffect = CreateEffect(toWin.effectWhenGot, atPosition);
-            SetObjectToParent(createdGem, createdEffect);
+            SetObjectToParent(createdGem, createdEffect, new Vector3(0f, 0f, -0.5f));
 
             player.HandleGem(toWin, createdGem);
             //TODO maybe  HandleText(toWin.textDisplyed);
@@ -385,10 +417,10 @@ public class GameMaster : MonoBehaviour {
         gemsWonInBonusRound.Add(toWin);
     }
 
-    void SetObjectToParent(GameObject parentGO,GameObject child)
+    void SetObjectToParent(GameObject parentGO,GameObject child,Vector3 newLocalPos)
     {
         child.transform.SetParent(parentGO.transform);
-        child.transform.localPosition = new Vector3(0f, 0f, -2f);
+        child.transform.localPosition = newLocalPos;
     }
     void HandleExtraBonuses()
     {
@@ -440,13 +472,14 @@ public class GameMaster : MonoBehaviour {
         List<Gem> gemsToMove = playerWhoseGemsMove.wonGems;
         foreach (Gem gem in gemsToMove)
         {
+            int amountAlreadyInGems = playerToScreenMove.allGemsTomiddleCreatedGems.Count;
             if (Common.gemSkins.IsGemEmpty(gem))
             {
                 //newWonGems.Add(null);
             }
             else if (gem.Name == whatTypeOfGem.Name)
             {
-                int amountAlreadyInGems = playerToScreenMove.allGemsTomiddleCreatedGems.Count;
+                
                 Debug.Log("moving gem gems in middle is " + amountAlreadyInGems);
                 Vector3 endPos = Vector3.zero;
                 if (isShowEndScreen)
@@ -468,11 +501,33 @@ public class GameMaster : MonoBehaviour {
                 Vector3 startPos = playerWhoseGemsMove.myInformationGUI.GetWorldPositionOfGemInfo(counter);
                 //playerToScreenMove.myInformationGUI.GemShowDisableGem(counter);
                 playerWhoseGemsMove.myInformationGUI.GemShowDisableGem(counter);
-                GameObject createdGem=CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f);
+                GameObject createdGem = null;
+                if (playerWhoseGemsMove == playerToScreenMove)
+                {
+                    createdGem = playerWhoseGemsMove.myInformationGUI.Get3DGem(counter);
+                    Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endPos, 0.75f);
+                }
+                else
+                {
+                    createdGem = CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f);
+                    playerWhoseGemsMove.allExtraCreatedGems.Add(createdGem);
+                }
+                
+                
                 playerToScreenMove.startingPositionsOfGemMoveMiddle.Add(startPos);
                 playerToScreenMove.allGemsTomiddleCreatedGems.Add(createdGem);
                 yield return new WaitForSeconds(0.75f);
-                
+                if (isShowEndScreen)
+                {
+                    Vector2 offsets = new Vector2(0.0f, 0.4f);
+                    string popUpString = (gem.priceMoney/2).ToString();
+                    PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
+                    pu.FontSize = 45;
+                    pu.FillColor = Color.yellow;
+                    pu.OutlineColor = Color.black;
+                    PopUpManager.Instance.Pop(pu, true);
+
+                }
             }
 
 
@@ -485,6 +540,9 @@ public class GameMaster : MonoBehaviour {
     {
 
     }
+
+    
+
     IEnumerator ShowEndResults()
     {
         player1.myInformationGUI.StartShowEndGameResults();
@@ -503,11 +561,16 @@ public class GameMaster : MonoBehaviour {
         {
             tempMoneyFromFromMovedGems.Add(0);
             float lowerMoney = moneyGoer;
-            float moneyByType = Common.gemSkins.CalculateMoneyWonByType(combinedWonGems, gemType);
+            float moneyByType = Common.gemSkins.CalculateMoneyWonByType(combinedWonGems, gemType)/2;
             float upperMOney = moneyGoer + moneyByType;
-            StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
-            StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
+
             yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",true));
+            if (moneyByType != 0)
+            {
+              //  PopUpManager.Instance.Pop(pu, true);
+                StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
+                StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
+            }
             while (countingMoney)
             {
                 yield return new WaitForFixedUpdate();
@@ -521,9 +584,9 @@ public class GameMaster : MonoBehaviour {
             
         }
         yield return new WaitForSeconds(1f);
-        float totalMoney = moneyGoer/2;
-        player1.WinMoney(totalMoney,2);
-        player2.WinMoney(totalMoney,2);
+        float totalMoney = moneyGoer;  //2;
+        player1.WinMoney(totalMoney,1);
+        player2.WinMoney(totalMoney,1);
         StartCoroutine(CountMoneyOneType(player1, moneyGoer, 0));
         StartCoroutine(CountMoneyOneType(player2, moneyGoer, 0));
         while (player1.myInformationGUI.AreWeCountingMoney())
@@ -613,10 +676,13 @@ public class GameMaster : MonoBehaviour {
 
     IEnumerator CreateBonusMovements()
     {
-        StartCoroutine(CombineGameObjects(player1.allGemsTomiddleCreatedGems, 0.5f));
-        yield return StartCoroutine(CombineGameObjects(player2.allGemsTomiddleCreatedGems, 0.5f));
-        StartCoroutine(MoveGemsBack(player1, 0.5f));
+         StartCoroutine(CombineGameObjects(player1.allGemsTomiddleCreatedGems, 0.5f));
+          yield return StartCoroutine(CombineGameObjects(player2.allGemsTomiddleCreatedGems, 0.5f));
+         StartCoroutine(MoveGemsBack(player1, 0.5f));
+        //yield return new WaitForSeconds(1f);
+        //StartCoroutine(MoveGemsBack(player1, 0.5f));
         yield return StartCoroutine(MoveGemsBack(player2, 0.5f));
+
         BonusRoundStartPopUp();
 
     }
@@ -634,22 +700,24 @@ public class GameMaster : MonoBehaviour {
             yield return new WaitForSeconds(oneMoveDuration);
 
         }
-        foreach(GameObject gem in toMove)
+        foreach(GameObject gem in toPlayer.allExtraCreatedGems)
         {
             Destroy(gem);
         }
         toPlayer.myInformationGUI.SetGemShow(toPlayer.wonGems);
     }
-
+    
     IEnumerator CombineGameObjects(List<GameObject> toCombine,float oneMoveDuration)
     {
         List<GameObject> ordered = Common.usefulFunctions.OrderByTransformxPosition(toCombine); // Common.usefulFunctions.GetMeanPositionFromGameObjects(toCombine);
         GameObject middleObject = ordered[1];
         Vector3 startScale = middleObject.transform.localScale;
+        Vector3[] startPoss = new Vector3[3] { ordered[0].transform.position, ordered[1].transform.position, ordered[2].transform.position };
+        Common.effects.PlayEffect(EffectsEnum.Gem_movement_finishing_combo, middleObject.transform.position);
         float fixedZToMove = Common.effects.fixedZToMove;
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[0].transform, middleObject.transform.position, oneMoveDuration);
         yield return new WaitForSeconds(oneMoveDuration);
-        Common.effects.PlayEffect(EffectsEnum.Gem_movement_finishing_combo, middleObject.transform.position);
+        
         Common.usefulFunctions.scaleGOOverTime(middleObject,middleObject.transform.localScale*1.4f,oneMoveDuration);
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[2].transform, middleObject.transform.position, oneMoveDuration);
         yield return new WaitForSeconds(oneMoveDuration);
@@ -662,9 +730,15 @@ public class GameMaster : MonoBehaviour {
         ordered[0].SetActive(false);
         yield return new WaitForSeconds(1f);
         Debug.Log("settings scale back to " + startScale);
-        middleObject.transform.localScale = startScale;
         ordered[0].SetActive(true);
         ordered[2].SetActive(true);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[0].transform, startPoss[0], oneMoveDuration);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[2].transform, startPoss[2], oneMoveDuration);
+        yield return new WaitForSeconds(oneMoveDuration);
+        middleObject.transform.localScale = startScale;
+        yield return new WaitForSeconds(oneMoveDuration);
+
+
         yield break; 
         
 

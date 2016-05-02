@@ -35,6 +35,7 @@ public class InfoGUI : MonoBehaviour {
     public Transform sStartBB;
     public Transform sPlayAgain;
     public Transform BonusRoundCombining;
+    public Transform sOutOfHits;
 
     public float wonMoneyTester = 0f;
     public int hitsLeft = 10;
@@ -48,7 +49,7 @@ public class InfoGUI : MonoBehaviour {
     Camera myCamera;
     public Color usedAxeColor;
     public Color unUsedAxeColor;
-
+    public GameObject testSpawn;
     public Transform hitShowHorizontal;
     public Transform combinedHitsAndGemsFound;
 
@@ -59,6 +60,19 @@ public class InfoGUI : MonoBehaviour {
     public Text moneyTotalTextForEndShow;
     public Text moneyTotalBBResults;
 
+    public List<GameObject> my3DGUIGEMS;
+    List<Gem> gemTypeOf3DGems;
+
+    public void AddGUIGem(GameObject gem,Gem gemType)
+    {
+        my3DGUIGEMS.Add(gem);
+       // gemTypeOf3DGems.Add(gemType);
+    }
+
+    public GameObject Get3DGem(int counter)
+    {
+        return my3DGUIGEMS[counter];
+    }
 
     public void SetWonMoney(float wonMoney)
     {
@@ -96,7 +110,7 @@ public class InfoGUI : MonoBehaviour {
 
     bool stillCountingMoney = false;
 
-    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f)
+    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f,bool createCoinMovement=false)
     {
         stillCountingMoney = true;
         MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
@@ -105,6 +119,7 @@ public class InfoGUI : MonoBehaviour {
         float sign = Mathf.Sign(newAmount - oldAmount);
         int moneyPerStep = 1;
         float lasts = difference * moneyCountParams.step;
+        int modToCoinMove = Common.effects.modToCoinMove;
         if (difference * moneyCountParams.step > maxDuration)
         {
             
@@ -121,15 +136,23 @@ public class InfoGUI : MonoBehaviour {
             {
                 break;
             }
-            toSet.text = moneyGoer.ToString();
+            if (createCoinMovement)
+            {
+                if (n % modToCoinMove == 0)
+                {
+                    Common.effects.CreateOneCoinMove(step*modToCoinMove, moneyTotalBBResults.transform.position, moneyTotalText.rectTransform.position);
+                   // Instantiate(testSpawn, moneyTotalText.rectTransform.position, Quaternion.identity);
+                }
+            }
             yield return new WaitForSeconds(step);
+            toSet.text = moneyGoer.ToString();
 
         }
 
         toSet.text = newAmount.ToString();
-        Debug.Log("in reality money count lasted " + (Time.time - startTime).ToString()+ "  with step "+moneyPerStep+" we caunted "+difference+ " should last"+lasts.ToString()+ " max duration is "+maxDuration.ToString());
-        Debug.Log("New amount " + newAmount);
-        Debug.Log("Old Amount " + oldAmount);
+      //  Debug.Log("in reality money count lasted " + (Time.time - startTime).ToString()+ "  with step "+moneyPerStep+" we caunted "+difference+ " should last"+lasts.ToString()+ " max duration is "+maxDuration.ToString());
+      //  Debug.Log("New amount " + newAmount);
+       // Debug.Log("Old Amount " + oldAmount);
         stillCountingMoney = false;
         yield break;
     }
@@ -158,6 +181,12 @@ public class InfoGUI : MonoBehaviour {
     public void ShowStartBonusRound(float duration)
     {
         Common.usefulFunctions.ShowChildForxSeconds(sStartBB, duration);
+    }
+
+    public void ShowOutOfHitsOnOff(bool onOff)
+    {
+        GameObject objectToShow = sOutOfHits.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(onOff);
     }
 
     public void ShowPlayAgain()
@@ -215,6 +244,11 @@ public class InfoGUI : MonoBehaviour {
         Image img = gemImagesOnWonGems[index];
         return img.rectTransform.position;
 
+    }
+    public GameObject GetGOOfGemMiddleShowEndScreen(int index)
+    {
+        Image img = gemImagesOnShowEndScreenGems[index];
+        return img.gameObject;
     }
 
     public Vector3 GetWorldPositionOfMiddleGemLocation(int index)
