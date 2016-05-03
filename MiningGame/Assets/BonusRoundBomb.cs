@@ -139,7 +139,7 @@ public class BonusRoundBomb : MonoBehaviour {
     }
     */
 
-    void OnMouseDown()
+    void OnMultiDisplayMouseDown()
     {
         Debug.Log("On mouse down on bomb");
         PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(this.transform.position);
