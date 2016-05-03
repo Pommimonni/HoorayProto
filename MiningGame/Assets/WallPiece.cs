@@ -2,12 +2,16 @@
 using System.Collections;
 
 public class WallPiece : MonoBehaviour {
-
     
 
 	// Use this for initialization
 	void Start () {
-	
+        float r = Random.Range(0, 100);
+        if(r < 14)
+        {
+            float delay = Random.Range(0, 20);
+            Invoke("SpawnShinyEffect", delay);
+        }
 	}
 	
 	// Update is called once per frame
@@ -18,6 +22,14 @@ public class WallPiece : MonoBehaviour {
     void OnMouseDown()
     {
 
+    }
+
+    void SpawnShinyEffect()
+    {
+        GameObject shine = (GameObject)GameObject.Instantiate(ShinyEffect.main.shinePrefab, transform.position + Vector3.back*5, Quaternion.identity);
+        //shine.transform.parent = ShinyEffect.main.transform;
+        shine.transform.parent = transform;
+        shine.transform.localScale = new Vector3(1, 1, 1);
     }
 
     void OnMultiDisplayMouseDown()
