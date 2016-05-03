@@ -14,8 +14,13 @@ public class WallPiece : MonoBehaviour {
 	void Update () {
 	
 	}
-
+    
     void OnMouseDown()
+    {
+
+    }
+
+    void OnMultiDisplayMouseDown()
     {
         Debug.Log("On mouse down on wall piece");
         PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);

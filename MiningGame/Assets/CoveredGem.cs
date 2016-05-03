@@ -68,7 +68,7 @@ public class CoveredGem : MonoBehaviour {
         onDisplay = true;
     }
 
-    void OnMouseDown()
+    void OnMultiDisplayMouseDown()
     {
         if (onDisplay)
         {
