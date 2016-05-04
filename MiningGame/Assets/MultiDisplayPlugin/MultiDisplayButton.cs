@@ -18,6 +18,8 @@ public class MultiDisplayButton : MonoBehaviour {
     void OnMultiDisplayMouseDown()
     {
         Debug.Log("MultiDisplayButton pressed");
+       // PopUp pu = new PopUp(this.gameObject, Vector2.zero, this.gameObject.name, 5f, Vector2.up, 60f);//60f);
+        //pu.FontSize = 45;
         b.onClick.Invoke();
         b.transform.position += Vector3.up * 5;
     }

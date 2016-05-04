@@ -23,7 +23,8 @@ public class ToogleGroupHandler : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SetspritesToChoices(Common.gemSkins.GiveGemSkinsAsSprites());
+            // SetspritesToChoices(Common.gemSkins.GiveGemSkinsAsSprites());
+            SetMemberToggled(3);
         }
 	}
     public List<GameObject> myActiveChildren;
@@ -95,6 +96,13 @@ public class ToogleGroupHandler : MonoBehaviour {
                     counter++;
             }
         }
+    }
+
+    public void ChildBooltToggledButton(MultiDisplayToggle toggled)
+    {
+        int index = toggled.order;
+        ChildToggleChanged(index);
+        SetMemberToggled(index);
     }
 
     public void SetMemberToggled(int toggled)
