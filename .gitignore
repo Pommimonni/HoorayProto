@@ -73,11 +73,18 @@ $RECYCLE.BIN/
 /*.rar
 MiningGame/ProjectSettings/ProjectVersion.txt
 
-# FMOD 
+# FMOD generic
 Assets/FMODStudioCache.asset
-MiningGame\Assets\FMODStudioCache.asset
+Assets/FMODStudioCache.asset.meta
 Assets/StreamingAssets/*.bank
+Assets/StreamingAssets/*.bank.meta
 fmod.log
 fmod_editor.log
+
+# FMOD
+MiningGame/Assets/FMODStudioCache.asset
+MiningGame/Assets/StreamingAssets/*.bank
+MiningGame/fmod.log
+MiningGame/fmod_editor.log
 MiningGame/Assets/FMODStudioCache.asset
 MiningGame/Assets/FMODStudioCache.asset.meta
