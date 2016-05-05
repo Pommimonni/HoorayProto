@@ -68,6 +68,11 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     {
         int screenNumber = GetCurrentMousePositionScreenIndex();
         Vector3 relativePos = GetMousePositionRelativeToScreen();
+        if (Application.isEditor)
+        {
+            screenNumber = 1;
+            relativePos = Input.mousePosition;
+        }
         if (screenNumber == 1)
         {
             RayCastFromCamera(relativePos, cameraP1, canvasP1);

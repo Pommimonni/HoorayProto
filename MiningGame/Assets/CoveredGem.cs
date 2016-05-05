@@ -23,12 +23,18 @@ public class CoveredGem : MonoBehaviour {
     public ParticleSystem rockFX;
     public GameObject coveredGem;
 
+    public FMODUnity.StudioEventEmitter gemFound;
+    public FMODUnity.StudioEventEmitter coveredGemOnDisplay;
+    public FMODUnity.StudioEventEmitter gemRevealed;
+    public FMODUnity.StudioEventEmitter gemFlyToUI;
+
     GameObject created3DGem;
 
     // Use this for initialization
     void Start () {
         //Invoke("StartApproachingTarget", waitUntilMovingToTarget);
         if (!targetLocation) enabled = false;
+        gemFound.Play();
 	}
 
     bool droppingDown = true;
@@ -66,6 +72,7 @@ public class CoveredGem : MonoBehaviour {
     {
         approaching = false;
         onDisplay = true;
+        coveredGemOnDisplay.Play();
     }
 
     void OnMultiDisplayMouseDown()
@@ -77,7 +84,9 @@ public class CoveredGem : MonoBehaviour {
             rockFX.Play();
             Destroy(coveredGem);
             onDisplay = false;
-          //  Common.gameMaster.GemRevealOver(this.transform.position,myPlayer);
+            coveredGemOnDisplay.Stop();
+            gemRevealed.Play();
+            //  Common.gameMaster.GemRevealOver(this.transform.position,myPlayer);
             SpawnGem(myPlayer.nextGemToWin);
         }
     }
@@ -97,6 +106,7 @@ public class CoveredGem : MonoBehaviour {
     void RevealOver()
     {
         Common.gameMaster.GemRevealOver(this.transform.position, myPlayer);
+        gemFlyToUI.Play();
         Destroy(gameObject);
         Destroy(created3DGem);
     }
