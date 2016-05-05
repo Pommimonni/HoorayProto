@@ -18,25 +18,66 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     public Text uidebug;
     public Text prevClick;
+
+    public bool hackFromOneScreenInput = true;
+    public float clickDelay = 0.05f;
     
+    void Start()
+    {
+        if (hackFromOneScreenInput)
+        {
+            screenWidth /= 2f;
+        }
+    }
+
 	void Update () {
         Vector2 systemMousePosition = SystemMousePosition();
         if (Input.GetMouseButtonDown(0))
         {
-            int screenNumber = GetCurrentMousePositionScreenIndex();
-            Vector3 relativePos = GetMousePositionRelativeToScreen();
-            if (screenNumber == 1)
+            if(clickDelay > 0)
             {
-                RayCastFromCamera(relativePos, cameraP1, canvasP1);
+                DelayedClick(clickDelay);
             } else
             {
-                RayCastFromCamera(relativePos, cameraP2, canvasP2);
+                ApplyClick();
             }
-            if(prevClick)
-                prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
+            
         }
         if (uidebug)
             uidebug.text = systemMousePosition + "";
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            clickDelay += 0.05f;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            clickDelay -= 0.05f;
+            if(clickDelay <= 0.01f)
+            {
+                clickDelay = 0.05f;
+            }
+        }
+    }
+
+    void DelayedClick(float delay)
+    {
+        Invoke("ApplyClick", delay);
+    }
+
+    void ApplyClick()
+    {
+        int screenNumber = GetCurrentMousePositionScreenIndex();
+        Vector3 relativePos = GetMousePositionRelativeToScreen();
+        if (screenNumber == 1)
+        {
+            RayCastFromCamera(relativePos, cameraP1, canvasP1);
+        }
+        else
+        {
+            RayCastFromCamera(relativePos, cameraP2, canvasP2);
+        }
+        if (prevClick)
+            prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
     }
 
     void RayCastFromCamera(Vector3 relativeMousePosition, Camera cam, Canvas can)
@@ -86,6 +127,10 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     {
         Vector2 sysPos = SystemMousePosition();
         if (sysPos.x > screenWidth) sysPos.x -= screenWidth;
+        if (hackFromOneScreenInput)
+        {
+            sysPos.x *= 2;
+        }
         return new Vector3(sysPos.x, screenHeight - sysPos.y, 0);
     }
 
