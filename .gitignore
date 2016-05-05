@@ -79,3 +79,5 @@ MiningGame\Assets\FMODStudioCache.asset
 Assets/StreamingAssets/*.bank
 fmod.log
 fmod_editor.log
+MiningGame/Assets/FMODStudioCache.asset
+MiningGame/Assets/FMODStudioCache.asset.meta
