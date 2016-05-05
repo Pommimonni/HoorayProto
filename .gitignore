@@ -75,6 +75,7 @@ MiningGame/ProjectSettings/ProjectVersion.txt
 
 # FMOD 
 Assets/FMODStudioCache.asset
+MiningGame\Assets\FMODStudioCache.asset
 Assets/StreamingAssets/*.bank
 fmod.log
 fmod_editor.log
