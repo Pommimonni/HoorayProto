@@ -80,17 +80,17 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         }
         if (screenNumber == 1)
         {
-            RayCastFromCamera(relativePos, cameraP1, canvasP1);
+            RayCastFromCamera(relativePos, cameraP1, canvasP1, 1);
         }
         else
         {
-            RayCastFromCamera(relativePos, cameraP2, canvasP2);
+            RayCastFromCamera(relativePos, cameraP2, canvasP2, 2);
         }
         if (prevClick)
             prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
     }
 
-    void RayCastFromCamera(Vector3 relativeMousePosition, Camera cam, Canvas can)
+    void RayCastFromCamera(Vector3 relativeMousePosition, Camera cam, Canvas can, int screenIndex)
     {
         Debug.Log("Raycasting to: " + relativeMousePosition +"on camera: "+cam.gameObject.name);
         Ray ray = cam.ScreenPointToRay(relativeMousePosition);
@@ -99,7 +99,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         if (Physics.Raycast(ray, out hit))
         {
             Debug.Log("Physics ray hit: "+hit.collider.gameObject.name);
-            hit.collider.SendMessage("OnMultiDisplayMouseDown", SendMessageOptions.DontRequireReceiver);
+            hit.collider.SendMessage("OnMultiDisplayMouseDown", screenIndex, SendMessageOptions.DontRequireReceiver);
         }
 
         //Code to be place in a MonoBehaviour with a GraphicRaycaster component
@@ -115,7 +115,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         foreach(RaycastResult r in results)
         {
             Debug.Log("UI ray hit: " + r.gameObject.name);
-            r.gameObject.SendMessage("OnMultiDisplayMouseDown", SendMessageOptions.DontRequireReceiver);
+            r.gameObject.SendMessage("OnMultiDisplayMouseDown", screenIndex , SendMessageOptions.DontRequireReceiver);
         }
     }
 
