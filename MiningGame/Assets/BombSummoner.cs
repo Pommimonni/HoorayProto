@@ -67,8 +67,7 @@ public class BombSummoner : MonoBehaviour
                 }
                 else
                 {
-                    Common.gameMaster.BonusRoundEndsShowResults();
-                    summoning = false;
+                    EndBonusRound();
                 }
 
             }
@@ -153,16 +152,23 @@ public class BombSummoner : MonoBehaviour
 
     bool summoning = false;
 
+    public Light mainLightSource;
+
     public void StartBonusRound()
     {
         objectsSpawned = 0;
         summoning = true;
-        
+        mainLightSource.enabled = false;
     }
 
 
+    public void EndBonusRound()
+    {
+        Common.gameMaster.BonusRoundEndsShowResults();
+        summoning = false;
+        mainLightSource.enabled = true;
+    }
 
-   
 
     public Vector3 randomInsideCircle(float radius, Vector3 center)
     {

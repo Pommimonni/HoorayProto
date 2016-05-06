@@ -24,6 +24,11 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     
     void Start()
     {
+        if (Application.isEditor)
+        {
+            clickDelay = 0;
+            hackFromOneScreenInput = false;
+        }
         if (hackFromOneScreenInput)
         {
             screenWidth /= 2f;

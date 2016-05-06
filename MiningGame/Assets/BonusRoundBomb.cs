@@ -14,6 +14,9 @@ public class BonusRoundBomb : MonoBehaviour {
 	void Update () {
 	
 	}
+    public GameObject spotLight;
+    public FMODUnity.StudioEventEmitter fuseLit;
+    public FMODUnity.StudioEventEmitter explosion;
     public ParticleSystem systemColourToChange;
     public GameObject fuseEffectGO;
     public Color player1Colour;
@@ -36,6 +39,9 @@ public class BonusRoundBomb : MonoBehaviour {
         nextPlayerPlayer1=startingPlayerPlayer1;
         isBigOne = newIsBigOne;
         SetNewPlayerCOlour(startingPlayerPlayer1);
+        spotLight = (GameObject)GameObject.Instantiate(spotLight, this.transform.position, Quaternion.identity);
+        spotLight.GetComponent<FollowTransform>().target = transform;
+        spotLight.transform.localRotation = Quaternion.Euler(9, 0, 0);
     }
 
     public void PlayerHitsMe(bool isPlayer1)
@@ -63,6 +69,7 @@ public class BonusRoundBomb : MonoBehaviour {
         SetNewPlayerCOlour(nextPlayerPlayer1);
         SetFuse();
         SetScaleAnimation();
+        fuseLit.Play();
     }
 
     private void SetFuse()
@@ -97,7 +104,7 @@ public class BonusRoundBomb : MonoBehaviour {
     private void BombBreaks()
     {
         Common.gameMaster.HandleBonusRoundWin(isBigOne,this.transform.position);
-
+        explosion.Play();
         HandleDestruction();
 
     }
