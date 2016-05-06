@@ -86,8 +86,11 @@ public class GameMaster : MonoBehaviour {
         {
             return Common.gameMaster.player2;
         }
-        //TODO how to detect correct player
-        return Common.playerInfo;
+    }
+    public PlayerInformation GetHittingPlayer(int screenIndex)
+    {
+        if (screenIndex == 1 || screenIndex == 0) return Common.gameMaster.player1;
+        return Common.gameMaster.player2;
     }
     public Camera GetCameraBasedOnPosition(Vector3 position)
     {

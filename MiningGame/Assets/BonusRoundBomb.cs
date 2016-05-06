@@ -21,6 +21,7 @@ public class BonusRoundBomb : MonoBehaviour {
     public GameObject fuseEffectGO;
     public Color player1Colour;
     public Color player2Colour;
+    private int hitOnScreen;
 
     private int[] playersToHit = new int[2] { 1, 2 };
     private int hits = 0;
@@ -116,11 +117,11 @@ public class BonusRoundBomb : MonoBehaviour {
         if (!isBigOne)
         {
             Common.effects.PlayBombExplosionEffect(position);
-            Common.lauriWrapper.BonusRoundDestroyWall(position, false);
+            Common.lauriWrapper.BonusRoundDestroyWall(position, false, hitOnScreen);
         }
         else
         {
-            Common.lauriWrapper.BonusRoundDestroyWall(position, true);
+            Common.lauriWrapper.BonusRoundDestroyWall(position, true, hitOnScreen);
             Common.effects.PlayBigBombExplosionEffect(position);
         }
         Destroy(this.gameObject);
@@ -146,12 +147,13 @@ public class BonusRoundBomb : MonoBehaviour {
     }
     */
 
-    void OnMultiDisplayMouseDown()
+    void OnMultiDisplayMouseDown(int screenIndex)
     {
         Debug.Log("On mouse down on bomb");
-        PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(this.transform.position);
+        hitOnScreen = screenIndex;
+        PlayerInformation hitter = Common.gameMaster.GetHittingPlayer(screenIndex);
         bool isp1 = false;
-        if (hittingPlayer == Common.gameMaster.player1)
+        if (hitter == Common.gameMaster.player1)
         {
             isp1 = true;
         }

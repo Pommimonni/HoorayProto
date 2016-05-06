@@ -32,24 +32,24 @@ public class WallPiece : MonoBehaviour {
         shine.transform.localScale = new Vector3(1, 1, 1);
     }
 
-    void OnMultiDisplayMouseDown()
+    void OnMultiDisplayMouseDown(int screenIndex)
     {
         Debug.Log("On mouse down on wall piece");
-        PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);
+        PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(screenIndex);
         if (Common.gameMaster.canHitWall(hittingPlayer))
         {
             Debug.Log("Clicked a wallpiece");
             bool isGem=Common.gameMaster.WallOpened(this.transform.position, hittingPlayer);
-            ShatterPlay(isGem);
+            ShatterPlay(isGem, screenIndex);
             
            // PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);
             // Common.lauriWrapper.WallMouseClick();
         }
     }
-    public void ShatterPlay(bool gemFound)
+    public void ShatterPlay(bool gemFound, int screenIndex)
     {
         Destroy(this.gameObject);
-        PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);
+        PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(screenIndex);
         ShatterEffect.main.Play(this.transform.position, gemFound,hittingPlayer);
         if (gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
@@ -59,11 +59,6 @@ public class WallPiece : MonoBehaviour {
         {
             ShatterCone.main.DestroyCone(this.transform.position);
         }
-    }
-    //which screen did the hit happen on?
-    PlayerInformation GetHittingPlayer(Vector3 position)
-    {
-        return Common.gameMaster.GetHittingPlayer(position);
     }
 
     

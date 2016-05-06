@@ -14,11 +14,11 @@ public class LauriWrapper : MonoBehaviour {
 	}
 
     //laita tarvittava toiminnallisuus seinän tekoon
-    public void BonusRoundDestroyWall(Vector3 position,bool isBigOne)
+    public void BonusRoundDestroyWall(Vector3 position,bool isBigOne, int destroyedOnScreen)
     {
         Camera camera = Common.gameMaster.GetCameraBasedOnPosition(position);
         GameObject wallPieceGO = Common.usefulFunctions.RayCastAlongCameraAndReturnhit(camera, position, 11);
-        wallPieceGO.GetComponentInChildren<WallPiece>().ShatterPlay(false);
+        wallPieceGO.GetComponentInChildren<WallPiece>().ShatterPlay(false, destroyedOnScreen);
       //  ShatterCone.smaller.DestroyCone(position); tai jotain vastaavaa
         //positio on parametri joka kertoo missä paikassa pommi tuhoutuu
         //is bigOne parametri joka kertoo jos on isompi pommi tulossa.
