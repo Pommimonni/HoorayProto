@@ -78,10 +78,10 @@ public class PlayerInformation : MonoBehaviour {
     {
         bet = RoundSettings.bet;
         if (this.playerNumber == 1) {
-            moneyTotalAmount = RoundSettings.moneyInsertedPLayer1;
+            moneyTotalAmount = RoundSettings.player1Money;
         }else
         {
-            moneyTotalAmount = RoundSettings.moneyInsertedPlayer2;
+            moneyTotalAmount = RoundSettings.player2Money;
         }
         Debug.Log("Loading round values current money is at the start "+moneyTotalAmount);
         SetTotalMoneyAmount(- RoundSettings.bet);
@@ -94,11 +94,11 @@ public class PlayerInformation : MonoBehaviour {
         moneyTotalAmount += newAmountIncrease;
         if (this.playerNumber == 1)
         {
-            RoundSettings.moneyInsertedPLayer1 = moneyTotalAmount;
+            RoundSettings.player1Money = moneyTotalAmount;
         }
         else
         {
-            RoundSettings.moneyInsertedPlayer2 = moneyTotalAmount;
+            RoundSettings.player2Money = moneyTotalAmount;
         }
         myInformationGUI.SetMoneyTotal(moneyTotalAmount);
     }

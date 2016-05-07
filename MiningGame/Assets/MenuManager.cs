@@ -37,6 +37,7 @@ public class MenuManager : MonoBehaviour {
     public Gem chosenFavouriteGem;
     public MenuManager otherMenu;
     public ToogleGroupHandler betToggle;
+    public Text TeamBetText;
 
     public void SetIsAllGemsOn(bool value)
     {
@@ -60,7 +61,7 @@ public class MenuManager : MonoBehaviour {
         SetAllPlayerNameTittle(newPlayer);
         
         this.playerNumber = newplayerNumber;
-        this.GetComponentInChildren<RemoveFromPlayer>().RemoveBasedOnTags(playerNumber);
+       // this.GetComponentInChildren<RemoveFromPlayer>().RemoveBasedOnTags(playerNumber);
         ActivateMenu(menuGOer);
 
     }
@@ -73,13 +74,20 @@ public class MenuManager : MonoBehaviour {
         moneyInserted = money;
         if (playerNumber == 1)
         {
-            RoundSettings.moneyInsertedPLayer1 += moneyInserted;
+            RoundSettings.player1Money += moneyInserted;
         }
         else
         {
-            RoundSettings.moneyInsertedPlayer2 += moneyInserted;
+            RoundSettings.player2Money += moneyInserted;
         }
 
+    }
+
+    string FindFirstDigitAndChangeIt(string str, int newDigit)
+    {
+        int index = str.IndexOfAny(new char[]
+            { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+        return str.Replace(str[index], newDigit.ToString()[0]);
     }
 
     public void SetBetAmount(string newBetAmount)
@@ -119,7 +127,9 @@ public class MenuManager : MonoBehaviour {
 
     public void ChangeOtherBetToggle(int toggle)
     {
-       // otherMenu.betToggle.SetMemberToggled(toggle);
+        this.betAmount = toggle+ 1;
+        otherMenu.betToggle.SetMemberToggled(toggle);
+        ChangeBetText((int)betAmount);
     }
 
     public void BetToggleChanged(int newBet)
@@ -128,6 +138,13 @@ public class MenuManager : MonoBehaviour {
         this.betAmount = newBet+1;
         ChangeOtherBetToggle(newBet);
         otherMenu.betAmount = newBet + 1;
+        ChangeBetText((int)betAmount);
+    }
+
+    void ChangeBetText(int newBet)
+    {
+        string newText=FindFirstDigitAndChangeIt(TeamBetText.text,newBet);
+        TeamBetText.text = newText;
     }
 
     public void RatioToggleChanged(int newToggle)

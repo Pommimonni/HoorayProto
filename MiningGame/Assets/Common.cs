@@ -27,5 +27,7 @@ public static class Common  {
     public static Vector3 mapRightTop;
     public static Vector3 mapMIddle;
 
+    public static Color defaultRedTextColor;
+
 
 }

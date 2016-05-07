@@ -8,6 +8,7 @@ public class MultiDisplayToggle : MonoBehaviour {
 
     Button b;
     public int order = 0;
+    public Text textToColourChange;
     // Use this for initialization
     void Start()
     {

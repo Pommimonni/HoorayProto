@@ -81,8 +81,8 @@ public class InfoGUI : MonoBehaviour {
     }
     public void SetHitsLeft(int newHits)
     {
-        // hitsLeftText.text = newHits.ToString();
-        ColourHitSown(newHits);
+         hitsLeftText.text = "x"+newHits.ToString();
+       // ColourHitSown(newHits);
 
     }
     public void SetBet()
@@ -94,7 +94,7 @@ public class InfoGUI : MonoBehaviour {
     {
         if (moneyTotalText)
         {
-            moneyTotalText.text = money.ToString();
+            moneyTotalText.text = "€"+money.ToString();
         }
     }
 
