@@ -90,13 +90,10 @@ public class Gems: MonoBehaviour
             }
         }
         
-        return AdjustBet(total);
+        return Common.AdjustBet(total);
     }
 
-    float AdjustBet(float amount)
-    {
-        return amount * RoundSettings.bet;
-    }
+
 
     public float CalculateMoneyWonByType(List<Gem> gems,Gem whatTypeOfGem)
     {
@@ -113,7 +110,7 @@ public class Gems: MonoBehaviour
                
             }
         }
-        return AdjustBet(total);
+        return Common.AdjustBet(total);
     }
 
 

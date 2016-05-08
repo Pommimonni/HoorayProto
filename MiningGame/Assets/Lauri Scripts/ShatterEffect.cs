@@ -49,5 +49,9 @@ public class ShatterEffect : MonoBehaviour {
             sparklingGem.GetComponent<CoveredGem>().myPlayer = playerInfo;
             sparklingGem.GetComponent<CoveredGem>().targetLocation = playerInfo.gemRevealLocation;
         }
+        else
+        {
+            Common.gameMaster.EmptyHitOver();
+        }
     }
 }

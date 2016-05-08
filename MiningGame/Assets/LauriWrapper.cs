@@ -14,11 +14,20 @@ public class LauriWrapper : MonoBehaviour {
 	}
 
     //laita tarvittava toiminnallisuus seinän tekoon
-    public void BonusRoundDestroyWall(Vector3 position,bool isBigOne, int destroyedOnScreen)
+    public void BonusRoundDestroyWall(Vector3 position,bool isBigOne, int destroyedOnScreen,Gem gem)
     {
         Camera camera = Common.gameMaster.GetCameraBasedOnPosition(position);
         GameObject wallPieceGO = Common.usefulFunctions.RayCastAlongCameraAndReturnhit(camera, position, 11);
         wallPieceGO.GetComponentInChildren<WallPiece>().ShatterPlay(false, destroyedOnScreen);
+        GameObject the3dModel= gem.my3DGem;
+
+        //Tee gem tulee ulos räjähdys kolosta.
+        GameObject createdGemGO=(GameObject)Instantiate(the3dModel,position,Quaternion.identity);
+        //Create dropping gem found!
+
+
+        Common.gameMaster.gemsWonInBBGOS.Add(createdGemGO);
+
       //  ShatterCone.smaller.DestroyCone(position); tai jotain vastaavaa
         //positio on parametri joka kertoo missä paikassa pommi tuhoutuu
         //is bigOne parametri joka kertoo jos on isompi pommi tulossa.

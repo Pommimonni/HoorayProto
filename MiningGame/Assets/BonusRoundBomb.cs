@@ -17,6 +17,7 @@ public class BonusRoundBomb : MonoBehaviour {
     public GameObject spotLight;
     public FMODUnity.StudioEventEmitter fuseLit;
     public FMODUnity.StudioEventEmitter explosion;
+    public FMODUnity.StudioEventEmitter bombFailDropSound;
     public ParticleSystem systemColourToChange;
     public GameObject fuseEffectGO;
     public Color player1Colour;
@@ -47,7 +48,7 @@ public class BonusRoundBomb : MonoBehaviour {
 
     public void PlayerHitsMe(bool isPlayer1)
     {
-        if (nextPlayerPlayer1==isPlayer1)
+        if (nextPlayerPlayer1==isPlayer1  || true)
         {
             CorrectPlayerHits();
         }
@@ -104,26 +105,34 @@ public class BonusRoundBomb : MonoBehaviour {
 
     private void BombBreaks()
     {
-        Common.gameMaster.HandleBonusRoundWin(isBigOne,this.transform.position);
+        Gem won=Common.gameMaster.HandleBonusRoundWin(isBigOne,this.transform.position);
         explosion.Play();
-        HandleDestruction();
+        HandleDestruction(won);
 
     }
 
+    public void BombDropsDown()
+    {
+        this.transform.GetComponent<Rigidbody>().useGravity = true;
+        bombFailDropSound.Play();
+    }
 
-    private void HandleDestruction()
+
+    private void HandleDestruction(Gem won)
     {
         Vector3 position = this.transform.position;
         if (!isBigOne)
         {
             Common.effects.PlayBombExplosionEffect(position);
-            Common.lauriWrapper.BonusRoundDestroyWall(position, false, hitOnScreen);
+            Common.lauriWrapper.BonusRoundDestroyWall(position, false, hitOnScreen,won);
         }
         else
         {
-            Common.lauriWrapper.BonusRoundDestroyWall(position, true, hitOnScreen);
+            Common.lauriWrapper.BonusRoundDestroyWall(position, true, hitOnScreen,won);
             Common.effects.PlayBigBombExplosionEffect(position);
         }
+        // Destroy(spotLight.gameObject);
+        Common.usefulFunctions.DelayDestroy(spotLight, 1f);
         Destroy(this.gameObject);
     }
 

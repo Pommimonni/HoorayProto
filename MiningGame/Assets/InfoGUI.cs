@@ -7,6 +7,7 @@ public class InfoGUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        myPlayer = this.transform.parent.GetComponent<PlayerInformation>();
        // wonAmountText.text = wonMoneyTester.ToString();
        // hitsLeftText.text = hitsLeft.ToString();
         foreach (Image img in gemImagesOnWonGems)
@@ -21,6 +22,8 @@ public class InfoGUI : MonoBehaviour {
         
     }
 	
+
+
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.A))
@@ -29,7 +32,7 @@ public class InfoGUI : MonoBehaviour {
             //SetNewWonGems(sameInARowForTesting);
         }
 	}
-
+    PlayerInformation myPlayer;
     public Transform sBBResults;
     public Transform sEndGameResults;
     public Transform sStartBB;
@@ -53,14 +56,19 @@ public class InfoGUI : MonoBehaviour {
     public Transform hitShowHorizontal;
     public Transform combinedHitsAndGemsFound;
 
-    public Text tittleText;
+    public Transform coinMoveLocation;
 
+    public Text tittleText;
+    public FMODUnity.StudioEventEmitter coinCountSound;
     public Text betText;
     public Text moneyTotalText;
     public Text moneyTotalTextForEndShow;
     public Text moneyTotalBBResults;
 
     public List<GameObject> my3DGUIGEMS;
+
+    public CurtainDrop myCurtain;
+
     List<Gem> gemTypeOf3DGems;
 
     public void AddGUIGem(GameObject gem,Gem gemType)
@@ -74,27 +82,79 @@ public class InfoGUI : MonoBehaviour {
         return my3DGUIGEMS[counter];
     }
 
+    public void SetShowEndScreenToEmpty()
+    {
+        foreach(Image gemImg in gemImagesOnShowEndScreenGems)
+        {
+            gemImg.sprite = emptyWonGemSprite;
+        }
+    }
+
     public void SetWonMoney(float wonMoney)
     {
        // Debug.LogError("settings money " + wonMoney);
         wonAmountText.text = wonMoney.ToString();
     }
+
+
+    public void DropMyCurtain()
+    {
+        myCurtain.Startmoving(-1);
+    }
+    public bool IsDropFinished()
+    {
+        return !myCurtain.moving;
+    }
+
+    public void RaiseMyCurtain()
+    {
+        myCurtain.Startmoving(1);
+    }
+
     public void SetHitsLeft(int newHits)
     {
          hitsLeftText.text = "x"+newHits.ToString();
        // ColourHitSown(newHits);
 
     }
+
+    public void TransformTo2D()
+    {
+        SetGemShow(myPlayer.wonGems);
+        foreach(GameObject gem3D in my3DGUIGEMS){
+            gem3D.SetActive(false);
+        }
+    }
+
+    void EmptyGemShow()
+    {
+        foreach(Image img in gemImagesOnWonGems)
+        {
+            img.sprite = emptyWonGemSprite;
+            // gemImagesOnWonGems[n].sprite = emptyWonGemSprite;
+        }
+    }
+
+    public void TransformTo3D()
+    {
+        EmptyGemShow();
+        foreach (GameObject gem3D in my3DGUIGEMS)
+        {
+            gem3D.SetActive(true);
+        }
+
+    }
+
     public void SetBet()
     {
         //Debug.Log(this.gameObject.name);
-        betText.text = RoundSettings.bet.ToString();
+        betText.text = "€"+RoundSettings.bet.ToString();
     }
     public void SetMoneyTotal(float money)
     {
         if (moneyTotalText)
         {
-            moneyTotalText.text = "€"+money.ToString();
+            moneyTotalText.text = Common.usefulFunctions.FormatTOtaleAmountTOText(money);
         }
     }
 
@@ -110,7 +170,22 @@ public class InfoGUI : MonoBehaviour {
 
     bool stillCountingMoney = false;
 
-    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f,bool createCoinMovement=false)
+    public void CahsOut()
+    {
+        StopShowPlayAgain();
+        StartCoroutine(CountInsertMoney(myPlayer.moneyTotalAmount, 0, moneyTotalText, Common.effects.moneyCountParams.maxDuration));
+        RoundSettings.player1Money = 0f;
+        RoundSettings.player2Money = 0f;
+    }
+
+    public void CountHIts()
+    {
+        StopShowPlayAgain();
+        StartCoroutine(CountInsertMoney(0, RoundSettings.maxHits, hitsLeftText, Common.effects.moneyCountParams.maxDuration,0.4f,false,true));
+
+    }
+
+    public IEnumerator CountInsertMoney(float oldAmount, float newAmount, Text toSet, float maxDuration,float speed=1f,bool createCoinMovement=false,bool areWeCountinghits=false)
     {
         stillCountingMoney = true;
         MoneyCounParameters moneyCountParams = Common.effects.moneyCountParams;
@@ -120,6 +195,10 @@ public class InfoGUI : MonoBehaviour {
         int moneyPerStep = 1;
         float lasts = difference * moneyCountParams.step;
         int modToCoinMove = Common.effects.modToCoinMove;
+        if (!areWeCountinghits)
+        {
+            coinCountSound.Play();
+        }
         if (difference * moneyCountParams.step > maxDuration)
         {
             
@@ -138,18 +217,35 @@ public class InfoGUI : MonoBehaviour {
             }
             if (createCoinMovement)
             {
+                
                 if (n % modToCoinMove == 0)
                 {
-                    Common.effects.CreateOneCoinMove(step*modToCoinMove, moneyTotalBBResults.transform.position, moneyTotalText.rectTransform.position);
-                   // Instantiate(testSpawn, moneyTotalText.rectTransform.position, Quaternion.identity);
+                    Common.effects.CreateOneCoinMove(step*modToCoinMove,coinMoveLocation.position, moneyTotalText.rectTransform.position);   // moneyTotalBBResults.transform.position
+                                                                                                                                    // Instantiate(testSpawn, moneyTotalText.rectTransform.position, Quaternion.identity);
                 }
             }
             yield return new WaitForSeconds(step);
-            toSet.text = moneyGoer.ToString();
+            if (areWeCountinghits == true)
+            {
+                toSet.text = "x"+moneyGoer.ToString();
+            }
+            else {
+                toSet.text = Common.usefulFunctions.FormatTOtaleAmountTOText(moneyGoer);//moneyGoer.ToString();
+            }
 
         }
+        if (!areWeCountinghits)
+        {
+            coinCountSound.Stop();
+        }
+        if (areWeCountinghits == true)
+        {
+            toSet.text = "x" + newAmount.ToString();
+        }
+        else {
+            toSet.text = Common.usefulFunctions.FormatTOtaleAmountTOText(newAmount); //newAmount.ToString();
+        }
 
-        toSet.text = newAmount.ToString();
       //  Debug.Log("in reality money count lasted " + (Time.time - startTime).ToString()+ "  with step "+moneyPerStep+" we caunted "+difference+ " should last"+lasts.ToString()+ " max duration is "+maxDuration.ToString());
       //  Debug.Log("New amount " + newAmount);
        // Debug.Log("Old Amount " + oldAmount);
@@ -178,9 +274,11 @@ public class InfoGUI : MonoBehaviour {
         objectToShow.gameObject.SetActive(false);
     }
 
-    public void ShowStartBonusRound(float duration)
+    public void OnOFfBOnusRoundStartPopUp(bool onOff)
     {
-        Common.usefulFunctions.ShowChildForxSeconds(sStartBB, duration);
+        GameObject objectToShow = sStartBB.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(onOff);
+        // Common.usefulFunctions.ShowChildForxSeconds(sStartBB, duration);
     }
 
     public void ShowOutOfHitsOnOff(bool onOff)
@@ -193,6 +291,11 @@ public class InfoGUI : MonoBehaviour {
     {
         GameObject objectToShow = sPlayAgain.GetChild(0).gameObject;
         objectToShow.gameObject.SetActive(true);
+    }
+    public void StopShowPlayAgain()
+    {
+        GameObject objectToShow = sPlayAgain.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(false);
     }
 
 
@@ -266,9 +369,41 @@ public class InfoGUI : MonoBehaviour {
 
     public void SetNewWonGems(List<Gem> gems)
     {
-        SetGemShow(gems);
+        //Takaisin jos 2d normi peliinSetGemShow(gems);
         //  SetCombinedHitsAndDiamonds(gems);
         //   Common.gameMaster.RefreshTotalGemShow();
+    }
+
+    public void BetDiamondPressed()
+    {
+        if (Common.gameMaster.gameEnded)
+        {
+            Common.levelLoader.LoadMenu();
+        }
+    }
+
+    public GameObject InfoBetDiamond;
+
+    public void BetdiamondButtonEffectStart()
+    {
+        StartCoroutine(BetdiamondScaleEffect());
+    }
+
+    IEnumerator BetdiamondScaleEffect()
+    {
+        Vector3 startScale = InfoBetDiamond.transform.localScale;
+        float percentageToScale = 0.7f;
+        float dur = 1f;
+        Vector3 lastScale = startScale * (1.2f + percentageToScale);
+        Vector3 lowScale = startScale * percentageToScale;
+        while (Common.gameMaster.gameEnded)
+        {
+            Common.usefulFunctions.scaleGOOverTime(InfoBetDiamond, lowScale, dur);
+            yield return new WaitForSeconds(dur);
+            Common.usefulFunctions.scaleGOOverTime(InfoBetDiamond,  startScale, dur);
+            yield return new WaitForSeconds(dur);
+            Common.usefulFunctions.scaleGOOverTime(InfoBetDiamond, lastScale, dur);
+        }
     }
 
 

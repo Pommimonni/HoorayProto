@@ -27,7 +27,14 @@ public static class Common  {
     public static Vector3 mapRightTop;
     public static Vector3 mapMIddle;
 
-    public static Color defaultRedTextColor;
+    public static Color defaultRedTextColor=Color.white;
+
+    public static DisplayScript displayScript;
+
+    public static float AdjustBet(float amount)
+    {
+        return amount * RoundSettings.bet;
+    }
 
 
 }

@@ -4,25 +4,33 @@ using UnityEngine.UI;
 public class SetTextToRichesAmount : MonoBehaviour {
 
     public int player = 1;
-    string formatting = "N2";
     // Use this for initialization
     void Start () {
-        if(player==1)
-          this.GetComponent<Text>().text = "€" + RoundSettings.player1Money.ToString(formatting);
-        else
-        {
-            this.GetComponent<Text>().text = "€" + RoundSettings.player2Money.ToString(formatting);
-        }
-	}
+        updateText();
+
+    }
 
     void OnEnable()
     {
-        if (player == 1)
-            this.GetComponent<Text>().text = "€" + RoundSettings.player1Money.ToString(formatting);
+
+        updateText();
+    }
+
+    void updateText()
+    {
+        if (Common.usefulFunctions)
+        {
+            if (player == 1)
+                this.GetComponent<Text>().text = Common.usefulFunctions.FormatTOtaleAmountTOText(RoundSettings.player1Money); //RoundSettings.player1Money.ToString(formatting);
+            else
+            {
+                this.GetComponent<Text>().text = Common.usefulFunctions.FormatTOtaleAmountTOText(RoundSettings.player2Money);
+            }
+        }
         else
         {
-            this.GetComponent<Text>().text = "€" + RoundSettings.player2Money.ToString(formatting);
+            Invoke("updateText", Time.deltaTime);
         }
     }
 
-}
+    }

@@ -10,6 +10,7 @@ public enum SpawnLocationType : int { spawn_on_sides,spawn_around_circle,spawn_a
 
 public class BombSummoner : MonoBehaviour
 {
+    GameObject lastSpawnedBomb;
 
     void Awake()
     {
@@ -67,7 +68,8 @@ public class BombSummoner : MonoBehaviour
                 }
                 else
                 {
-                    EndBonusRound();
+                    summoning = false;
+                    Invoke("EndBonusRound", flyDuration);
                 }
 
             }
@@ -76,7 +78,7 @@ public class BombSummoner : MonoBehaviour
 
     bool IsThereTimeLeft()
     {
-        if (objectsSpawned > maxAmountOfObjectsToSpawn)
+        if (objectsSpawned >= maxAmountOfObjectsToSpawn)
         {
             return false;
         }
@@ -87,15 +89,17 @@ public class BombSummoner : MonoBehaviour
     {
         float objectSuhde = objectsSpawned/maxAmountOfObjectsToSpawn;
         spawnHz = Mathf.Lerp(startSpawnHz, endSpawnHz, objectSuhde);
+        flyDuration = Mathf.Lerp(startFlyDuration, endFlyDuration, objectSuhde);
         //		Debug.Log ("current spawnHz"+spawnHz + " end spawnhz on " + endSpawnHz + " masterin ajat ovat " + master.timePlayed + " ja " + master.timeLimit + " ja suhde on " + timeSuhde);
     }
 
     void SpawnBomb(Vector3 spawnLoc)
     {
-        GameObject enemySpawned = (GameObject)Instantiate(normalPrefab, spawnLoc, Quaternion.identity);
-        HandleBombInitialization(enemySpawned,false);
-        forceAdding(enemySpawned);
-        TorqueAdding(enemySpawned);
+        GameObject bombSpawned = (GameObject)Instantiate(normalPrefab, spawnLoc, Quaternion.identity);
+        lastSpawnedBomb = bombSpawned;
+        HandleBombInitialization(bombSpawned,false);
+        forceAdding(bombSpawned);
+        TorqueAdding(bombSpawned);
     }
 
     void SpawnBigOne(Vector3 spawnLoc)
@@ -165,7 +169,6 @@ public class BombSummoner : MonoBehaviour
     public void EndBonusRound()
     {
         Common.gameMaster.BonusRoundEndsShowResults();
-        summoning = false;
         mainLightSource.enabled = true;
     }
 
@@ -262,6 +265,8 @@ public class BombSummoner : MonoBehaviour
     }
 
     public float flyDuration = 0f;
+    public float startFlyDuration = 8f;
+    public float endFlyDuration = 3f;
     public float linearIncreaseMagnity = 5f;
     public Vector3 targetTest;
     public Vector3 normalizedTest;

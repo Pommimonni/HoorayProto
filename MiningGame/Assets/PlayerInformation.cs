@@ -110,9 +110,12 @@ public class PlayerInformation : MonoBehaviour {
 
     public void WinMoney(float money,float speed=1f)
     {
-       // Common.effects.CreateCoinMoveEffectForPlayers(1f);
-        StartCoroutine(myInformationGUI.CountInsertMoney(moneyWon, moneyWon + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration,speed,true));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
-        moneyWon += money;
+        // Common.effects.CreateCoinMoveEffectForPlayers(1f);
+        if (money != 0f)
+        {
+            StartCoroutine(myInformationGUI.CountInsertMoney(moneyTotalAmount, moneyTotalAmount + money, myInformationGUI.moneyTotalText, Common.effects.moneyCountParams.maxDuration, speed, true));//moneyWon, moneyWon + money,myInformationGUI,Common.effects.moneyCountParams.maxDuration));
+            moneyWon += money;
+        }
       //  myInformationGUI.SetWonMoney(wonMoney);
      
     }
@@ -349,7 +352,7 @@ public class PlayerInformation : MonoBehaviour {
     {
         float fixedZToMove = Common.effects.fixedZToMove;
         Vector3 pos=myInformationGUI.GetWorldPositionOfGemInfo(index);
-        Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(gem.transform, pos, duration,fixedZToMove);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(gem.transform, pos, duration);//,fixedZToMove);
         return pos;
     }
 

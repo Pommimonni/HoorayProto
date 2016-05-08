@@ -10,12 +10,13 @@ public class GameMaster : MonoBehaviour {
     public int indexOfGemWeEnteredBonusRound=0;
     public bool forceFirstMember = false;
     bool startingBonusRound = false;
-    bool gameEnded = false;
+    public bool gameEnded = false;
     bool showingEndGame = false;
 
     public Transform bonusRowShowMenu;
 
     public List<Gem> gemsWonInBonusRound;
+    public List<GameObject> gemsWonInBBGOS;
 
     public bool dublicatePlayersOnStartUp = true;
     public bool dublicateCameras = true;
@@ -34,11 +35,13 @@ public class GameMaster : MonoBehaviour {
     public List<int> indexesNoLongerValidForBonusRound;
     public bool allowHittingAlways = false;
 
-    public float howlongToShowBonusRoundPopUP = 5f;
-    public float howLongToShowResultsOfBonusRound = 5f;
+    public float howlongToShowBonusRoundPopUP = 3f;
+    public float howLongToShowResultsOfBonusRound = 3f;
 
     public List<int> debuggingGemsPLayer1;
     public List<int> debuggingGemsPLayer2;
+    public List<int> debuggingGemsWonInBBRound;
+    public List<int> debuggingGemsEnterBonusRound;
 
     bool countingMoney = false;
     
@@ -74,6 +77,11 @@ public class GameMaster : MonoBehaviour {
             player2.playerNumber = 2;
             createdCamera.GetComponentInChildren<Camera>().targetDisplay = 1;
         }
+    }
+
+    public void EmptyHitOver()
+    {
+        CheckGameEnd();
     }
 
     public PlayerInformation GetHittingPlayer(Vector3 position)
@@ -125,7 +133,14 @@ public class GameMaster : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.B))
         {
             //BeforeBonusRoundEnterEffects();
-            StartBonusRound();
+            //StartBonusRound();
+            StartCoroutine(AddDebuggingDelayd(debuggingGemsEnterBonusRound));
+
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            AddBBWonDebuggingGems();
+            BonusRoundEndsShowResults();
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -142,7 +157,7 @@ public class GameMaster : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            StartCoroutine(AddDebuggingDelayd());
+            StartCoroutine(AddDebuggingDelayd(debuggingGemsPLayer1));
         }
     }
 
@@ -157,9 +172,26 @@ public class GameMaster : MonoBehaviour {
             CreateGemAndPlayerHandle(allGems[index], Vector3.zero, player2);
         }
     }
-    IEnumerator AddDebuggingDelayd()
+
+    void AddBBWonDebuggingGems()
     {
-        foreach (int index in debuggingGemsPLayer1)
+        foreach (int index in debuggingGemsWonInBBRound)
+        {
+            ForceCreateGemBBRound(allGems[index], Vector3.zero);
+        }
+    }
+
+    void ForceCreateGemBBRound(Gem gem, Vector3 location)
+    {
+        GameObject createdGem = CreateGem(gem, location, true, true);
+        gemsWonInBBGOS.Add(createdGem);
+        gemsWonInBonusRound.Add(gem);
+
+    }
+
+    IEnumerator AddDebuggingDelayd(List<int> whatGems)
+    {
+        foreach (int index in whatGems)
         {
             playerHandlingGem = true;
             player1.onGemHandling = true;
@@ -244,12 +276,14 @@ public class GameMaster : MonoBehaviour {
     }
 
 
-    void CheckGameEnd()
+    bool CheckGameEnd()
     {
         if (player1.IsNoHits() && player2.IsNoHits() && !onBonusRound)
         {
             EndGameStarts();
+            return true;
         }
+        return false;
     }
 
     public void GemRevealOver(Vector3 position, PlayerInformation player)
@@ -321,23 +355,29 @@ public class GameMaster : MonoBehaviour {
 
     public void BonusRoundEndsShowResults()
     {
-        player1.myInformationGUI.ShowBBResultsSetActive(true);
-        player2.myInformationGUI.ShowBBResultsSetActive(true);
+       // player1.myInformationGUI.ShowBBResultsSetActive(true);
+      //  player2.myInformationGUI.ShowBBResultsSetActive(true);
         Common.effects.SpawnEffectOnBothScreens(EffectsEnum.BonusGameEnds, Vector3.zero);//Common.effects.PlayEffect(EffectsEnum.BonusGameEnds, Vector3.zero);
-        StartCoroutine(CountMoneyBonusRound(player1));
-        StartCoroutine(CountMoneyBonusRound(player2));
+                                                                                         //  StartCoroutine(CountMoneyBonusRound(player1));
+                                                                                         // StartCoroutine(CountMoneyBonusRound(player2));
+
+
+        StartCoroutine(ShowBBResults());
+       // CheckGameEnd();
         //float total = Common.gemSkins.CalculateMoneyWon(gemsWonInBonusRound);
         //StartCoroutine(player1.myInformationGUI.CountInsertMoney(0, total, player1.myInformationGUI.moneyTotalBBResults, Common.effects.moneyCountParams.maxDuration));
         // StartCoroutine(player2.myInformationGUI.CountInsertMoney(0, total, player2.myInformationGUI.moneyTotalBBResults, Common.effects.moneyCountParams.maxDuration));
         //CheckGameEnd();
     }
 
+
     void BonusRoundCompletelyEnds()
     {
-        player1.myInformationGUI.ShowBBResultsSetActive(false);
-        player2.myInformationGUI.ShowBBResultsSetActive(false);
+       // player1.myInformationGUI.ShowBBResultsSetActive(false);
+        //player2.myInformationGUI.ShowBBResultsSetActive(false);
         onBonusRound = false;
-        CheckGameEnd();
+        bool gameEnds=CheckGameEnd();
+
     }
 
     void EndGameStarts()
@@ -357,6 +397,9 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("GAME ENDS");
         showingEndGame = false;
         gameEnded = true;
+        player1.myInformationGUI.BetdiamondButtonEffectStart();
+        player2.myInformationGUI.BetdiamondButtonEffectStart();
+
         player1.myInformationGUI.StopShowEndGameResults();
         player2.myInformationGUI.StopShowEndGameResults();
         player1.myInformationGUI.ShowPlayAgain();
@@ -373,6 +416,47 @@ public class GameMaster : MonoBehaviour {
     {
         return Common.playerInfo;
     }
+    public bool cashingOut = false;
+
+    public void CashOutFromTheGame()
+    {
+        cashingOut = true;
+        StartCoroutine(CashOutFromTheGameRoutine());
+        
+
+    }
+    public void StartGameAgain()
+    {
+        cashingOut = true;
+        StartCoroutine(CountHitsAndStartGame());
+    }
+
+    IEnumerator CountHitsAndStartGame()
+    {
+        player1.myInformationGUI.CountHIts();
+        player2.myInformationGUI.CountHIts();
+        while (player1.myInformationGUI.AreWeCountingMoney() || player2.myInformationGUI.AreWeCountingMoney())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        cashingOut = false;
+        Common.levelLoader.LoadGame();
+    }
+
+
+    IEnumerator CashOutFromTheGameRoutine()
+    {
+        player1.myInformationGUI.CahsOut();
+        player2.myInformationGUI.CahsOut();
+        while(player1.myInformationGUI.AreWeCountingMoney() || player2.myInformationGUI.AreWeCountingMoney())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        cashingOut = false;
+        Common.levelLoader.LoadMenu();
+    }
+
+    
 
     void gemHandling(Vector3 atPosition,PlayerInformation player)
     {
@@ -410,7 +494,7 @@ public class GameMaster : MonoBehaviour {
         combinedWithRemovedBonusRoundGems.Add(toWin);
     }
 
-    public  void HandleBonusRoundWin(bool isBigOne,Vector3 position)
+    public  Gem HandleBonusRoundWin(bool isBigOne,Vector3 position)
     {
         Gem toWin = Common.bonusRoundChances.DetermineWin(this.indexOfGemWeEnteredBonusRound);
         if (isBigOne)
@@ -418,6 +502,7 @@ public class GameMaster : MonoBehaviour {
             //Win 3 gems?
         }
         gemsWonInBonusRound.Add(toWin);
+        return toWin;
     }
 
     void SetObjectToParent(GameObject parentGO,GameObject child,Vector3 newLocalPos)
@@ -434,20 +519,27 @@ public class GameMaster : MonoBehaviour {
         Common.playerInfo.WinMoney(amount);
     }
     public Gem wonned;
-    public GameObject CreateGem(Gem gem,Vector3 position)
+    public float gem3DScale;
+    public GameObject CreateGem(Gem gem,Vector3 position,bool create3DGem=true,bool create2DGem=false)
     {
         wonned = gem;
      //   Debug.Log("Creating game named " + gem.Name);
         GameObject created = (GameObject)Instantiate(gemPrefab, position, Quaternion.identity);
+
         created.GetComponentInChildren<SpriteRenderer>().sprite = gem.gemSprite;
 
+        if (create2DGem==false)
+        {
+            created.GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(false);
+        }
         if (create3DGem)
         {
             GameObject created3D = (GameObject)Instantiate(gem.my3DGem, position, Quaternion.identity);
+            created3D.transform.localScale = created3D.transform.localScale * gem3DScale;
             Common.usefulFunctions.SetObjectToParent(created.transform, created3D.transform);
           //  created3D.GetComponent<Rigidbody>().AddTorque(Vector3.up * 30);
         }
-
+        //created.transform.localScale = gemScale;
         return created;
     }
 
@@ -468,11 +560,23 @@ public class GameMaster : MonoBehaviour {
             Destroy(createdGO);
         }
     }
-    IEnumerator SpawnGemTypeAndMoveItToMiddle(PlayerInformation playerWhoseGemsMove, PlayerInformation playerToScreenMove, Gem whatTypeOfGem,bool isShowEndScreen=false)
+    IEnumerator SpawnGemTypeAndMoveItToMiddle(PlayerInformation playerWhoseGemsMove, PlayerInformation playerToScreenMove, Gem whatTypeOfGem,bool isShowEndScreen=false, bool isBonusRowResult=false)
     {
         //  return;
         int counter = 0;
+        if (isBonusRowResult)
+        {
+            if (playerWhoseGemsMove!=player1)
+            {
+                yield break;
+            }
+        }
+
         List<Gem> gemsToMove = playerWhoseGemsMove.wonGems;
+        if (isBonusRowResult)
+        {
+            gemsToMove = gemsWonInBonusRound;
+        }
         foreach (Gem gem in gemsToMove)
         {
             int amountAlreadyInGems = playerToScreenMove.allGemsTomiddleCreatedGems.Count;
@@ -482,16 +586,21 @@ public class GameMaster : MonoBehaviour {
             }
             else if (gem.Name == whatTypeOfGem.Name)
             {
-                
+                Image toEditImageEnd = playerToScreenMove.myInformationGUI.gemImagesOnShowEndScreenGems[amountAlreadyInGems];
+                Image toEditImageStart = null;
+                if (!isBonusRowResult)
+                {
+                    toEditImageStart = playerWhoseGemsMove.myInformationGUI.gemImagesOnWonGems[counter];
+                }
                 Debug.Log("moving gem gems in middle is " + amountAlreadyInGems);
                 Vector3 endPos = Vector3.zero;
-                if (isShowEndScreen)
+                if (isShowEndScreen || isBonusRowResult)
                 {
                     endPos = playerToScreenMove.myInformationGUI.GetWorldPositionOfShowEndGemLocation(amountAlreadyInGems);
                 }
                 else {
                      endPos = playerToScreenMove.myInformationGUI.GetWorldPositionOfMiddleGemLocation(amountAlreadyInGems);
-                    endPos.z = -20f;
+                   // endPos.z = -20f;
                 }
 
                 if (playerWhoseGemsMove == playerToScreenMove)
@@ -501,29 +610,59 @@ public class GameMaster : MonoBehaviour {
                         tempMoneyFromFromMovedGems[endShowMoneyCountCounter] += gem.priceMoney;
                     }
                 }
-                Vector3 startPos = playerWhoseGemsMove.myInformationGUI.GetWorldPositionOfGemInfo(counter);
-                //playerToScreenMove.myInformationGUI.GemShowDisableGem(counter);
-                playerWhoseGemsMove.myInformationGUI.GemShowDisableGem(counter);
-                GameObject createdGem = null;
-                if (playerWhoseGemsMove == playerToScreenMove)
+                Vector3 startPos = Vector3.zero;
+                if (!isBonusRowResult)
                 {
-                    createdGem = playerWhoseGemsMove.myInformationGUI.Get3DGem(counter);
-                    Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endPos, 0.75f);
+                    startPos=playerWhoseGemsMove.myInformationGUI.GetWorldPositionOfGemInfo(counter);
                 }
                 else
                 {
-                    createdGem = CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f);
-                    playerWhoseGemsMove.allExtraCreatedGems.Add(createdGem);
+                    startPos = gemsWonInBBGOS[amountAlreadyInGems].transform.position;
                 }
-                
-                
+                //playerToScreenMove.myInformationGUI.GemShowDisableGem(counter);
+                if (!isBonusRowResult)
+                {
+                    playerWhoseGemsMove.myInformationGUI.GemShowDisableGem(counter);
+                }
+                GameObject createdGem = null;
+                if ((!isShowEndScreen) && (!isBonusRowResult))
+                {
+                    Debug.Log("isbonus should be false it is :" + isBonusRowResult.ToString());
+                    if (playerWhoseGemsMove == playerToScreenMove)
+                    {
+                        createdGem = playerWhoseGemsMove.myInformationGUI.Get3DGem(counter);
+                        Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endPos, 0.75f);
+                    }
+                    else
+                    {
+                        createdGem = CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f, !isShowEndScreen);
+                        playerWhoseGemsMove.allExtraCreatedGems.Add(createdGem);
+                    }
+                }
+                else
+                {
+                    if (isBonusRowResult)
+                    {
+                        toEditImageEnd.sprite = gem.gemSprite;
+                        toEditImageEnd.transform.localScale = Vector3.zero;
+                        Common.usefulFunctions.scaleGOOverTime(toEditImageEnd.gameObject, Vector3.one, 0.75f);
+                    }
+                    else {
+                        yield return ResultEffectBetweenImages(toEditImageStart, toEditImageEnd, 0.75f, gem);
+                    }
+                }
+
+               // createdGem.transform.FindChild("Gem_sprite").gameObject.SetActive(isShowEndScreen);//SetActive(true);
+
+
                 playerToScreenMove.startingPositionsOfGemMoveMiddle.Add(startPos);
                 playerToScreenMove.allGemsTomiddleCreatedGems.Add(createdGem);
                 yield return new WaitForSeconds(0.75f);
-                if (isShowEndScreen)
+                if (isShowEndScreen || isBonusRowResult)
                 {
+                    
                     Vector2 offsets = new Vector2(0.0f, 0.4f);
-                    string popUpString = (gem.priceMoney/2).ToString();
+                    string popUpString = "€"+((Common.AdjustBet(gem.priceMoney/2))).ToString();
                     PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
                     pu.FontSize = 45;
                     pu.FillColor = Color.yellow;
@@ -539,15 +678,126 @@ public class GameMaster : MonoBehaviour {
         yield break;
         //return newWonGems;
     }
+
+    IEnumerator ResultEffectBetweenImages(Image toEditImageStart, Image toEditImageEnd, float dur,Gem gem)
+    {
+        Common.usefulFunctions.scaleGOOverTime(toEditImageStart.gameObject, Vector3.zero, dur);
+        yield return new WaitForSeconds(dur);
+        toEditImageEnd.sprite = gem.gemSprite;
+        toEditImageEnd.transform.localScale = Vector3.zero;
+        Common.usefulFunctions.scaleGOOverTime(toEditImageEnd.gameObject, Vector3.one, dur);
+
+    }
+    
     void GemTypeEnds()
     {
 
     }
 
-    
+
+
+    IEnumerator ShowBBResults()
+    {
+
+        player1.myInformationGUI.SetShowEndScreenToEmpty();
+        player2.myInformationGUI.SetShowEndScreenToEmpty();
+
+        yield return StartCoroutine(DropCurtainRoutine());
+
+        player1.myInformationGUI.StartShowEndGameResults();
+        player2.myInformationGUI.StartShowEndGameResults();
+
+        player1.allGemsTomiddleCreatedGems = new List<GameObject>();
+        player2.allGemsTomiddleCreatedGems = new List<GameObject>();
+        player2.startingPositionsOfGemMoveMiddle = new List<Vector3>();
+        player1.startingPositionsOfGemMoveMiddle = new List<Vector3>();
+        tempMoneyFromFromMovedGems = new List<float>();
+        endShowMoneyCountCounter = 0;
+        float moneyGoer = 0f;
+        //  StartCoroutine(CountMoneyEndShowCountAllMoney(player1));
+        //   StartCoroutine(CountMoneyEndShowCountAllMoney(player2));
+        foreach (Gem gemType in allGems)
+        {
+            tempMoneyFromFromMovedGems.Add(0);
+            float lowerMoney = moneyGoer;
+            
+            float moneyByType = Common.gemSkins.CalculateMoneyWonByType(gemsWonInBonusRound, gemType) / 2;
+            float upperMOney = moneyGoer + moneyByType;
+
+            yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",false,true));
+            if (moneyByType != 0)
+            {
+                //  PopUpManager.Instance.Pop(pu, true);
+                StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
+                StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
+            }
+            while (countingMoney)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+            // yield return new WaitForSeconds(0.3f);
+            // moneyGoer += tempMoneyFromFromMovedGems//tempMoneyFromFromMovedGems[endShowMoneyCountCounter];
+            //If wanted to count every win separately player1.myInformationGUI.CountTotalMoneyForEndText(0f,moneyGoer,4f);
+
+            moneyGoer += moneyByType;
+            endShowMoneyCountCounter++;
+
+        }
+        yield return new WaitForSeconds(1f);
+        float totalMoney = moneyGoer;  //2;
+        player1.WinMoney(totalMoney, 1);
+        player2.WinMoney(totalMoney, 1);
+        StartCoroutine(CountMoneyOneType(player1, moneyGoer, 0));
+        StartCoroutine(CountMoneyOneType(player2, moneyGoer, 0));
+        while (player1.myInformationGUI.AreWeCountingMoney())
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        yield return new WaitForSeconds(1f);
+        DestroyCreatedGems(player1);
+        DestroyCreatedGems(player2);
+
+
+
+        player1.myInformationGUI.StopShowEndGameResults();
+        player2.myInformationGUI.StopShowEndGameResults();
+
+        yield return StartCoroutine(RaiseCurtainRoutine());
+
+        BonusRoundCompletelyEnds();
+        //EndGame();
+    }
+
+    IEnumerator DropCurtainRoutine()
+    {
+        player1.myInformationGUI.DropMyCurtain();
+        player2.myInformationGUI.DropMyCurtain();
+
+        while (!player1.myInformationGUI.IsDropFinished())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    IEnumerator RaiseCurtainRoutine()
+    {
+        player1.myInformationGUI.RaiseMyCurtain();
+        player2.myInformationGUI.RaiseMyCurtain();
+
+        while (!player1.myInformationGUI.IsDropFinished())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+    }
 
     IEnumerator ShowEndResults()
     {
+        player1.myInformationGUI.SetShowEndScreenToEmpty();
+        player2.myInformationGUI.SetShowEndScreenToEmpty();
+
+        yield return StartCoroutine(DropCurtainRoutine());
+        
+
         player1.myInformationGUI.StartShowEndGameResults();
         player2.myInformationGUI.StartShowEndGameResults();
 
@@ -570,7 +820,7 @@ public class GameMaster : MonoBehaviour {
             yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",true));
             if (moneyByType != 0)
             {
-              //  PopUpManager.Instance.Pop(pu, true);
+                //  PopUpManager.Instance.Pop(pu, true);
                 StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
                 StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
             }
@@ -600,7 +850,6 @@ public class GameMaster : MonoBehaviour {
         DestroyCreatedGems(player1);
         DestroyCreatedGems(player2);
         EndGame();
-
     }
 
     IEnumerator CountMoneyEndShowCountAllMoney(PlayerInformation player)
@@ -647,13 +896,13 @@ public class GameMaster : MonoBehaviour {
     }
 
 
-    IEnumerator CreateGemMovementTypeOfGemToBothPlayers(Gem typeOfGem, string functionToRunAfter,bool isShowEndScreen=false)
+    IEnumerator CreateGemMovementTypeOfGemToBothPlayers(Gem typeOfGem, string functionToRunAfter,bool isShowEndScreen=false, bool isBonusRowResult=false)
     {
-
-        StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player1, player2, typeOfGem,isShowEndScreen));
-        yield return StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player1, player1, typeOfGem, isShowEndScreen));
-        StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player2, player1, typeOfGem, isShowEndScreen));
-        yield return StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player2, player2, typeOfGem, isShowEndScreen));
+        Debug.Log("starting gem movements " + isShowEndScreen + isBonusRowResult);
+        StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player1, player2, typeOfGem,isShowEndScreen,isBonusRowResult));
+        yield return StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player1, player1, typeOfGem, isShowEndScreen, isBonusRowResult));
+        StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player2, player1, typeOfGem, isShowEndScreen, isBonusRowResult));
+        yield return StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player2, player2, typeOfGem, isShowEndScreen, isBonusRowResult));
         yield return new WaitForSeconds(0.5f);
         Invoke(functionToRunAfter, 0f);
         
@@ -668,9 +917,23 @@ public class GameMaster : MonoBehaviour {
     void BonusRoundStartPopUp()
     {
         // Common.usefulFunctions.ShowChildForxSeconds(bonusRowShowMenu, howlongToShowBonusRoundPopUP);
-        player1.myInformationGUI.ShowStartBonusRound(howlongToShowBonusRoundPopUP);
-        player2.myInformationGUI.ShowStartBonusRound(howlongToShowBonusRoundPopUP);
-        Invoke("StartBonusRound", howlongToShowBonusRoundPopUP);
+        // player1.myInformationGUI.ShowStartBonusRound(howlongToShowBonusRoundPopUP);
+        //player2.myInformationGUI.ShowStartBonusRound(howlongToShowBonusRoundPopUP);
+        //  Invoke("StartBonusRound", howlongToShowBonusRoundPopUP);
+        StartCoroutine(BonusRoundStartPopUpRoutine());
+    }
+
+    IEnumerator BonusRoundStartPopUpRoutine()
+    {
+        player1.myInformationGUI.OnOFfBOnusRoundStartPopUp(true);
+        player2.myInformationGUI.OnOFfBOnusRoundStartPopUp(true);
+        yield return StartCoroutine(DropCurtainRoutine());
+        yield return new WaitForSeconds(howlongToShowBonusRoundPopUP);
+        yield return StartCoroutine(RaiseCurtainRoutine());
+        player1.myInformationGUI.OnOFfBOnusRoundStartPopUp(false);
+        player2.myInformationGUI.OnOFfBOnusRoundStartPopUp(false);
+        StartBonusRound();
+
     }
 
 
@@ -697,8 +960,8 @@ public class GameMaster : MonoBehaviour {
         int counter = 0;
         foreach (GameObject gem in toMove)
         {
-           
-            Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(gem.transform,toPlayer.startingPositionsOfGemMoveMiddle[counter],oneMoveDuration, fixedZToMove);
+
+            Common.usefulFunctions.MoveObjectToPlaceNonFixed(gem.transform, toPlayer.startingPositionsOfGemMoveMiddle[counter], oneMoveDuration);//, fixedZToMove);
             counter++;
             yield return new WaitForSeconds(oneMoveDuration);
 
@@ -716,7 +979,9 @@ public class GameMaster : MonoBehaviour {
         GameObject middleObject = ordered[1];
         Vector3 startScale = middleObject.transform.localScale;
         Vector3[] startPoss = new Vector3[3] { ordered[0].transform.position, ordered[1].transform.position, ordered[2].transform.position };
-        Common.effects.PlayEffect(EffectsEnum.Gem_movement_finishing_combo, middleObject.transform.position);
+        Vector3 comboEffectPos = middleObject.transform.position;
+        comboEffectPos.z -= 3.5f;
+        Common.effects.PlayEffect(EffectsEnum.Gem_movement_finishing_combo, comboEffectPos);
         float fixedZToMove = Common.effects.fixedZToMove;
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[0].transform, middleObject.transform.position, oneMoveDuration);
         yield return new WaitForSeconds(oneMoveDuration);
@@ -727,7 +992,7 @@ public class GameMaster : MonoBehaviour {
         ordered[2].SetActive(false);
         Common.usefulFunctions.scaleGOOverTime(middleObject, middleObject.transform.localScale * 1.4f, oneMoveDuration);
         Vector3 newPos = middleObject.transform.position;
-        newPos.z += 2f;
+        newPos.z -= 2f;
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(middleObject.transform,newPos , oneMoveDuration);
         yield return new WaitForSeconds(oneMoveDuration);
         ordered[0].SetActive(false);
@@ -737,8 +1002,9 @@ public class GameMaster : MonoBehaviour {
         ordered[2].SetActive(true);
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[0].transform, startPoss[0], oneMoveDuration);
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(ordered[2].transform, startPoss[2], oneMoveDuration);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(middleObject.transform, startPoss[1], oneMoveDuration);
+        Common.usefulFunctions.scaleGOOverTime(middleObject, startScale, oneMoveDuration);
         yield return new WaitForSeconds(oneMoveDuration);
-        middleObject.transform.localScale = startScale;
         yield return new WaitForSeconds(oneMoveDuration);
 
 
@@ -749,10 +1015,10 @@ public class GameMaster : MonoBehaviour {
     }
 
     public bool create3DGem = true;
-    public GameObject CreateGemAndMoveToLocation(Gem toCreate, Vector3 startLocation, Vector3 endLocation, float oneMoveDuration)
+    public GameObject CreateGemAndMoveToLocation(Gem toCreate, Vector3 startLocation, Vector3 endLocation, float oneMoveDuration,bool is3D=true)
     {
 
-        GameObject createdGem = Common.gameMaster.CreateGem(toCreate, startLocation);
+        GameObject createdGem = Common.gameMaster.CreateGem(toCreate, startLocation,is3D);
         createdGem.GetComponent<Rigidbody2D>().gravityScale = 0;
         float fixedZToMove = Common.effects.fixedZToMove;
 
@@ -760,7 +1026,19 @@ public class GameMaster : MonoBehaviour {
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endLocation, oneMoveDuration);
         return createdGem;
     }
+/*
+    public void ScaleElements(Gem toCreate, Vector3 startLocation, Vector3 endLocation, float oneMoveDuration, bool is3D = true)
+    {
 
+        GameObject createdGem = Common.gameMaster.CreateGem(toCreate, startLocation, is3D);
+        createdGem.GetComponent<Rigidbody2D>().gravityScale = 0;
+        float fixedZToMove = Common.effects.fixedZToMove;
+
+        // Common.usefulFunctions.MoveObjectToPlaceOverTimeFixedZ(createdGem.transform, endLocation, oneMoveDuration, fixedZToMove);
+        Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endLocation, oneMoveDuration);
+        return createdGem;
+    }
+    */
 
     Gem WhatGemDoWeWin()
     {

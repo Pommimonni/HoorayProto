@@ -136,6 +136,7 @@ public class MenuManager : MonoBehaviour {
     {
 
         this.betAmount = newBet+1;
+        RoundSettings.bet = betAmount;
         ChangeOtherBetToggle(newBet);
         otherMenu.betAmount = newBet + 1;
         ChangeBetText((int)betAmount);

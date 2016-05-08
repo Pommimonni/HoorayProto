@@ -7,17 +7,26 @@ public class BonusAnimation : MonoBehaviour {
 	void Start () {
      //   PlayAnimationEffect();
 	}
-	
+    public BonusRoundBomb myBomb;
 	// Update is called once per frame
 	void Update () {
-        if (playing)
+        if (!playing)
         {
             if (CheckAreWeMiddle())
             {
-                StopAnimationEffect();
+                //StopAnimationEffect();
+                DropBombDown();
             }
         }
 	}
+
+    public void DropBombDown()
+    {
+        // this.transform.parent.GetComponent<Rigidbody>().useGravity = true;
+        myBomb.BombDropsDown();
+
+    }
+
     bool playing = false;
     public void PlayAnimationEffect()
     {

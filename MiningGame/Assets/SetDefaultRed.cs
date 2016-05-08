@@ -5,12 +5,18 @@ public class SetDefaultRed : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        GetComponent<Text>().color = Common.defaultRedTextColor;
+        if (Common.defaultRedTextColor != Color.white)
+        {
+            GetComponent<Text>().color = Common.defaultRedTextColor;
+        }
 	}
 
     void OnEnable()
     {
-        GetComponent<Text>().color = Common.defaultRedTextColor;
+        if (Common.defaultRedTextColor != Color.white)
+        {
+            GetComponent<Text>().color = Common.defaultRedTextColor;
+        }
     }
 
 

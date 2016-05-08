@@ -48,6 +48,16 @@ public class UsefulFunctions : MonoBehaviour {
         return false;
     }
 
+    public void DelayDestroy(GameObject go,float delay)
+    {
+        StartCoroutine(DelayDestroyRoutine(delay, go));
+    }
+
+    IEnumerator DelayDestroyRoutine(float delay,GameObject go)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(go);
+    }
 
     public GameObject RayCastAlongCameraAndReturnhit(Camera camera,Vector3 position,int layer)
     {
@@ -145,6 +155,13 @@ public class UsefulFunctions : MonoBehaviour {
             allPos.Add(go.transform.position);
         }
         return GetMeanVector(allPos);
+    }
+    string formatting = "N2";
+
+    public string FormatTOtaleAmountTOText(float amount)
+    {
+        string str = "€" + amount.ToString(formatting);
+        return str;
     }
 
     public Vector3 GetMeanVector(List<Vector3> positions)
