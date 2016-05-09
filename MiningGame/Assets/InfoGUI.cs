@@ -21,14 +21,26 @@ public class InfoGUI : MonoBehaviour {
         }
         
     }
-	
 
+    public Text debugText;
 
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.A))
         {
-           // Debug.Log("KEY DOWN A");
+            Canvas mycanv=this.GetComponent<Canvas>();//.planeDistance.ToString();
+            RenderMode rend = mycanv.renderMode;
+            
+            mycanv.renderMode = RenderMode.ScreenSpaceCamera;
+            mycanv.worldCamera = myCamera;
+            Canvas.ForceUpdateCanvases();
+            debugText.text = rend.ToString() +"      "+ mycanv.worldCamera.ToString();
+            //canvas.renderMode = RenderMode.OverlayCamera;
+            //  debugText.text += mycanv.camera.ToString();
+            //mycanv.renderMode = RenderMode.ScreenSpaceCamera;
+            //mycanv.render
+
+            // Debug.Log("KEY DOWN A");
             //SetNewWonGems(sameInARowForTesting);
         }
 	}
@@ -49,7 +61,7 @@ public class InfoGUI : MonoBehaviour {
     public List<Image> gemImagesOnMiddleGemsBonusRound;
     public List<Image> gemImagesOnShowEndScreenGems;
     public Sprite emptyWonGemSprite;
-    Camera myCamera;
+    public Camera myCamera;
     public Color usedAxeColor;
     public Color unUsedAxeColor;
     public GameObject testSpawn;

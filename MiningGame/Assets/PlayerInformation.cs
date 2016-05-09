@@ -353,6 +353,8 @@ public class PlayerInformation : MonoBehaviour {
     {
         float fixedZToMove = Common.effects.fixedZToMove;
         Vector3 pos=myInformationGUI.GetWorldPositionOfGemInfo(index);
+        //pos.z = -5f;
+       // myInformationGUI.moneyTotalText.text = pos.z.ToString();
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(gem.transform, pos, duration);//,fixedZToMove);
         return pos;
     }
