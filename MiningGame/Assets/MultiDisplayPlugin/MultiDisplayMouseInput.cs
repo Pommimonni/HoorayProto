@@ -21,6 +21,8 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     public bool hackFromOneScreenInput = true;
     public float clickDelay = 0.05f;
+
+    public bool alwaysHitScreenTwo = false;
     
     void Start()
     {
@@ -39,7 +41,8 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         Vector2 systemMousePosition = SystemMousePosition();
         if (Input.GetMouseButtonDown(0))
         {
-            if(clickDelay > 0)
+            alwaysHitScreenTwo = false;
+            if (clickDelay > 0)
             {
                 DelayedClick(clickDelay);
             } else
@@ -47,6 +50,19 @@ public class MultiDisplayMouseInput : MonoBehaviour {
                 ApplyClick();
             }
             
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            alwaysHitScreenTwo = true;
+            if (clickDelay > 0)
+            {
+                DelayedClick(clickDelay);
+            }
+            else
+            {
+                ApplyClick();
+            }
+
         }
         if (uidebug)
             uidebug.text = systemMousePosition + "";
@@ -62,6 +78,10 @@ public class MultiDisplayMouseInput : MonoBehaviour {
                 clickDelay = 0.05f;
             }
         }
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            alwaysHitScreenTwo = !alwaysHitScreenTwo;
+        }
     }
 
     void DelayedClick(float delay)
@@ -75,16 +95,15 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         Vector3 relativePos = GetMousePositionRelativeToScreen();
         if (Application.isEditor)
         {
-            screenNumber = 1;
             relativePos = Input.mousePosition;
         }
         if (screenNumber == 1)
         {
-            RayCastFromCamera(relativePos, cameraP1, canvasP1, 1);
+            RayCastFromCamera(relativePos, cameraP1, canvasP1, screenNumber);
         }
         else
         {
-            RayCastFromCamera(relativePos, cameraP2, canvasP2, 2);
+            RayCastFromCamera(relativePos, cameraP2, canvasP2, screenNumber);
         }
         if (prevClick)
             prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
@@ -92,7 +111,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     void RayCastFromCamera(Vector3 relativeMousePosition, Camera cam, Canvas can, int screenIndex)
     {
-        Debug.Log("Raycasting to: " + relativeMousePosition +"on camera: "+cam.gameObject.name);
+        Debug.Log("Raycasting to: " + relativeMousePosition +"on camera: "+cam.gameObject.name + " screenindex: "+screenIndex);
         Ray ray = cam.ScreenPointToRay(relativeMousePosition);
         RaycastHit hit;
         Debug.Log("CAST: " + Physics.Raycast(ray, out hit));
@@ -126,6 +145,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     private int ConvertMousePointToScreenIndex(Point mousePoint)
     {
+        if (alwaysHitScreenTwo) return 2;
         if (mousePoint.X < screenWidth)
         {
             return 1;

@@ -302,7 +302,7 @@ public class GameMaster : MonoBehaviour {
 
     public bool canHitWall(PlayerInformation info)
     {
-        if ((info.IsNoHits() || IsGameOnNonNormalState(info)) && !allowHittingAlways)//info.onGemReveal || info.onGemHandling || onBonusRound || gameEnded || startingBonusRound) && !allowHittingAlways)
+        if ((info.IsNoHits() || info.HitOnCooldown() || IsGameOnNonNormalState(info)) && !allowHittingAlways )//info.onGemReveal || info.onGemHandling || onBonusRound || gameEnded || startingBonusRound) && !allowHittingAlways)
         {
             return false; //Change back to false
         }

@@ -38,12 +38,12 @@ public class ShatterEffect : MonoBehaviour {
         if (gemFound)
         {
             Vector3 spawnLoc = location;
-            Vector3 cameraPos = Camera.main.transform.position;
+            Vector3 cameraPos = playerInfo.gameCamera.transform.position;
             Vector3 locToCam = cameraPos - spawnLoc;
             Vector3 offsetSpawn = locToCam.normalized * spawnLoc.z;
             spawnLoc += offsetSpawn;
             GameObject sparklingGem = (GameObject)GameObject.Instantiate(sparklingGemPrefab, spawnLoc, Quaternion.identity);
-            sparklingGem.GetComponent<Rigidbody>().AddForce(Vector3.back * (pushSparklingGemForce + sparklingGem.transform.position.z * extraKickForDeepGems) );
+            sparklingGem.GetComponent<Rigidbody>().AddForce(Vector3.back * pushSparklingGemForce);
             sparklingGem.GetComponent<Rigidbody>().AddTorque(Vector3.right * Random.Range(100, 200));
             sparklingGem.GetComponent<Rigidbody>().AddTorque(Vector3.up * Random.Range(100, 200));
             sparklingGem.GetComponent<CoveredGem>().myPlayer = playerInfo;

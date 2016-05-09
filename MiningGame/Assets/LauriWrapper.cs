@@ -22,9 +22,13 @@ public class LauriWrapper : MonoBehaviour {
         GameObject the3dModel= gem.my3DGem;
 
         //Tee gem tulee ulos räjähdys kolosta.
-        GameObject createdGemGO=(GameObject)Instantiate(the3dModel,position,Quaternion.identity);
+        GameObject createdGemGO=(GameObject)Instantiate(the3dModel,wallPieceGO.transform.position,Quaternion.identity);
+
         //Create dropping gem found!
 
+        GemFall gemFall = createdGemGO.GetComponent<GemFall>();
+        PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(destroyedOnScreen);
+        gemFall.FallBelowScreenAndWait(wallPieceGO.transform.position, hittingPlayer);
 
         Common.gameMaster.gemsWonInBBGOS.Add(createdGemGO);
 
@@ -33,6 +37,7 @@ public class LauriWrapper : MonoBehaviour {
         //is bigOne parametri joka kertoo jos on isompi pommi tulossa.
         //laita funktio toiminnalisuusjota kutsut kun seinää tuhotaan at bonusround
     }
+    
 
     //
 

@@ -61,14 +61,37 @@ public class PlayerInformation : MonoBehaviour {
     public List<GameObject> allExtraCreatedGems;  // FOR BOnus ROund
     public List<Vector3> startingPositionsOfGemMoveMiddle;
 
+    public Camera gameCamera;
+    public Camera uiCamera;
+
+    bool hitOnCooldown = false;
+    public float hitCooldown = 0.5f;
 
     public void PlayerHits()
     {
         this.gamesLeft--;
+        SetCooldown(hitCooldown);
         Debug.Log("playerHItsBeing set" + gamesLeft.ToString());
         myInformationGUI.SetHitsLeft(this.gamesLeft);
         Common.controlGameMusic.PlayerHits();
     }
+
+    void SetCooldown(float cooldownTime)
+    {
+        hitOnCooldown = true;
+        Invoke("ClearCooldown", cooldownTime);
+    }
+
+    void ClearCooldown()
+    {
+        hitOnCooldown = false;
+    }
+
+    public bool HitOnCooldown()
+    {
+        return hitOnCooldown;
+    }
+
     public bool IsNoHits()
     {
             return this.gamesLeft <= 0;
