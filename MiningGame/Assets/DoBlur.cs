@@ -11,7 +11,7 @@ public class DoBlur : MonoBehaviour {
         initialized = true;
     }
 
-    PlayerInformation myPlayer;
+    public PlayerInformation myPlayer;
     BlurOptimized myBlur;
     NoiseAndGrain myNoiseAndGrain;
     bool initialized = false;

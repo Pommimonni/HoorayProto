@@ -10,8 +10,10 @@ public class MenuMaster : MonoBehaviour {
     public string player2TittleName = "Player2";
     public GameObject menu1;
     public GameObject menu2;
+    public FMODUnity.StudioEventEmitter menuMusic;
     void Start()
     {
+        menuMusic.Play();
        // PlayerInformation newInfo = Instantiate(playerInfoPrefab).GetComponentInChildren<PlayerInformation>();
        // newInfo.name = "BUBU";
         menu1=CreateMenu(player1TittleName,player1Pos,1,menu1);

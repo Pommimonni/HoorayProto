@@ -67,6 +67,7 @@ public class PlayerInformation : MonoBehaviour {
         this.gamesLeft--;
         Debug.Log("playerHItsBeing set" + gamesLeft.ToString());
         myInformationGUI.SetHitsLeft(this.gamesLeft);
+        Common.controlGameMusic.PlayerHits();
     }
     public bool IsNoHits()
     {

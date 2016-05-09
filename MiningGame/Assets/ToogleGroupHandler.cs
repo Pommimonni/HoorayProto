@@ -16,7 +16,7 @@ public class ToogleGroupHandler : MonoBehaviour {
         {
             SetspritesToChoices(picturesToChoose);
         }
-        SetToggleGroupFunctionToMyChildren();
+       // SetToggleGroupFunctionToMyChildren();
     }
 	
 	// Update is called once per frame
@@ -97,18 +97,20 @@ public class ToogleGroupHandler : MonoBehaviour {
             }
         }
     }
-
+    public FMODUnity.StudioEventEmitter togglePressedSound;
     public void ChildBooltToggledButton(MultiDisplayToggle toggled)
     {
         int index = toggled.order;
         ChildToggleChanged(index);
         SetMemberToggled(index);
+        togglePressedSound.Play();
     }
 
     public void SetMemberToggled(int toggled)
     {
         Toggle toggle=myActiveChildren[toggled].GetComponent<Toggle>();
         toggle.isOn = true;
+        
     }
     
 }

@@ -22,6 +22,7 @@ public static class Common  {
 
     public static string cullingMaskNameInTexture = "_Mask";
 
+    public static ControlGameMusics controlGameMusic;
 
     public static Vector3 mapleftBottom;
     public static Vector3 mapRightTop;

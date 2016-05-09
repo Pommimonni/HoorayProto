@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 public class GameMaster : MonoBehaviour {
+
+    public FMODUnity.StudioEventEmitter buttonMusicTest;
+
     public List<Gem> allGems;
     public GameObject gemPrefab;
     public bool playerHandlingGem=false;
@@ -44,10 +47,13 @@ public class GameMaster : MonoBehaviour {
     public List<int> debuggingGemsEnterBonusRound;
 
     bool countingMoney = false;
+
+    
     
     // Use this for initialization
     void Awake()
     {
+
         Common.gameMaster = this;
         allGems = GetComponentInChildren<Gems>().allGems;
         combinedWonGems = new List<Gem>();
@@ -128,6 +134,7 @@ public class GameMaster : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            buttonMusicTest.Play();
             forceFirstMember = !forceFirstMember;
         }
         if (Input.GetKeyDown(KeyCode.B))
@@ -340,6 +347,7 @@ public class GameMaster : MonoBehaviour {
     {
         startingBonusRound = false;
         onBonusRound = true;
+        Common.controlGameMusic.StartBonusRound();
         Common.gameMaster.gemsWonInBonusRound = new List<Gem>();
         Common.bonusBombSummoner.StartBonusRound();
     }
@@ -377,6 +385,7 @@ public class GameMaster : MonoBehaviour {
         //player2.myInformationGUI.ShowBBResultsSetActive(false);
         onBonusRound = false;
         bool gameEnds=CheckGameEnd();
+        Common.controlGameMusic.EndBonusRound();
 
     }
 
@@ -420,15 +429,20 @@ public class GameMaster : MonoBehaviour {
 
     public void CashOutFromTheGame()
     {
-        cashingOut = true;
-        StartCoroutine(CashOutFromTheGameRoutine());
-        
+        if (cashingOut == false)
+        {
+            cashingOut = true;
+            StartCoroutine(CashOutFromTheGameRoutine());
+        }
 
     }
     public void StartGameAgain()
     {
-        cashingOut = true;
-        StartCoroutine(CountHitsAndStartGame());
+        if (cashingOut == false)
+        {
+            cashingOut = true;
+            StartCoroutine(CountHitsAndStartGame());
+        }
     }
 
     IEnumerator CountHitsAndStartGame()
