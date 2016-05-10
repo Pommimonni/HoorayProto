@@ -33,6 +33,11 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         TouchManager.Instance.TouchesBegan += touchesBeganHandler;
     }
 
+    void OnDisable()
+    {
+        TouchManager.Instance.TouchesBegan -= touchesBeganHandler;
+    }
+
     private void touchesBeganHandler(object sender, TouchEventArgs e)
     {
         if (!tuioInput) return;
@@ -54,7 +59,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     void HandleClickEvent(int screenNumber, Vector3 relativePosition)
     {
         Vector3 relativePos = relativePosition;
-        if (Application.isEditor)
+        if (Application.isEditor && !tuioInput)
         {
             relativePos = Input.mousePosition;
         }
@@ -72,7 +77,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     void Start()
     {
-        if (Application.isEditor)
+        if (Application.isEditor && !tuioInput)
         {
             clickDelay = 0;
             hackFromOneScreenInput = false;
@@ -218,7 +223,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         {
             sysPos.x *= 2;
         }
-        return new Vector3(sysPos.x, screenHeight - sysPos.y, 0);
+        return new Vector3(sysPos.x, sysPos.y, 0);
     }
 
     private Vector2 SystemMousePosition()
