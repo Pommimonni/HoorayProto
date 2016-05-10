@@ -357,7 +357,7 @@ public class GameMaster : MonoBehaviour {
         float xDiff = player2Camera.transform.position.x- player1Camera.transform.position.x;
         Vector3 p2Pos = p1Pos;
         p2Pos.x += xDiff;
-        Debug.Log("New POS " + p2Pos + " old pos " + p1Pos);
+      //  Debug.Log("New POS " + p2Pos + " old pos " + p1Pos);
         return p2Pos;
     }
 
@@ -634,7 +634,7 @@ public class GameMaster : MonoBehaviour {
                 {
                     toEditImageStart = playerWhoseGemsMove.myInformationGUI.gemImagesOnWonGems[counter];
                 }
-                Debug.Log("moving gem gems in middle is " + amountAlreadyInGems);
+               // Debug.Log("moving gem gems in middle is " + amountAlreadyInGems);
                 Vector3 endPos = Vector3.zero;
                 if (isShowEndScreen || isBonusRowResult)
                 {
@@ -669,7 +669,7 @@ public class GameMaster : MonoBehaviour {
                 GameObject createdGem = null;
                 if ((!isShowEndScreen) && (!isBonusRowResult) || true)
                 {
-                    Debug.Log("isbonus should be false it is :" + isBonusRowResult.ToString());
+                  //  Debug.Log("isbonus should be false it is :" + isBonusRowResult.ToString());
                     if (playerWhoseGemsMove == playerToScreenMove)
                     {
                         createdGem = playerWhoseGemsMove.myInformationGUI.Get3DGem(counter);
@@ -702,7 +702,7 @@ public class GameMaster : MonoBehaviour {
                 }
 
                 // createdGem.transform.FindChild("Gem_sprite").gameObject.SetActive(isShowEndScreen);//SetActive(true);
-                Debug.Log("End movement " + endPos);
+              //  Debug.Log("End movement " + endPos);
 
                 playerToScreenMove.startingPositionsOfGemMoveMiddle.Add(startPos);
                 playerToScreenMove.allGemsTomiddleCreatedGems.Add(createdGem);
@@ -953,7 +953,7 @@ public class GameMaster : MonoBehaviour {
 
     IEnumerator CreateGemMovementTypeOfGemToBothPlayers(Gem typeOfGem, string functionToRunAfter,bool isShowEndScreen=false, bool isBonusRowResult=false)
     {
-        Debug.Log("starting gem movements " + isShowEndScreen + isBonusRowResult);
+      //  Debug.Log("starting gem movements " + isShowEndScreen + isBonusRowResult);
         StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player1, player2, typeOfGem,isShowEndScreen,isBonusRowResult));
         yield return StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player1, player1, typeOfGem, isShowEndScreen, isBonusRowResult));
         StartCoroutine(SpawnGemTypeAndMoveItToMiddle(player2, player1, typeOfGem, isShowEndScreen, isBonusRowResult));

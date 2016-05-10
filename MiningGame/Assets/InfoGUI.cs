@@ -84,6 +84,8 @@ public class InfoGUI : MonoBehaviour {
 
     List<Gem> gemTypeOf3DGems;
 
+    public RectTransform locationForCoinMovement;
+
     public void AddGUIGem(GameObject gem,Gem gemType)
     {
         my3DGUIGEMS.Add(gem);
@@ -222,6 +224,8 @@ public class InfoGUI : MonoBehaviour {
         }
         float moneyGoer = oldAmount;
         float step = moneyCountParams.step/speed;
+        
+           
         for (int n = 0; n < (int)difference; n++)
         {
             moneyGoer += sign * moneyPerStep;
@@ -234,7 +238,7 @@ public class InfoGUI : MonoBehaviour {
                 
                 if (n % modToCoinMove == 0)
                 {
-                    Common.effects.CreateOneCoinMove(step*modToCoinMove,coinMoveLocation.position, moneyTotalText.rectTransform.position);   // moneyTotalBBResults.transform.position
+                    Common.effects.CreateOneCoinMove(step*modToCoinMove,coinMoveLocation.position,locationForCoinMovement.position);   // moneyTotalBBResults.transform.position
                                                                                                                                     // Instantiate(testSpawn, moneyTotalText.rectTransform.position, Quaternion.identity);
                 }
             }

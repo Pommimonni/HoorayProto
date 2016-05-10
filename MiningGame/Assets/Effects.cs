@@ -144,6 +144,7 @@ public class Effects : MonoBehaviour {
 
     }
     public GameObject CoinGO;
+    public Vector3 endScaleForCoinMove=new Vector3(0.68f,0.68f,0.68f);
     float coinmoveDuration = 0.5f;
     void CreateCoinMoveEffect(PlayerInformation player,float duration)
     {
@@ -182,6 +183,7 @@ public class Effects : MonoBehaviour {
         GameObject createdObj = (GameObject)Instantiate(CoinGO, startPos, Quaternion.identity);
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdObj.transform, endPos, duration);
         StartCoroutine(Common.usefulFunctions.ScaleSpritesColourOverTime(createdObj.GetComponent<SpriteRenderer>(), coinEndColour, duration));
+        Common.usefulFunctions.scaleGOOverTime(createdObj, endScaleForCoinMove, duration);
         yield return new WaitForSeconds(coinmoveDuration);
         Destroy(createdObj);
     }
