@@ -184,7 +184,7 @@ public class Effects : MonoBehaviour {
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdObj.transform, endPos, duration);
         StartCoroutine(Common.usefulFunctions.ScaleSpritesColourOverTime(createdObj.GetComponent<SpriteRenderer>(), coinEndColour, duration));
         Common.usefulFunctions.scaleGOOverTime(createdObj, endScaleForCoinMove, duration);
-        yield return new WaitForSeconds(coinmoveDuration);
+        yield return new WaitForSeconds(duration+0.1f);
         Destroy(createdObj);
     }
     
