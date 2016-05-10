@@ -71,7 +71,6 @@ $RECYCLE.BIN/
 *.lnk
 *.sln
 /*.rar
-MiningGame/ProjectSettings/ProjectVersion.txt
 
 # FMOD generic
 Assets/FMODStudioCache.asset
