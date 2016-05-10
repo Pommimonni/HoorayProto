@@ -30,7 +30,7 @@ public class CurtainDrop : MonoBehaviour {
         {
 
 
-            if (!doneGemChange)
+            if (!doneGemChange && false)  //Change back if wanted to change games from 3D=>2D
             {
                 if (moveDirection < 0)
                 {

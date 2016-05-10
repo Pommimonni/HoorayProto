@@ -134,7 +134,7 @@ public class GameMaster : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            buttonMusicTest.Play();
+            //buttonMusicTest.Play();
             forceFirstMember = !forceFirstMember;
         }
         if (Input.GetKeyDown(KeyCode.B))
@@ -406,15 +406,38 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("GAME ENDS");
         showingEndGame = false;
         gameEnded = true;
-        player1.myInformationGUI.BetdiamondButtonEffectStart();
-        player2.myInformationGUI.BetdiamondButtonEffectStart();
+
 
         player1.myInformationGUI.StopShowEndGameResults();
         player2.myInformationGUI.StopShowEndGameResults();
-        player1.myInformationGUI.ShowPlayAgain();
-        player2.myInformationGUI.ShowPlayAgain();
+        if (player1.moneyTotalAmount < RoundSettings.bet || player2.moneyTotalAmount < RoundSettings.bet)
+        {
+            HeadOut();
+        }
+        else {
+            player1.myInformationGUI.BetdiamondButtonEffectStart();
+            player2.myInformationGUI.BetdiamondButtonEffectStart();
+            player1.myInformationGUI.ShowPlayAgain();
+            player2.myInformationGUI.ShowPlayAgain();
+        }
     }
 
+    void HeadOut()
+    {
+        //CashOutFromTheGame()
+        StartCoroutine(HeadOutRoutine());
+       
+    }
+
+    IEnumerator HeadOutRoutine()
+    {
+        
+        player1.myInformationGUI.DoHeadOut();  //DOES colouriong and scaling of the total money
+        player2.myInformationGUI.DoHeadOut();
+
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(CashOutFromTheGameRoutine());
+    }
 
     public void PlayerGemHandlingStart()
     {
@@ -600,8 +623,13 @@ public class GameMaster : MonoBehaviour {
             }
             else if (gem.Name == whatTypeOfGem.Name)
             {
+                //FOr 2D
                 Image toEditImageEnd = playerToScreenMove.myInformationGUI.gemImagesOnShowEndScreenGems[amountAlreadyInGems];
                 Image toEditImageStart = null;
+
+                //For3D
+                //GameObject toEditGOStart=
+
                 if (!isBonusRowResult)
                 {
                     toEditImageStart = playerWhoseGemsMove.myInformationGUI.gemImagesOnWonGems[counter];
@@ -639,7 +667,7 @@ public class GameMaster : MonoBehaviour {
                     playerWhoseGemsMove.myInformationGUI.GemShowDisableGem(counter);
                 }
                 GameObject createdGem = null;
-                if ((!isShowEndScreen) && (!isBonusRowResult))
+                if ((!isShowEndScreen) && (!isBonusRowResult) || true)
                 {
                     Debug.Log("isbonus should be false it is :" + isBonusRowResult.ToString());
                     if (playerWhoseGemsMove == playerToScreenMove)
@@ -649,7 +677,7 @@ public class GameMaster : MonoBehaviour {
                     }
                     else
                     {
-                        createdGem = CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f, !isShowEndScreen);
+                        createdGem = CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f, true);
                         playerWhoseGemsMove.allExtraCreatedGems.Add(createdGem);
                     }
                 }
@@ -666,8 +694,15 @@ public class GameMaster : MonoBehaviour {
                     }
                 }
 
-               // createdGem.transform.FindChild("Gem_sprite").gameObject.SetActive(isShowEndScreen);//SetActive(true);
+                if (isShowEndScreen)
+                {
+                   float newScale = Common.gemSkins.GemScaleInEndScreen;
+                    Vector3 newScaleVector = new Vector3(newScale, newScale, newScale);
+                    Common.usefulFunctions.scaleGOOverTime(createdGem, newScaleVector,0.75f);
+                }
 
+                // createdGem.transform.FindChild("Gem_sprite").gameObject.SetActive(isShowEndScreen);//SetActive(true);
+                Debug.Log("End movement " + endPos);
 
                 playerToScreenMove.startingPositionsOfGemMoveMiddle.Add(startPos);
                 playerToScreenMove.allGemsTomiddleCreatedGems.Add(createdGem);
@@ -678,9 +713,11 @@ public class GameMaster : MonoBehaviour {
                     Vector2 offsets = new Vector2(0.0f, 0.4f);
                     string popUpString = "€"+((Common.AdjustBet(gem.priceMoney/2))).ToString();
                     PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
-                    pu.FontSize = 45;
-                    pu.FillColor = Color.yellow;
-                    pu.OutlineColor = Color.black;
+                    pu.FontSize = 30;
+                    
+                    pu.OutlineColor = new Color(0, 0, 0,0);
+                    pu.FillColor = Color.black;
+                   // pu.OutlineColor = Color.black;
                     PopUpManager.Instance.Pop(pu, true);
 
                 }
@@ -738,10 +775,11 @@ public class GameMaster : MonoBehaviour {
             float moneyByType = Common.gemSkins.CalculateMoneyWonByType(gemsWonInBonusRound, gemType) / 2;
             float upperMOney = moneyGoer + moneyByType;
 
-            yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",false,true));
+           
             if (moneyByType != 0)
             {
                 //  PopUpManager.Instance.Pop(pu, true);
+                yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds", false, true));
                 StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
                 StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
             }
@@ -831,10 +869,13 @@ public class GameMaster : MonoBehaviour {
             float moneyByType = Common.gemSkins.CalculateMoneyWonByType(combinedWonGems, gemType)/2;
             float upperMOney = moneyGoer + moneyByType;
 
-            yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",true));
+            // yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds",true));
+            
             if (moneyByType != 0)
             {
+
                 //  PopUpManager.Instance.Pop(pu, true);
+                yield return StartCoroutine(CreateGemMovementTypeOfGemToBothPlayers(gemType, "GemTypeEnds", true));
                 StartCoroutine(CountMoneyOneType(player1, lowerMoney, upperMOney));
                 StartCoroutine(CountMoneyOneType(player2, lowerMoney, upperMOney));
             }

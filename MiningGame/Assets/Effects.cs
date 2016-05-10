@@ -176,11 +176,12 @@ public class Effects : MonoBehaviour {
             yield return new WaitForSeconds(coinmoveDuration / 2);
         }
     }
-
+    public Color coinEndColour;
     IEnumerator CoinEffect(Vector3 startPos, Vector3 endPos,float duration)
     {
         GameObject createdObj = (GameObject)Instantiate(CoinGO, startPos, Quaternion.identity);
         Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdObj.transform, endPos, duration);
+        StartCoroutine(Common.usefulFunctions.ScaleSpritesColourOverTime(createdObj.GetComponent<SpriteRenderer>(), coinEndColour, duration));
         yield return new WaitForSeconds(coinmoveDuration);
         Destroy(createdObj);
     }

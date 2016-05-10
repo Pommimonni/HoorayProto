@@ -31,7 +31,7 @@ public class Gems: MonoBehaviour
 
     }
 
-
+    public float GemScaleInEndScreen = 1.5f;
 
 
     [SerializeField]

@@ -49,13 +49,14 @@ public class InfoGUI : MonoBehaviour {
     public Transform sEndGameResults;
     public Transform sStartBB;
     public Transform sPlayAgain;
+    public Transform sHeadOut;
     public Transform BonusRoundCombining;
     public Transform sOutOfHits;
 
     public float wonMoneyTester = 0f;
     public int hitsLeft = 10;
     public List<Gem> sameInARowForTesting;
-    public Text wonAmountText;
+    public Text midScreenWonAmountTextNotUsed;
     public Text hitsLeftText;
     public List<Image> gemImagesOnWonGems;
     public List<Image> gemImagesOnMiddleGemsBonusRound;
@@ -105,7 +106,7 @@ public class InfoGUI : MonoBehaviour {
     public void SetWonMoney(float wonMoney)
     {
        // Debug.LogError("settings money " + wonMoney);
-        wonAmountText.text = wonMoney.ToString();
+        midScreenWonAmountTextNotUsed.text = wonMoney.ToString();
     }
 
 
@@ -186,8 +187,9 @@ public class InfoGUI : MonoBehaviour {
     {
         StopShowPlayAgain();
         StartCoroutine(CountInsertMoney(myPlayer.moneyTotalAmount, 0, moneyTotalText, Common.effects.moneyCountParams.maxDuration));
-        RoundSettings.player1Money = 0f;
-        RoundSettings.player2Money = 0f;
+        RoundSettings.player1Money = RoundSettings.StartMoney;
+        RoundSettings.player2Money = RoundSettings.StartMoney;
+
     }
 
     public void CountHIts()
@@ -304,6 +306,14 @@ public class InfoGUI : MonoBehaviour {
         GameObject objectToShow = sPlayAgain.GetChild(0).gameObject;
         objectToShow.gameObject.SetActive(true);
     }
+
+    public void DoHeadOut()
+    {
+        GameObject objectToShow = sHeadOut.GetChild(0).gameObject;
+        objectToShow.gameObject.SetActive(true);
+        TotalAmountZeroEffect();
+    }
+
     public void StopShowPlayAgain()
     {
         GameObject objectToShow = sPlayAgain.GetChild(0).gameObject;
@@ -396,25 +406,39 @@ public class InfoGUI : MonoBehaviour {
 
     public GameObject InfoBetDiamond;
 
+    bool BetScaleEffectGoing = false;
     public void BetdiamondButtonEffectStart()
     {
-        StartCoroutine(BetdiamondScaleEffect());
+        BetScaleEffectGoing = true;
+        StartCoroutine(ScaleEffectForUI(InfoBetDiamond));
     }
 
-    IEnumerator BetdiamondScaleEffect()
+    public void StopBetScaleEffect()
     {
-        Vector3 startScale = InfoBetDiamond.transform.localScale;
+        BetScaleEffectGoing = false;
+    }
+
+    public void TotalAmountZeroEffect()
+    {
+        GameObject amountGO = moneyTotalText.gameObject;
+        moneyTotalText.color = Color.red;
+        StartCoroutine(ScaleEffectForUI(amountGO));
+    }
+
+    IEnumerator ScaleEffectForUI(GameObject toScale)
+    {
+        Vector3 startScale = toScale.transform.localScale;
         float percentageToScale = 0.7f;
         float dur = 1f;
         Vector3 lastScale = startScale * (1.2f + percentageToScale);
         Vector3 lowScale = startScale * percentageToScale;
         while (Common.gameMaster.gameEnded)
         {
-            Common.usefulFunctions.scaleGOOverTime(InfoBetDiamond, lowScale, dur);
+            Common.usefulFunctions.scaleGOOverTime(toScale, lowScale, dur);
             yield return new WaitForSeconds(dur);
-            Common.usefulFunctions.scaleGOOverTime(InfoBetDiamond,  startScale, dur);
+            Common.usefulFunctions.scaleGOOverTime(toScale,  startScale, dur);
             yield return new WaitForSeconds(dur);
-            Common.usefulFunctions.scaleGOOverTime(InfoBetDiamond, lastScale, dur);
+            Common.usefulFunctions.scaleGOOverTime(toScale, lastScale, dur);
         }
     }
 

@@ -219,6 +219,31 @@ public class UsefulFunctions : MonoBehaviour {
         StartCoroutine(moveObjectToPlaceRoutine(toMove, where, duration));
     }
 
+    public IEnumerator ScaleSpritesColourOverTime(SpriteRenderer sprite, Color endColor,float duration)
+    {
+        float timeGoer = 0f;
+        Color startColour = sprite.color;
+        float startTime = Time.time;
+        while (timeGoer < duration)
+        {
+            if (sprite)
+            {
+                //Debug.Log("<color=red>We are still scaling:</color>");
+                timeGoer = Time.time - startTime;
+                sprite.color = Color.Lerp(startColour, endColor, timeGoer / duration);
+                
+
+            }
+            else {
+                timeGoer = duration + 1;
+            }
+            yield return new WaitForEndOfFrame();
+            
+        }
+
+        yield break;
+    }
+
     public bool GetRandomBool(float trueChance=0.5f)
     {
         float random = Random.Range(0, 1f);
