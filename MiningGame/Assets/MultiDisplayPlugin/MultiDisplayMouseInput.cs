@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Drawing;
 using System.Collections.Generic;
+using TouchScript;
 
 public class MultiDisplayMouseInput : MonoBehaviour {
 
@@ -23,7 +24,52 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     public float clickDelay = 0.05f;
 
     public bool alwaysHitScreenTwo = false;
-    
+
+    public bool tuioInput = true;
+    public TouchManager tuioTouchManager;
+
+    void OnEnable()
+    {
+        TouchManager.Instance.TouchesBegan += touchesBeganHandler;
+    }
+
+    private void touchesBeganHandler(object sender, TouchEventArgs e)
+    {
+        if (!tuioInput) return;
+        var count = e.Touches.Count;
+        for(var i = 0; i < count; i++)
+        {
+            var touch = e.Touches[i];
+            ApplyTuioTouch(touch);
+        }
+    }
+
+    private void ApplyTuioTouch(TouchPoint tuioTouchPoint)
+    {
+        int screenNumber = ConvertTouchPointToScreenIndex(tuioTouchPoint);
+        Vector3 relativePos = GetTouchPositionRelativeToScreen(tuioTouchPoint);
+        HandleClickEvent(screenNumber, relativePos);
+    }
+
+    void HandleClickEvent(int screenNumber, Vector3 relativePosition)
+    {
+        Vector3 relativePos = relativePosition;
+        if (Application.isEditor)
+        {
+            relativePos = Input.mousePosition;
+        }
+        if (screenNumber == 1)
+        {
+            RayCastFromCamera(relativePos, cameraP1, canvasP1, screenNumber);
+        }
+        else
+        {
+            RayCastFromCamera(relativePos, cameraP2, canvasP2, screenNumber);
+        }
+        if (prevClick)
+            prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
+    }
+
     void Start()
     {
         if (Application.isEditor)
@@ -39,30 +85,34 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
 	void Update () {
         Vector2 systemMousePosition = SystemMousePosition();
-        if (Input.GetMouseButtonDown(0))
+        if (!tuioInput)
         {
-            alwaysHitScreenTwo = false;
-            if (clickDelay > 0)
+            if (Input.GetMouseButtonDown(0))
             {
-                DelayedClick(clickDelay);
-            } else
-            {
-                ApplyClick();
-            }
-            
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            alwaysHitScreenTwo = true;
-            if (clickDelay > 0)
-            {
-                DelayedClick(clickDelay);
-            }
-            else
-            {
-                ApplyClick();
-            }
+                alwaysHitScreenTwo = false;
+                if (clickDelay > 0)
+                {
+                    DelayedClick(clickDelay);
+                }
+                else
+                {
+                    ApplyClick();
+                }
 
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                alwaysHitScreenTwo = true;
+                if (clickDelay > 0)
+                {
+                    DelayedClick(clickDelay);
+                }
+                else
+                {
+                    ApplyClick();
+                }
+
+            }
         }
         if (uidebug)
             uidebug.text = systemMousePosition + "";
@@ -93,20 +143,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     {
         int screenNumber = GetCurrentMousePositionScreenIndex();
         Vector3 relativePos = GetMousePositionRelativeToScreen();
-        if (Application.isEditor)
-        {
-            relativePos = Input.mousePosition;
-        }
-        if (screenNumber == 1)
-        {
-            RayCastFromCamera(relativePos, cameraP1, canvasP1, screenNumber);
-        }
-        else
-        {
-            RayCastFromCamera(relativePos, cameraP2, canvasP2, screenNumber);
-        }
-        if (prevClick)
-            prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
+        HandleClickEvent(screenNumber, relativePos);
     }
 
     void RayCastFromCamera(Vector3 relativeMousePosition, Camera cam, Canvas can, int screenIndex)
@@ -153,9 +190,29 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         else return 2;
     }
 
+    private int ConvertTouchPointToScreenIndex(TouchPoint touchPoint)
+    {
+        if (alwaysHitScreenTwo) return 2;
+        if (touchPoint.Position.x < screenWidth)
+        {
+            return 1;
+        }
+        else return 2;
+    }
+
     private Vector3 GetMousePositionRelativeToScreen()
     {
         Vector2 sysPos = SystemMousePosition();
+        if (sysPos.x > screenWidth) sysPos.x -= screenWidth;
+        if (hackFromOneScreenInput)
+        {
+            sysPos.x *= 2;
+        }
+        return new Vector3(sysPos.x, screenHeight - sysPos.y, 0);
+    }
+    private Vector3 GetTouchPositionRelativeToScreen(TouchPoint tuioTouchPoint)
+    {
+        Vector2 sysPos = new Vector2(tuioTouchPoint.Position.x, tuioTouchPoint.Position.y);
         if (sysPos.x > screenWidth) sysPos.x -= screenWidth;
         if (hackFromOneScreenInput)
         {
