@@ -133,10 +133,17 @@ public class UsefulFunctions : MonoBehaviour {
         float startTime = Time.time;
         while (timeGoer < duration)
         {
-            // Debug.Log("<color=red>We are still scaling:</color>");
-            timeGoer = Time.time - startTime;
-            objectToScale.localScale = Vector3.Lerp(startScale, endScale, timeGoer / duration);
-            yield return new WaitForEndOfFrame();
+            if (objectToScale)
+            {
+                // Debug.Log("<color=red>We are still scaling:</color>");
+                timeGoer = Time.time - startTime;
+                objectToScale.localScale = Vector3.Lerp(startScale, endScale, timeGoer / duration);
+                yield return new WaitForEndOfFrame();
+            }
+            else
+            {
+                yield break;
+            }
         }
 
         yield break;

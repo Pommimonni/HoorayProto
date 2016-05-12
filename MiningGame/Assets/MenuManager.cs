@@ -7,9 +7,13 @@ public class MenuManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-       // SetAllPlayerNameTittle(playerName);
-       // ActivateMenu(menuGOer);
-        
+        // SetAllPlayerNameTittle(playerName);
+        // ActivateMenu(menuGOer);
+        if (RoundSettings.cameFromBet)
+        {
+            GoNextMenu();
+            RoundSettings.cameFromBet = false;
+        }
 
     }
 	
@@ -95,6 +99,11 @@ public class MenuManager : MonoBehaviour {
         float conv = float.Parse(newBetAmount);
         betAmount = conv;
 
+    }
+    public void MoveNextFromP1()
+    {
+        GoNextMenu();
+        otherMenu.GoNextMenu();
     }
 
     public void GoNextMenu()

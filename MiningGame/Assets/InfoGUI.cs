@@ -404,6 +404,7 @@ public class InfoGUI : MonoBehaviour {
     {
         if (Common.gameMaster.gameEnded)
         {
+            RoundSettings.cameFromBet = true;
             Common.levelLoader.LoadMenu();
         }
     }

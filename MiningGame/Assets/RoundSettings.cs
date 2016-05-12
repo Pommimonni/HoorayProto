@@ -12,6 +12,8 @@ public static class RoundSettings {
    
     public static float moneyInserted = 14;
     public static int maxHits = 3;
+
+    public static bool cameFromBet = false;
     /*
     void Awake()
     {

@@ -437,6 +437,9 @@ public class GameMaster : MonoBehaviour {
 
         yield return new WaitForSeconds(3f);
         yield return StartCoroutine(CashOutFromTheGameRoutine());
+        RoundSettings.player1Money = RoundSettings.StartMoney;
+        RoundSettings.player2Money = RoundSettings.StartMoney;
+        Common.levelLoader.LoadMenu();
     }
 
     public void PlayerGemHandlingStart()
@@ -710,13 +713,13 @@ public class GameMaster : MonoBehaviour {
                 if (isShowEndScreen || isBonusRowResult)
                 {
                     
-                    Vector2 offsets = new Vector2(0.0f, 0.4f);
+                    Vector2 offsets = new Vector2(0.0f, 30f);
                     string popUpString = "€"+((Common.AdjustBet(gem.priceMoney/2))).ToString();
                     PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
                     pu.FontSize = 30;
                     
                     pu.OutlineColor = new Color(0, 0, 0,0);
-                    pu.FillColor = Color.black;
+                    pu.FillColor = Color.white;
                    // pu.OutlineColor = Color.black;
                     PopUpManager.Instance.Pop(pu, true);
 
