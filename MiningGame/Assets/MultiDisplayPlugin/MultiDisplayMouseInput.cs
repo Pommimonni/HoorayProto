@@ -30,12 +30,14 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     void OnEnable()
     {
-        TouchManager.Instance.TouchesBegan += touchesBeganHandler;
+        if (TouchManager.Instance != null)
+            TouchManager.Instance.TouchesBegan += touchesBeganHandler;
     }
 
     void OnDisable()
     {
-        TouchManager.Instance.TouchesBegan -= touchesBeganHandler;
+        if(TouchManager.Instance != null)
+            TouchManager.Instance.TouchesBegan -= touchesBeganHandler;
     }
 
     private void touchesBeganHandler(object sender, TouchEventArgs e)
