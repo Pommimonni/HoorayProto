@@ -6,8 +6,8 @@ public static class RoundSettings {
     public static float bet=1f;
     public static float ratio;
     public static int hits=3;
-    public static float player1Money =0f;
-    public static float player2Money = 0f;
+    public static float player1Money =3f;
+    public static float player2Money = 3f;
     public static float StartMoney = 5f;
    
     public static float moneyInserted = 14;

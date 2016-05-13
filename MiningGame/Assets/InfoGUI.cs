@@ -270,6 +270,25 @@ public class InfoGUI : MonoBehaviour {
         stillCountingMoney = false;
         yield break;
     }
+    public Image line1;
+    public Image line2;
+    IEnumerator WaitAndDoLine(int index, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        if (index == 0)
+        {
+            line1.enabled = true;
+        }
+        if (index == 1)
+        {
+            line2.enabled = true;
+            line1.enabled = true;
+        }
+    }
+    public void AddLine(int index,float duration)
+    {
+        StartCoroutine(WaitAndDoLine(index, duration));
+    }
 
     public void ShowBBResultsSetActive(bool active)
     {
