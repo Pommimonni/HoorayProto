@@ -132,7 +132,7 @@ public class BonusRoundBomb : MonoBehaviour {
             Common.effects.PlayBigBombExplosionEffect(position);
         }
         // Destroy(spotLight.gameObject);
-        Common.usefulFunctions.DelayDestroy(spotLight, 1f);
+        spotLight.GetComponent<DimLight>().DimLights();
         Destroy(this.gameObject);
     }
 

@@ -28,6 +28,7 @@ public class BombSummoner : MonoBehaviour
         Debug.Log(eq);
         initialize();
         lastSpawn = Time.time;
+        bgLighting = GetComponent<BonusGameLightManager>();
     }
 
     void initialize()
@@ -156,20 +157,20 @@ public class BombSummoner : MonoBehaviour
 
     bool summoning = false;
 
-    public Light mainLightSource;
+    BonusGameLightManager bgLighting;
 
     public void StartBonusRound()
     {
         objectsSpawned = 0;
         summoning = true;
-        mainLightSource.enabled = false;
+        bgLighting.DimLights();
     }
 
 
     public void EndBonusRound()
     {
         Common.gameMaster.BonusRoundEndsShowResults();
-        mainLightSource.enabled = true;
+        bgLighting.EndDim();
     }
 
 

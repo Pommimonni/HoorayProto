@@ -30,12 +30,14 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     void OnEnable()
     {
-        TouchManager.Instance.TouchesBegan += touchesBeganHandler;
+        if (TouchManager.Instance != null)
+            TouchManager.Instance.TouchesBegan += touchesBeganHandler;
     }
 
     void OnDisable()
     {
-        TouchManager.Instance.TouchesBegan -= touchesBeganHandler;
+        if(TouchManager.Instance != null)
+            TouchManager.Instance.TouchesBegan -= touchesBeganHandler;
     }
 
     private void touchesBeganHandler(object sender, TouchEventArgs e)
@@ -154,6 +156,23 @@ public class MultiDisplayMouseInput : MonoBehaviour {
     void RayCastFromCamera(Vector3 relativeMousePosition, Camera cam, Canvas can, int screenIndex)
     {
         Debug.Log("Raycasting to: " + relativeMousePosition +"on camera: "+cam.gameObject.name + " screenindex: "+screenIndex);
+
+
+        //RAYCAST UI FIRST
+        bool uiWasHit = false;
+        GraphicRaycaster gr = can.GetComponent<GraphicRaycaster>();
+        PointerEventData ped = new PointerEventData(null);
+        ped.position = relativeMousePosition;
+        List<RaycastResult> results = new List<RaycastResult>();
+        gr.Raycast(ped, results);
+        foreach (RaycastResult r in results)
+        {
+            Debug.Log("UI ray hit: " + r.gameObject.name);
+            uiWasHit = true;
+            r.gameObject.SendMessage("OnMultiDisplayMouseDown", screenIndex, SendMessageOptions.DontRequireReceiver);
+        }
+        if (uiWasHit) return;
+        //RAYCAST PHYSICS
         Ray ray = cam.ScreenPointToRay(relativeMousePosition);
         RaycastHit hit;
         Debug.Log("CAST: " + Physics.Raycast(ray, out hit));
@@ -163,21 +182,6 @@ public class MultiDisplayMouseInput : MonoBehaviour {
             hit.collider.SendMessage("OnMultiDisplayMouseDown", screenIndex, SendMessageOptions.DontRequireReceiver);
         }
 
-        //Code to be place in a MonoBehaviour with a GraphicRaycaster component
-        GraphicRaycaster gr = can.GetComponent<GraphicRaycaster>();
-        //Create the PointerEventData with null for the EventSystem
-        PointerEventData ped = new PointerEventData(null);
-        //Set required parameters, in this case, mouse position
-        ped.position = relativeMousePosition;
-        //Create list to receive all results
-        List<RaycastResult> results = new List<RaycastResult>();
-        //Raycast it
-        gr.Raycast(ped, results);
-        foreach(RaycastResult r in results)
-        {
-            Debug.Log("UI ray hit: " + r.gameObject.name);
-            r.gameObject.SendMessage("OnMultiDisplayMouseDown", screenIndex , SendMessageOptions.DontRequireReceiver);
-        }
     }
 
     private int GetCurrentMousePositionScreenIndex()
