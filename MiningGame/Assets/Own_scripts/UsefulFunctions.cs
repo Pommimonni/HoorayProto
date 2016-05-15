@@ -165,9 +165,15 @@ public class UsefulFunctions : MonoBehaviour {
     }
     string formatting = "N2";
 
-    public string FormatTOtaleAmountTOText(float amount)
+    public string FormatTOtaleAmountTOText(float amount,bool hasEur=true)
     {
-        string str = "€" + amount.ToString(formatting);
+
+        string str = "";
+        if (hasEur)
+        {
+            str += "€";
+        }
+        str+= amount.ToString(formatting);
         return str;
     }
 

@@ -9,9 +9,9 @@ public class MultiDisplayToggle : MonoBehaviour {
     Button b;
     public int order = 0;
     public Text textToColourChange;
-    
-    // Use this for initialization
-    void Start()
+    Toggle toggleObject;
+    Image toggleOffImage;
+    void InitializeAll()
     {
         b = GetComponent<Button>();
         int money = Mathf.FloorToInt(RoundSettings.player1Money);
@@ -19,11 +19,30 @@ public class MultiDisplayToggle : MonoBehaviour {
         {
             MakeNotAllowedToPressMe();
         }
+        toggleObject = this.transform.parent.GetComponent<Toggle>();
+        toggleOffImage = this.transform.GetComponent<Image>();
+    }
+    // Use this for initialization
+    void Start()
+    {
+        InitializeAll();
+    }
+   // Sprite savedImage;
+    void Update()
+    {
+        if (toggleObject.isOn)
+        {
+            toggleOffImage.enabled = false;
+        }
+        else
+        {
+            toggleOffImage.enabled = true;
+        }
     }
 
     void Enable()
     {
-
+        InitializeAll();
     }
 
     void MakeNotAllowedToPressMe()
@@ -39,10 +58,6 @@ public class MultiDisplayToggle : MonoBehaviour {
     }
     bool allowedToHit = true;
     // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void OnMultiDisplayMouseDown()
     {

@@ -31,7 +31,7 @@ public class PopUpManager : MonoBehaviour {
 
         }
 
-        Debug.Log("target: " + pu.Target.transform);
+        //Debug.Log("target: " + pu.Target.transform);
 
         GameObject popGO = Instantiate(popUpPrefab) as GameObject;
         GameObject placeholdero = pu.Target.transform.Find("PopUpPlaceholder").gameObject;

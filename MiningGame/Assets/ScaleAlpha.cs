@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 
 public class ScaleAlpha : MonoBehaviour {
-
     Text myText;
     bool scaling = false;
     public float scaleDuration = 2f;

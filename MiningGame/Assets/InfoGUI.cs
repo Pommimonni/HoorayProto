@@ -69,7 +69,7 @@ public class InfoGUI : MonoBehaviour {
     public Transform hitShowHorizontal;
     public Transform combinedHitsAndGemsFound;
 
-    public Transform coinMoveLocation;
+    public Transform coinMoveStartlocation;
 
     public Text tittleText;
     public FMODUnity.StudioEventEmitter coinCountSound;
@@ -238,7 +238,7 @@ public class InfoGUI : MonoBehaviour {
                 
                 if (n % modToCoinMove == 0)
                 {
-                    Common.effects.CreateOneCoinMove(step*modToCoinMove,coinMoveLocation.position,locationForCoinMovement.position);   // moneyTotalBBResults.transform.position
+                    Common.effects.CreateOneCoinMove(step*modToCoinMove,coinMoveStartlocation.position,locationForCoinMovement.position);   // moneyTotalBBResults.transform.position
                                                                                                                                     // Instantiate(testSpawn, moneyTotalText.rectTransform.position, Quaternion.identity);
                 }
             }
@@ -429,12 +429,14 @@ public class InfoGUI : MonoBehaviour {
     }
 
     public GameObject InfoBetDiamond;
+    public Image betNotification;
 
     bool BetScaleEffectGoing = false;
     public void BetdiamondButtonEffectStart()
     {
         BetScaleEffectGoing = true;
         StartCoroutine(ScaleEffectForUI(InfoBetDiamond));
+        betNotification.enabled = true;
     }
 
     public void StopBetScaleEffect()

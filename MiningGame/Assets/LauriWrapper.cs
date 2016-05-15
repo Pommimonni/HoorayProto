@@ -22,11 +22,11 @@ public class LauriWrapper : MonoBehaviour {
         GameObject the3dModel= gem.my3DGem;
 
         //Tee gem tulee ulos räjähdys kolosta.
-        GameObject createdGemGO=(GameObject)Instantiate(the3dModel,wallPieceGO.transform.position,Quaternion.identity);
+        GameObject createdGemGO = Common.gameMaster.CreateGem(gem, wallPieceGO.transform.position); //(GameObject)Instantiate(the3dModel,wallPieceGO.transform.position,Quaternion.identity);
 
         //Create dropping gem found!
 
-        GemFall gemFall = createdGemGO.GetComponent<GemFall>();
+        GemFall gemFall = createdGemGO.GetComponentInChildren<GemFall>();
         PlayerInformation hittingPlayer = Common.gameMaster.GetHittingPlayer(destroyedOnScreen);
         gemFall.FallBelowScreenAndWait(wallPieceGO.transform.position, hittingPlayer);
 

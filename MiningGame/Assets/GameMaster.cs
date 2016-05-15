@@ -386,6 +386,13 @@ public class GameMaster : MonoBehaviour {
         onBonusRound = false;
         bool gameEnds=CheckGameEnd();
         Common.controlGameMusic.EndBonusRound();
+        foreach (GameObject gem in gemsWonInBBGOS)
+        {
+            Destroy(gem);
+            
+        }
+        gemsWonInBBGOS = new List<GameObject>();
+        gemsWonInBonusRound= new List<Gem>();
 
     }
 
@@ -670,11 +677,13 @@ public class GameMaster : MonoBehaviour {
                     playerWhoseGemsMove.myInformationGUI.GemShowDisableGem(counter);
                 }
                 GameObject createdGem = null;
-                if ((!isShowEndScreen) && (!isBonusRowResult) || true)
+                if (!isBonusRowResult)//(!isShowEndScreen) && (!isBonusRowResult) || true)
                 {
                   //  Debug.Log("isbonus should be false it is :" + isBonusRowResult.ToString());
+                  
                     if (playerWhoseGemsMove == playerToScreenMove)
                     {
+
                         createdGem = playerWhoseGemsMove.myInformationGUI.Get3DGem(counter);
                         Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endPos, 0.75f);
                     }
@@ -688,16 +697,31 @@ public class GameMaster : MonoBehaviour {
                 {
                     if (isBonusRowResult)
                     {
+
+                        /*
                         toEditImageEnd.sprite = gem.gemSprite;
                         toEditImageEnd.transform.localScale = Vector3.zero;
                         Common.usefulFunctions.scaleGOOverTime(toEditImageEnd.gameObject, Vector3.one, 0.75f);
+                        */
+                        /*
+                        if (playerToScreenMove == player1)
+                        {
+                            createdGem = gemsWonInBBGOS[amountAlreadyInGems];//amountAlreadyInGems
+                            Common.usefulFunctions.MoveObjectToPlaceNonFixed(createdGem.transform, endPos, 0.75f);
+
+                        }
+                        else
+                        {
+                        */
+                            createdGem = CreateGemAndMoveToLocation(gem, startPos, endPos, 0.75f, true);
+                        //}
                     }
                     else {
                         yield return ResultEffectBetweenImages(toEditImageStart, toEditImageEnd, 0.75f, gem);
                     }
                 }
 
-                if (isShowEndScreen)
+                if (isShowEndScreen || isBonusRowResult)
                 {
                    float newScale = Common.gemSkins.GemScaleInEndScreen;
                     Vector3 newScaleVector = new Vector3(newScale, newScale, newScale);
@@ -1028,7 +1052,7 @@ public class GameMaster : MonoBehaviour {
         {
             Destroy(gem);
         }
-        toPlayer.myInformationGUI.SetGemShow(toPlayer.wonGems);
+       //put back if wanted to have 2D pics. toPlayer.myInformationGUI.SetGemShow(toPlayer.wonGems);
     }
     
     IEnumerator CombineGameObjects(List<GameObject> toCombine,float oneMoveDuration)

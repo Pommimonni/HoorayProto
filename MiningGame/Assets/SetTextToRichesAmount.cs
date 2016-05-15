@@ -21,10 +21,10 @@ public class SetTextToRichesAmount : MonoBehaviour {
         if (Common.usefulFunctions)
         {
             if (player == 1)
-                this.GetComponent<Text>().text = Common.usefulFunctions.FormatTOtaleAmountTOText(RoundSettings.player1Money); //RoundSettings.player1Money.ToString(formatting);
+                this.GetComponent<Text>().text = Common.usefulFunctions.FormatTOtaleAmountTOText(RoundSettings.player1Money,true); //RoundSettings.player1Money.ToString(formatting);
             else
             {
-                this.GetComponent<Text>().text = Common.usefulFunctions.FormatTOtaleAmountTOText(RoundSettings.player2Money);
+                this.GetComponent<Text>().text = Common.usefulFunctions.FormatTOtaleAmountTOText(RoundSettings.player2Money,true);
             }
         }
         else
