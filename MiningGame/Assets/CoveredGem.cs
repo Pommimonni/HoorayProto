@@ -108,6 +108,8 @@ public class CoveredGem : MonoBehaviour {
     {
         Common.gameMaster.GemRevealOver(this.transform.position, myPlayer);
         gemFlyToUI.Play();
+        gemFound.Stop();
+        coveredGemOnDisplay.Stop();
         Destroy(gameObject);
         Destroy(created3DGem);
     }

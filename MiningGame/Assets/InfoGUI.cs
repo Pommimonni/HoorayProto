@@ -44,6 +44,7 @@ public class InfoGUI : MonoBehaviour {
             //SetNewWonGems(sameInARowForTesting);
         }
 	}
+    public FMODUnity.StudioEventEmitter drop_sound;
     PlayerInformation myPlayer;
     public Transform sBBResults;
     public Transform sEndGameResults;
@@ -111,9 +112,11 @@ public class InfoGUI : MonoBehaviour {
         midScreenWonAmountTextNotUsed.text = wonMoney.ToString();
     }
 
+   
 
     public void DropMyCurtain()
     {
+        drop_sound.Play();
         myCurtain.Startmoving(-1);
     }
     public bool IsDropFinished()

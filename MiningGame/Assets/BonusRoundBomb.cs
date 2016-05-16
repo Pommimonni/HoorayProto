@@ -105,6 +105,7 @@ public class BonusRoundBomb : MonoBehaviour {
 
     private void BombBreaks()
     {
+        canBehit = false;
         Gem won=Common.gameMaster.HandleBonusRoundWin(isBigOne,this.transform.position);
         explosion.Play();
         HandleDestruction(won);

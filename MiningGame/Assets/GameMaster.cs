@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 public class GameMaster : MonoBehaviour {
 
+    public FMODUnity.StudioEventEmitter combineSound;
     public FMODUnity.StudioEventEmitter buttonMusicTest;
 
     public List<Gem> allGems;
@@ -328,7 +329,7 @@ public class GameMaster : MonoBehaviour {
         return false;
     }
 
-
+    
 
     IEnumerator BeforeBonusRoundEnterEffects()
     {
@@ -338,7 +339,7 @@ public class GameMaster : MonoBehaviour {
             yield return new WaitForFixedUpdate();
         }
         Debug.Log("Starting bonus round");
-        
+        combineSound.Play();
         //Common.usefulFunctions.ShowChildForxSeconds(bonusRowShowMenu, 5f);
         player1.allGemsTomiddleCreatedGems = new List<GameObject>();
         player2.allGemsTomiddleCreatedGems = new List<GameObject>();

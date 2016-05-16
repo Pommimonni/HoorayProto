@@ -93,7 +93,6 @@ public class BombSummoner : MonoBehaviour
         flyDuration = Mathf.Lerp(startFlyDuration, endFlyDuration, objectSuhde);
         Debug.Log ("current spawnHz"+spawnHz + " end spawnhz on " + endSpawnHz + " fly dur "+flyDuration+" suhde "+objectSuhde);
     }
-
     void SpawnBomb(Vector3 spawnLoc)
     {
         GameObject bombSpawned = (GameObject)Instantiate(normalPrefab, spawnLoc, Quaternion.identity);

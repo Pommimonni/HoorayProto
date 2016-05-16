@@ -103,6 +103,7 @@ public class ToogleGroupHandler : MonoBehaviour {
         int index = toggled.order;
         ChildToggleChanged(index);
         SetMemberToggled(index);
+        togglePressedSound.SetParameter("Bet_amount", index+1.5f);
         togglePressedSound.Play();
     }
 
