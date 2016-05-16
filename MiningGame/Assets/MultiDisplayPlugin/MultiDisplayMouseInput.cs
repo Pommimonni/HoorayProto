@@ -42,7 +42,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
 
     private void touchesBeganHandler(object sender, TouchEventArgs e)
     {
-        if (!tuioInput) return;
+        if (!tuioInput || inputBlocked) return;
         var count = e.Touches.Count;
         for(var i = 0; i < count; i++)
         {
@@ -77,6 +77,9 @@ public class MultiDisplayMouseInput : MonoBehaviour {
             prevClick.text = "Screen: " + screenNumber + ", at: " + relativePos;
     }
 
+    bool inputBlocked;
+    public float blockInputStart = 1f;
+
     void Start()
     {
         if (Application.isEditor && !tuioInput)
@@ -84,10 +87,19 @@ public class MultiDisplayMouseInput : MonoBehaviour {
             clickDelay = 0;
             hackFromOneScreenInput = false;
         }
+        
         if (hackFromOneScreenInput)
         {
             screenWidth /= 2f;
         }
+
+        inputBlocked = true;
+        Invoke("AllowInput", blockInputStart);
+    }
+
+    void AllowInput()
+    {
+        inputBlocked = false;
     }
 
 	void Update () {
@@ -137,7 +149,7 @@ public class MultiDisplayMouseInput : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.F8))
         {
-            alwaysHitScreenTwo = !alwaysHitScreenTwo;
+            //alwaysHitScreenTwo = !alwaysHitScreenTwo;
         }
     }
 
