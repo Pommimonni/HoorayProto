@@ -88,10 +88,10 @@ public class BombSummoner : MonoBehaviour
 
     void adjustHz()
     {
-        float objectSuhde = objectsSpawned/maxAmountOfObjectsToSpawn;
+        float objectSuhde = (float)objectsSpawned/(float)maxAmountOfObjectsToSpawn;
         spawnHz = Mathf.Lerp(startSpawnHz, endSpawnHz, objectSuhde);
         flyDuration = Mathf.Lerp(startFlyDuration, endFlyDuration, objectSuhde);
-        //		Debug.Log ("current spawnHz"+spawnHz + " end spawnhz on " + endSpawnHz + " masterin ajat ovat " + master.timePlayed + " ja " + master.timeLimit + " ja suhde on " + timeSuhde);
+        Debug.Log ("current spawnHz"+spawnHz + " end spawnhz on " + endSpawnHz + " fly dur "+flyDuration+" suhde "+objectSuhde);
     }
 
     void SpawnBomb(Vector3 spawnLoc)
@@ -146,7 +146,7 @@ public class BombSummoner : MonoBehaviour
     public float yIncrement = 0f;
     public TypeOfTrajectory typeOfTrajectory;
     public SpawnLocationType spawnLocationType;
-    int objectsSpawned = 0;
+    public int objectsSpawned = 0;
     public int maxAmountOfObjectsToSpawn;
 
     public Vector3 torgue;
