@@ -28,6 +28,7 @@ public class ShatterEffect : MonoBehaviour {
     public void Play(Vector3 location, bool gemFound, PlayerInformation playerInfo)
     {
         shatterFX[fxIndex].transform.position = location;
+        shatterFX[fxIndex].GetComponent<FMODUnity.StudioEventEmitter>().Play();
         shatterFX[fxIndex++].Play();
         if (fxIndex >= fxAmount) fxIndex = 0;
         

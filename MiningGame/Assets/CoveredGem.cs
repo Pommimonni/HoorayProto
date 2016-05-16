@@ -33,8 +33,9 @@ public class CoveredGem : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //Invoke("StartApproachingTarget", waitUntilMovingToTarget);
-        if (!targetLocation) enabled = false;
         gemFound.Play();
+        if (!targetLocation) enabled = false;
+        
 	}
 
     bool droppingDown = true;
