@@ -144,6 +144,13 @@ public class GameMaster : MonoBehaviour {
             StartCoroutine(AddDebuggingDelayd(debuggingGemsEnterBonusRound));
 
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //BeforeBonusRoundEnterEffects();
+            StartBonusRound();
+           // StartCoroutine(AddDebuggingDelayd(debuggingGemsEnterBonusRound));
+
+        }
         if (Input.GetKeyDown(KeyCode.N))
         {
             AddBBWonDebuggingGems();
@@ -419,9 +426,19 @@ public class GameMaster : MonoBehaviour {
         player2.myInformationGUI.StopShowEndGameResults();
         if (player1.moneyTotalAmount < RoundSettings.bet || player2.moneyTotalAmount < RoundSettings.bet)
         {
-            HeadOut();
+            if (player1.moneyTotalAmount <= 0 || player2.moneyTotalAmount <= 0)
+            {
+                HeadOut();
+            }
+            else
+            {
+                int newBetAmount = Mathf.FloorToInt(player1.moneyTotalAmount);
+                RoundSettings.bet = newBetAmount;
+                player1.myInformationGUI.SetBet();
+                player2.myInformationGUI.SetBet();
+            }
         }
-        else {
+        if(!(player1.moneyTotalAmount <= 0 || player2.moneyTotalAmount <= 0)) {
             player1.myInformationGUI.BetdiamondButtonEffectStart();
             player2.myInformationGUI.BetdiamondButtonEffectStart();
             player1.myInformationGUI.ShowPlayAgain();
@@ -511,7 +528,7 @@ public class GameMaster : MonoBehaviour {
         Gem toWin = null;
         if (forceFirstMember)
         {
-            toWin = allGems[0];
+            toWin = allGems[4];
         }
         else {
             toWin = WhatGemDoWeWin();

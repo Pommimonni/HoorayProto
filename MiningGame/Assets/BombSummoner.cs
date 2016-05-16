@@ -67,10 +67,10 @@ public class BombSummoner : MonoBehaviour
                     
                     objectsSpawned++;
                 }
-                else
+                if (!IsThereTimeLeft())
                 {
                     summoning = false;
-                    Invoke("EndBonusRound", flyDuration);
+                    Invoke("EndBonusRound", flyDuration+1f);
                 }
 
             }

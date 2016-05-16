@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour {
         if (RoundSettings.cameFromBet)
         {
             GoNextMenu();
+            otherMenu.GoNextMenu();
             RoundSettings.cameFromBet = false;
         }
 
@@ -21,11 +22,11 @@ public class MenuManager : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            GoNextMenu();
+           // GoNextMenu();
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            GoBackMenu();
+            //GoBackMenu();
         }
 	}
     public string playerName = "player1";

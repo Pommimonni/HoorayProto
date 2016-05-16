@@ -48,7 +48,7 @@ public class BonusRoundBomb : MonoBehaviour {
 
     public void PlayerHitsMe(bool isPlayer1)
     {
-        if (nextPlayerPlayer1==isPlayer1  || true)
+        if (nextPlayerPlayer1==isPlayer1)
         {
             CorrectPlayerHits();
         }
@@ -110,9 +110,10 @@ public class BonusRoundBomb : MonoBehaviour {
         HandleDestruction(won);
 
     }
-
+    bool canBehit = true;
     public void BombDropsDown()
     {
+        canBehit = false;
         this.transform.GetComponent<Rigidbody>().useGravity = true;
         bombFailDropSound.Play();
     }
@@ -158,15 +159,18 @@ public class BonusRoundBomb : MonoBehaviour {
 
     void OnMultiDisplayMouseDown(int screenIndex)
     {
-        Debug.Log("On mouse down on bomb");
-        hitOnScreen = screenIndex;
-        PlayerInformation hitter = Common.gameMaster.GetHittingPlayer(screenIndex);
-        bool isp1 = false;
-        if (hitter == Common.gameMaster.player1)
+        if (canBehit)
         {
-            isp1 = true;
+            Debug.Log("On mouse down on bomb");
+            hitOnScreen = screenIndex;
+            PlayerInformation hitter = Common.gameMaster.GetHittingPlayer(screenIndex);
+            bool isp1 = false;
+            if (hitter == Common.gameMaster.player1)
+            {
+                isp1 = true;
+            }
+            PlayerHitsMe(isp1);
         }
-        PlayerHitsMe(isp1);
     }
 
 }

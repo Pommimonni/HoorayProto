@@ -447,7 +447,7 @@ public class InfoGUI : MonoBehaviour {
     public void TotalAmountZeroEffect()
     {
         GameObject amountGO = moneyTotalText.gameObject;
-        moneyTotalText.color = Color.red;
+        moneyTotalText.color = new Color(153f, 0f, 0f); //Color.red;
         StartCoroutine(ScaleEffectForUI(amountGO));
     }
 
@@ -456,7 +456,7 @@ public class InfoGUI : MonoBehaviour {
         Vector3 startScale = toScale.transform.localScale;
         float percentageToScale = 0.7f;
         float dur = 1f;
-        Vector3 lastScale = startScale * (1.2f + percentageToScale);
+        Vector3 lastScale = startScale * (1.1f + percentageToScale);
         Vector3 lowScale = startScale * percentageToScale;
         while (Common.gameMaster.gameEnded)
         {
