@@ -24,6 +24,7 @@ public class FMODSpeakerPositions : MonoBehaviour {
     void RepositionSpeakers()
     {
         var fmodLowLvlSystem = RuntimeManager.LowlevelSystem;
+        fmodLowLvlSystem.setSoftwareFormat(96000, SPEAKERMODE._5POINT1, 0);
         fmodLowLvlSystem.setSpeakerPosition(SPEAKER.BACK_LEFT, backLeft.x, backLeft.y, true);
         fmodLowLvlSystem.setSpeakerPosition(SPEAKER.SURROUND_LEFT, surroundLeft.x, surroundLeft.y, true);
         fmodLowLvlSystem.setSpeakerPosition(SPEAKER.FRONT_LEFT, frontLeft.x, frontLeft.y, true);

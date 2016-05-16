@@ -98,13 +98,21 @@ public class ToogleGroupHandler : MonoBehaviour {
         }
     }
     public FMODUnity.StudioEventEmitter togglePressedSound;
+    float pressCD = 0.2f;
+    float lastPress = 0f;
     public void ChildBooltToggledButton(MultiDisplayToggle toggled)
     {
-        int index = toggled.order;
-        ChildToggleChanged(index);
-        SetMemberToggled(index);
-        togglePressedSound.SetParameter("Bet_amount", index+1.5f);
-        togglePressedSound.Play();
+        float timeElapsed = Time.time - lastPress;
+        if (timeElapsed > pressCD)
+        {
+            lastPress = Time.time;
+            int index = toggled.order;
+            ChildToggleChanged(index);
+            SetMemberToggled(index);
+            Debug.Log("PRESSING SOUND"+index);
+            togglePressedSound.SetParameter("Bet_amount", index + 1.5f);
+            togglePressedSound.Play();
+        }
     }
 
     public void SetMemberToggled(int toggled)

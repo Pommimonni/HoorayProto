@@ -20,6 +20,7 @@ public class CurtainDrop : MonoBehaviour {
     public float upperGoal = 0f;
     public float currenty = 0f;
     public float reachedGoal = 0f;
+    
     // Update is called once per frame
     void Update() {
         Vector3 rtp = myRectTransform.position;
