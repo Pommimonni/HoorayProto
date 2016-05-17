@@ -41,10 +41,21 @@ public class WallPiece : MonoBehaviour {
             Debug.Log("Clicked a wallpiece");
             bool isGem=Common.gameMaster.WallOpened(this.transform.position, hittingPlayer);
             ShatterPlay(isGem, screenIndex);
-            
-           // PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);
+
+            // PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);
             // Common.lauriWrapper.WallMouseClick();
+        }else
+        {
+            if (hittingPlayer.IsNoHits())
+            {
+                OutOfHitsAnimationPlay(hittingPlayer);
+            }
         }
+    }
+
+    void OutOfHitsAnimationPlay(PlayerInformation player)
+    {
+        player.myInformationGUI.PlayOutOfHitsAnimation();
     }
     public void ShatterPlay(bool gemFound, int screenIndex)
     {

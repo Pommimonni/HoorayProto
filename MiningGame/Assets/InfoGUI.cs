@@ -45,6 +45,7 @@ public class InfoGUI : MonoBehaviour {
         }
 	}
     public FMODUnity.StudioEventEmitter drop_sound;
+    public FMODUnity.StudioEventEmitter outOfHitsAndHittingSound;
     PlayerInformation myPlayer;
     public Transform sBBResults;
     public Transform sEndGameResults;
@@ -112,7 +113,13 @@ public class InfoGUI : MonoBehaviour {
         midScreenWonAmountTextNotUsed.text = wonMoney.ToString();
     }
 
-   
+    public void PlayOutOfHitsAnimation()
+    {
+        Animation toPlay=hitsLeftText.transform.parent.GetComponent<Animation>();
+        toPlay.Play();
+        outOfHitsAndHittingSound.Play();
+    }
+
 
     public void DropMyCurtain()
     {

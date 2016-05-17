@@ -112,11 +112,18 @@ public class BonusRoundBomb : MonoBehaviour {
 
     }
     bool canBehit = true;
+    public Vector3 myVelocity;
+    public float xVelForDropDown=2f;
     public void BombDropsDown()
     {
         canBehit = false;
         this.transform.GetComponent<Rigidbody>().useGravity = true;
+        Vector3 currVel = this.transform.GetComponent<Rigidbody>().velocity;
+        float sign = Mathf.Sign(currVel.x);
+        currVel.x = sign * xVelForDropDown;
+        this.transform.GetComponent<Rigidbody>().velocity = currVel;
         bombFailDropSound.Play();
+        
     }
 
 

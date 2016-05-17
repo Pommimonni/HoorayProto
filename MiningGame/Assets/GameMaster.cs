@@ -49,6 +49,9 @@ public class GameMaster : MonoBehaviour {
 
     bool countingMoney = false;
 
+    public List<RectTransform> gemShowLocationsBothScreens;
+
+    
     
     
     // Use this for initialization
@@ -209,11 +212,11 @@ public class GameMaster : MonoBehaviour {
         foreach (int index in whatGems)
         {
             playerHandlingGem = true;
-            player1.onGemHandling = true;
-            CreateGemAndPlayerHandle(allGems[index], Vector3.zero, player1);
+            player2.onGemHandling = true;
+            CreateGemAndPlayerHandle(allGems[index], Vector3.zero, player2);
             while (playerHandlingGem)
             {
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.3f);
             }
         }
         //yield return new WaitForSeconds(1f);
@@ -334,7 +337,7 @@ public class GameMaster : MonoBehaviour {
     IEnumerator BeforeBonusRoundEnterEffects()
     {
     
-        while (player1.onGemHandling || player2.onGemHandling)
+        while (player1.onGemHandling || player2.onGemHandling  || player2.onGemReveal || player1.onGemReveal)
         {
             yield return new WaitForFixedUpdate();
         }
@@ -441,7 +444,7 @@ public class GameMaster : MonoBehaviour {
         }
         if(!(player1.moneyTotalAmount <= 0 || player2.moneyTotalAmount <= 0)) {
             player1.myInformationGUI.BetdiamondButtonEffectStart();
-            player2.myInformationGUI.BetdiamondButtonEffectStart();
+           // player2.myInformationGUI.BetdiamondButtonEffectStart();
             player1.myInformationGUI.ShowPlayAgain();
             player2.myInformationGUI.ShowPlayAgain();
         }
@@ -618,6 +621,9 @@ public class GameMaster : MonoBehaviour {
     {
 
     }
+
+ 
+
     void DestroyCreatedGems(PlayerInformation toPlayer)
     {
         foreach(GameObject createdGO in toPlayer.allGemsTomiddleCreatedGems)
@@ -645,6 +651,13 @@ public class GameMaster : MonoBehaviour {
         foreach (Gem gem in gemsToMove)
         {
             int amountAlreadyInGems = playerToScreenMove.allGemsTomiddleCreatedGems.Count;
+            if (amountAlreadyInGems > 2)
+            {
+                if(!(isBonusRowResult || isShowEndScreen))
+                {
+                    yield break;
+                }
+            }
             if (Common.gemSkins.IsGemEmpty(gem))
             {
                 //newWonGems.Add(null);
@@ -669,6 +682,7 @@ public class GameMaster : MonoBehaviour {
                     endPos = playerToScreenMove.myInformationGUI.GetWorldPositionOfShowEndGemLocation(amountAlreadyInGems);
                 }
                 else {
+                    Debug.Log("Amount already in gems " + amountAlreadyInGems);
                      endPos = playerToScreenMove.myInformationGUI.GetWorldPositionOfMiddleGemLocation(amountAlreadyInGems);
                    // endPos.z = -20f;
                 }

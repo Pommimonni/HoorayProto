@@ -98,6 +98,8 @@ public class PlayerInformation : MonoBehaviour {
         
     }
 
+
+
     void LoadRoundValues()
     {
         bet = RoundSettings.bet;
@@ -276,6 +278,7 @@ public class PlayerInformation : MonoBehaviour {
             Debug.Log("STARTING BONUSROUND");
             enterBonus = true;
             Common.gameMaster.combinedWithRemovedBonusRoundGems=Common.gemSkins.EmptyGemsThatAre(Common.gameMaster.combinedWonGems,wonGem);
+
             //AddBannedGems();
             /*
        //     int powder = howManyTimes - 2;
