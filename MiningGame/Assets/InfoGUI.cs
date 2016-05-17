@@ -124,8 +124,10 @@ public class InfoGUI : MonoBehaviour {
     public void DropMyCurtain()
     {
         drop_sound.Play();
+      //  Debug.Log("DROPPING CURTAIN SOUND "+Time.time);
         myCurtain.Startmoving(-1);
     }
+
     public bool IsDropFinished()
     {
         return !myCurtain.moving;

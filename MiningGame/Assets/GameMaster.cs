@@ -112,7 +112,7 @@ public class GameMaster : MonoBehaviour {
 
     public void EmptyHitOver()
     {
-        CheckGameEnd();
+        CheckGameEnd(2.75123f);
     }
 
     public PlayerInformation GetHittingPlayer(Vector3 position)
@@ -316,12 +316,23 @@ public class GameMaster : MonoBehaviour {
     }
 
 
-    bool CheckGameEnd()
+    bool CheckGameEnd(float startDelayForEmptyHit=0f)
     {
-        if (player1.IsNoHits() && player2.IsNoHits() && !onBonusRound)
+       // if (player1.IsNoHits() && player2.IsNoHits() && !onBonusRound && !startingBonusRound && !player1.onGemHandling && !player1.)
+       if(!IsGameOnNonNormalState(player1) && !IsGameOnNonNormalState(player2))
         {
-            EndGameStarts();
-            return true;
+            if (player1.IsNoHits() && player2.IsNoHits())
+            {
+                if (startDelayForEmptyHit != 0f)
+                {
+                    Invoke("EndGameStarts", startDelayForEmptyHit);
+                }
+                else
+                {
+                    EndGameStarts();
+                }
+                return true;
+            }
         }
         return false;
     }
@@ -1239,7 +1250,7 @@ public class GameMaster : MonoBehaviour {
 
     float forceWinBonusRoundChance = 0.1851f;
     Gem gemforceToWin = null;
-    List<int> indexesToWin;
+    public List<int> indexesToWin;
 
 
     Gem WhatGemDoWeWin()
