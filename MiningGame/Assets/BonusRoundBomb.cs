@@ -24,22 +24,26 @@ public class BonusRoundBomb : MonoBehaviour {
     public Color player2Colour;
     private int hitOnScreen;
 
+
     private int[] playersToHit = new int[2] { 1, 2 };
     private int hits = 0;
     private int hitsNeeded = 2;
     bool nextPlayerPlayer1=true;
     private bool isBigOne = false;
-    public void Initialize(int newHitsNeeded,bool startingPlayerPlayer1, bool newIsBigOne)
+    public void Initialize(int newHitsNeeded,bool startingPlayerPlayer1, bool isInfotext)
     {
-        if (newIsBigOne)
+
+        hitsNeeded = newHitsNeeded;
+        if (isInfotext)
         {
-            hitsNeeded = newHitsNeeded * 2;
+            hitMeText.SetActive(true);
         }
-        else {
-            hitsNeeded = newHitsNeeded;
+        else
+        {
+            hitMeText.SetActive(false);
         }
         nextPlayerPlayer1=startingPlayerPlayer1;
-        isBigOne = newIsBigOne;
+        isBigOne = false;
         SetNewPlayerCOlour(startingPlayerPlayer1);
         spotLight = (GameObject)GameObject.Instantiate(spotLight, this.transform.position, Quaternion.identity);
         spotLight.GetComponent<FollowTransform>().target = transform;
@@ -113,6 +117,7 @@ public class BonusRoundBomb : MonoBehaviour {
     }
     bool canBehit = true;
     public Vector3 myVelocity;
+    public GameObject hitMeText;
     public float xVelForDropDown=2f;
     public void BombDropsDown()
     {

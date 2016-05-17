@@ -234,7 +234,8 @@ public class InfoGUI : MonoBehaviour {
         }
         float moneyGoer = oldAmount;
         float step = moneyCountParams.step/speed;
-        
+
+        int coinSoundMod = 30;
            
         for (int n = 0; n < (int)difference; n++)
         {
@@ -242,6 +243,13 @@ public class InfoGUI : MonoBehaviour {
             if (moneyGoer*sign > newAmount)
             {
                 break;
+            }
+            if (!areWeCountinghits)
+            {
+                if (n % coinSoundMod == 0)
+                {
+                    coinCountSound.Play();
+                }
             }
             if (createCoinMovement)
             {

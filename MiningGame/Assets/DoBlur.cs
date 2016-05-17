@@ -5,7 +5,7 @@ public class DoBlur : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-       myPlayer= this.gameObject.transform.parent.GetComponentInChildren<PlayerInformation>();
+      // myPlayer= this.gameObject.transform.parent.GetComponentInChildren<PlayerInformation>();
         myBlur=this.gameObject.GetComponent<BlurOptimized>();
         myNoiseAndGrain= this.gameObject.GetComponent<NoiseAndGrain>();
         initialized = true;

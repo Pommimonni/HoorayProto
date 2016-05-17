@@ -100,6 +100,24 @@ public class BombSummoner : MonoBehaviour
         HandleBombInitialization(bombSpawned,false);
         forceAdding(bombSpawned);
         TorqueAdding(bombSpawned);
+        if (objectsSpawned > 0)
+        {
+            HelpPopUp(bombSpawned);
+        }
+    }
+
+    void HelpPopUp(GameObject createdBomb)
+    {
+        Vector2 offsets = new Vector2(0.0f, 30f);
+        string popUpString = "HIT ME";
+        //  PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
+        PopUp pu = new PopUp(createdBomb, offsets, popUpString, flyDuration, Vector2.up,0f);
+        pu.FontSize = 30;
+
+        pu.OutlineColor = new Color(0, 0, 0, 0);
+        pu.FillColor = Color.red;
+        // pu.OutlineColor = Color.black;
+        PopUpManager.Instance.Pop(pu, true);
     }
 
     void SpawnBigOne(Vector3 spawnLoc)
@@ -125,7 +143,13 @@ public class BombSummoner : MonoBehaviour
         else {
             whoStarts = Common.usefulFunctions.GetRandomBool();
         }
-        bomb.Initialize(2, whoStarts,isBig);
+        bool info = false;
+        if (objectsSpawned == 0)
+        {
+            info = true;
+        }
+
+        bomb.Initialize(2, whoStarts,info);
     }
 
 

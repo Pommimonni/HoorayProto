@@ -92,6 +92,7 @@ public class PlayerInformation : MonoBehaviour {
         return hitOnCooldown;
     }
 
+
     public bool IsNoHits()
     {
             return this.gamesLeft <= 0;

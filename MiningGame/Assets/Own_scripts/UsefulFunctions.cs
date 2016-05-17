@@ -59,6 +59,8 @@ public class UsefulFunctions : MonoBehaviour {
         Destroy(go);
     }
 
+
+
     public GameObject RayCastAlongCameraAndReturnhit(Camera camera,Vector3 position,int layer)
     {
         //Debug.Log("Checking raycast on " + startPosition);
@@ -169,11 +171,16 @@ public class UsefulFunctions : MonoBehaviour {
     {
 
         string str = "";
-        if (hasEur)
+        if (amount > 1000)
         {
+            string str1 = amount.ToString();
             str += "€";
+            str += str1;
         }
-        str+= amount.ToString(formatting);
+        else
+        {
+            str += amount.ToString(formatting);
+        }
         return str;
     }
 
