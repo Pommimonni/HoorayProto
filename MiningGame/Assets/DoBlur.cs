@@ -60,7 +60,7 @@ public class DoBlur : MonoBehaviour {
     void BlurEffects(bool onOff)
     {
         myBlur.enabled = onOff;
-        myPlayer.myInformationGUI.ShowOutOfHitsOnOff(onOff);
+        //myPlayer.myInformationGUI.ShowOutOfHitsOnOff(onOff);
        // myNoiseAndGrain.enabled = onOff;   
     }
     public void StopBlur()

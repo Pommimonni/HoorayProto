@@ -45,7 +45,7 @@ public class InfoGUI : MonoBehaviour {
         }
 	}
     public FMODUnity.StudioEventEmitter drop_sound;
-    public FMODUnity.StudioEventEmitter outOfHitsAndHittingSound;
+    public FMODUnity.StudioEventEmitter errorSound;
     PlayerInformation myPlayer;
     public Transform sBBResults;
     public Transform sEndGameResults;
@@ -117,7 +117,7 @@ public class InfoGUI : MonoBehaviour {
     {
         Animation toPlay=hitsLeftText.transform.parent.GetComponent<Animation>();
         toPlay.Play();
-        outOfHitsAndHittingSound.Play();
+        //outOfHitsAndHittingSound.Play();
     }
 
 

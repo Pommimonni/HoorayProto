@@ -2,7 +2,10 @@
 using System.Collections;
 
 public class WallPiece : MonoBehaviour {
-    
+
+
+    float lastErrorPlay = 0f;
+    float errorCD = 0.5f;
 
 	// Use this for initialization
 	void Start () {
@@ -46,11 +49,24 @@ public class WallPiece : MonoBehaviour {
             // Common.lauriWrapper.WallMouseClick();
         }else
         {
-            if (hittingPlayer.IsNoHits())
+            float elapsedTime = Time.time - lastErrorPlay;
+            if (errorCD < elapsedTime)
             {
-                OutOfHitsAnimationPlay(hittingPlayer);
+                lastErrorPlay = Time.time;
+                PlayErrorSound(hittingPlayer);
+
+
+                if (hittingPlayer.IsNoHits())
+                {
+                    OutOfHitsAnimationPlay(hittingPlayer);
+                }
             }
         }
+    }
+
+    void PlayErrorSound(PlayerInformation hittingPlayer)
+    {
+        hittingPlayer.myInformationGUI.errorSound.Play();
     }
 
     void OutOfHitsAnimationPlay(PlayerInformation player)

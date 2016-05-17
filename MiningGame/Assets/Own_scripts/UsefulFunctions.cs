@@ -179,6 +179,10 @@ public class UsefulFunctions : MonoBehaviour {
         }
         else
         {
+            if (hasEur)
+            {
+                str += "€";
+            }
             str += amount.ToString(formatting);
         }
         return str;
