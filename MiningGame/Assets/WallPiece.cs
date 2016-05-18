@@ -44,7 +44,7 @@ public class WallPiece : MonoBehaviour {
             Debug.Log("Clicked a wallpiece");
             bool isGem=Common.gameMaster.WallOpened(this.transform.position, hittingPlayer);
             ShatterPlay(isGem, screenIndex);
-
+            lastErrorPlay = Time.time;
             // PlayerInformation hittingPlayer = GetHittingPlayer(this.transform.position);
             // Common.lauriWrapper.WallMouseClick();
         }else
