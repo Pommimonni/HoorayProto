@@ -30,8 +30,12 @@ public class CoveredGem : MonoBehaviour {
 
     GameObject created3DGem;
 
+    Rigidbody rbody;
+    public float additionalGravity;
+
     // Use this for initialization
     void Start () {
+        rbody = GetComponent<Rigidbody>();
         //Invoke("StartApproachingTarget", waitUntilMovingToTarget);
         gemFound.Play();
         if (!targetLocation) enabled = false;
@@ -55,6 +59,14 @@ public class CoveredGem : MonoBehaviour {
             {
                 EndInterpolation();
             }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (rbody.useGravity && additionalGravity > 0f)
+        {
+            rbody.AddForce(Physics.gravity * additionalGravity, ForceMode.Acceleration);
         }
     }
 
