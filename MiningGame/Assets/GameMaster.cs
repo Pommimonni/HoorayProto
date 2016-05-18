@@ -1137,7 +1137,7 @@ public class GameMaster : MonoBehaviour {
     IEnumerator CreateBonusMovements()
     {
         Vector3 player1EffLocation = new Vector3(13f, -1.3f, -6.9f);
-        Vector3 player2EffLocation = new Vector3(50f, -1.3f, -6.9f);
+        Vector3 player2EffLocation = new Vector3(53f, -1.3f, -6.9f);
         Common.effects.PlayEffect(EffectsEnum.Gem_movement_finishing_combo, player1EffLocation);
         Common.effects.PlayEffect(EffectsEnum.Gem_movement_finishing_combo, player2EffLocation);
         yield return new WaitForSeconds(0.5f);
