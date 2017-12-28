@@ -394,6 +394,15 @@ public class BombSummoner : MonoBehaviour
         return result;
     }
 
+    float ParabolicMovement(float x, Vector3 parabParams)
+    {
+        float a = parabParams.x;
+        float b = parabParams.y;
+        float c = parabParams.z;
+        float newYPosition = a * x * x + b * x + c;
+        return newYPosition;
+    }
+
     IEnumerator numericParabel(GameObject toControl,Vector3[] positions,float duration)
     {
         Vector3 parabParams = CalculateParabelEquation(positions[0], positions[1], positions[2]);
@@ -422,7 +431,7 @@ public class BombSummoner : MonoBehaviour
     }
 
  
-
+    /*
     float ParabolicMovement(float x,Vector3 parabParams)
     {
         float a = parabParams.x;
@@ -430,7 +439,7 @@ public class BombSummoner : MonoBehaviour
         float c = parabParams.z;
         float newYPosition = a * x * x + b * x + c;
         return newYPosition;
-    }
+    }*/
 
 
     IEnumerator lerpNumerator(Rigidbody toChange,Vector3 endVelocity, float duration)

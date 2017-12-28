@@ -160,6 +160,7 @@ public class GameMaster : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.F))
         {
             //buttonMusicTest.Play();
+            CreatePopUp();
             forceFirstMember = !forceFirstMember;
         }
         if (Input.GetKeyDown(KeyCode.B))
@@ -366,6 +367,7 @@ public class GameMaster : MonoBehaviour {
     }
 
     
+
 
     IEnumerator BeforeBonusRoundEnterEffects()
     {
@@ -669,6 +671,19 @@ public class GameMaster : MonoBehaviour {
         {
             Destroy(createdGO);
         }
+    }
+
+    void CreatePopUp()
+    {
+        string popUpString = "€";
+        //  PopUp pu = new PopUp(playerToScreenMove.myInformationGUI.GetGOOfGemMiddleShowEndScreen(amountAlreadyInGems), offsets, popUpString, 0.75f, Vector2.up, 60f);//60f);
+        PopUp pu = new PopUp(gemShowLocationsBothScreens[0].gameObject, Vector2.zero, popUpString, 0.75f, Vector2.up, 60f);
+        pu.FontSize = 30;
+
+        pu.OutlineColor = new Color(0, 0, 0, 0);
+        pu.FillColor = Color.white;
+        // pu.OutlineColor = Color.black;
+        PopUpManager.Instance.Pop(pu, true);
     }
 
     void EnableAnimationOnGem(GameObject gem)

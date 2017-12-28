@@ -14,11 +14,26 @@ public class UsefulFunctions : MonoBehaviour {
         Vector3 mouseposition = Camera.main.ScreenToWorldPoint(new Vector3(mousex, mousey, 0));
         return mouseposition;
     }
+    /*
+            public static Vector2 WorldToCanvas(this Canvas canvas,
+                                            Vector3 world_position,
+                                            Camera camera = null)
+        {
+            if (camera == null)
+            {
+                camera = Camera.main;
+            }
 
-    public Vector3 GetWorldPositionFromPixelInCamera(Camera camera, Vector2 pixelPos)
-    {
-        return camera.ScreenToWorldPoint(new Vector3(pixelPos.x, pixelPos.y, 0));
-    }
+            var viewport_position = camera.WorldToViewportPoint(world_position);
+            var canvas_rect = canvas.GetComponent<RectTransform>();
+
+            return new Vector2((viewport_position.x * canvas_rect.sizeDelta.x) - (canvas_rect.sizeDelta.x * 0.5f),
+                               (viewport_position.y * canvas_rect.sizeDelta.y) - (canvas_rect.sizeDelta.y * 0.5f));
+        }
+        */
+
+
+
 
     public Vector3 GetMousePixelPosition()
     {
